@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>观潮看盘 · 市场结构与涨停复盘</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" aria-label="观潮看盘">观潮看盘</div>
+  <nav class="markets" id="markets" aria-label="五市场概览"></nav>
+  <div class="thermo" id="thermo" aria-label="市场情绪温度"></div>
+  <label class="search">
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="searchInput" type="search" placeholder="搜索代码 / 名称" autocomplete="off">
+  </label>
+</header>
+
+<main class="layout">
+  <section class="map-pane" aria-label="全市场树图">
+    <div class="pane-head">
+      <div class="pool-tabs" id="poolTabs" role="tablist" aria-label="标的池"></div>
+      <div class="pool-meta" id="poolMeta"></div>
+    </div>
+    <div class="treemap-wrap" id="treemapWrap">
+      <canvas id="treemap"></canvas>
+      <div class="tooltip" id="tooltip" hidden></div>
+      <div class="map-note" id="mapNote" hidden></div>
+    </div>
+  </section>
+  <aside class="drawer" id="drawer" aria-label="标的详情"></aside>
+</main>
+
+<section class="emotion-strip" id="emotionStrip" aria-label="市场情绪仪表盘（数据源：盘见）"></section>
+
+<footer class="bottom">
+  <div class="timeline-pane">
+    <div class="pane-head"><h2>涨停时间轴</h2><span class="pane-sub">2026-11-13 · 按首次封板时间</span></div>
+    <canvas id="timeline"></canvas>
+  </div>
+  <div class="spark-pane">
+    <div class="pane-head"><h2>情绪走势</h2><span class="pane-sub">近 21 个交易日评分</span></div>
+    <canvas id="spark"></canvas>
+  </div>
+</footer>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="data/treemap.js"></script>
+<script src="data/overview.js"></script>
+<script src="data/summary_all.js"></script>
+<script src="data/dashboard.js"></script>
+<script src="data/limit.js"></script>
+<script src="data/call.js"></script>
+<script src="data/kline_600519.js"></script>
+<script src="data/market_extra.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
