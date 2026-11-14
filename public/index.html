@@ -24,18 +24,19 @@
 
 <main class="layout" id="workspace" tabindex="-1">
   <section class="map-pane" aria-label="全市场树图">
-    <div class="map-title-row"><div><h1>市场全景</h1><span class="pane-sub">以市值看结构，以涨跌看强弱</span></div><div class="map-legend" aria-label="树图图例"><span><i class="legend-dot rising"></i>上涨</span><span><i class="legend-dot falling"></i>下跌</span><span><i class="legend-dot flat"></i>平盘</span><span><i class="legend-ring"></i>涨停</span></div></div>
+    <div class="map-title-row"><div class="map-heading"><button id="mapBack" class="map-back" type="button" hidden aria-label="返回全市场">← 全市场</button><h1 id="mapTitle">全市场云图</h1></div><div class="map-tools"><label class="industry-control">行业<select id="industrySelect" aria-label="聚焦行业"><option value="">全部行业</option></select></label><button id="mapFocus" type="button" class="map-focus-button" aria-pressed="false">专注云图</button></div></div>
     <div class="pane-head map-controls">
       <div class="pool-tabs" id="poolTabs" role="tablist" aria-label="标的池"></div>
-      <div class="pool-meta" id="poolMeta" role="status"></div>
+      <span class="map-instruction">点击行业标题放大 · 悬停查看 · 点击个股检视</span>
     </div>
     <div class="treemap-wrap" id="treemapWrap">
       <canvas id="treemap" role="img" aria-label="按行业和市值排列的市场树图，可通过股票搜索与右侧列表查看标的"></canvas>
       <div class="tooltip" id="tooltip" hidden></div>
       <div class="map-note" id="mapNote" hidden></div>
     </div>
+    <div class="map-statusbar"><div class="pool-meta" id="poolMeta" role="status"></div><div class="map-legend" aria-label="树图图例"><span><i class="legend-dot rising"></i>上涨</span><span><i class="legend-dot falling"></i>下跌</span><span><i class="legend-dot flat"></i>平盘</span><span><i class="legend-ring"></i>涨停</span></div></div>
   </section>
-  <aside class="inspector" aria-label="标的观察面板"><div class="inspector-head"><h2>观察面板</h2><span>个股 / 行业</span></div><div class="drawer" id="drawer" aria-label="标的详情"></div></aside>
+  <aside class="inspector" aria-label="标的观察面板"><div class="inspector-head"><h2>观察面板</h2><button id="resetInspector" type="button">观察列表</button></div><div class="drawer" id="drawer" aria-label="标的详情"></div></aside>
 </main>
 
 <section class="emotion-section" aria-label="情绪概览"><div class="section-heading"><h2>情绪概览</h2><span>盘见数据 · 收盘快照</span></div><section class="emotion-strip" id="emotionStrip" aria-label="市场情绪仪表盘（数据源：盘见）"></section></section>
@@ -62,6 +63,8 @@
 <script src="data/call.js"></script>
 <script src="data/kline_600519.js"></script>
 <script src="data/market_extra.js"></script>
+<script src="vendor/d3-hierarchy.min.js"></script>
+<script src="market-map.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

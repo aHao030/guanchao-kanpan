@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-14T10:41:32.289Z",
+  "generatedAt": "2026-11-14T11:19:38.157573Z",
   "title": "Design System: 观潮看盘",
   "extensions": {
     "colorMeta": {
@@ -255,6 +255,14 @@
           "oklch(83.57% 0.1121 157.13)",
           "oklch(95.00% 0.1121 157.13)"
         ]
+      },
+      "risk-soft": {
+        "role": "secondary",
+        "displayName": "炸板徽标浅红底"
+      },
+      "board-up": {
+        "role": "secondary",
+        "displayName": "Canvas行业涨幅红字"
       }
     },
     "typographyMeta": {
@@ -272,11 +280,11 @@
       },
       "body": {
         "displayName": "正文",
-        "purpose": "普通界面正文和列表。"
+        "purpose": "12px普通正文、搜索、股票名及详情；原因行高1.7。"
       },
       "label": {
         "displayName": "说明",
-        "purpose": "图例、计数、标签和来源说明；DOM功能字至少11px。"
+        "purpose": "11px短操作标签、图例、代码、计数、日期及来源；不替代12px正文。"
       },
       "numeric": {
         "displayName": "关键数字",
@@ -285,6 +293,26 @@
       "price": {
         "displayName": "现价",
         "purpose": "个股详情的主要价格。"
+      },
+      "brand-phone": {
+        "displayName": "手机品牌",
+        "purpose": "700px及以下，品牌19px。"
+      },
+      "stock-title": {
+        "displayName": "标的标题",
+        "purpose": "详情中的个股及行业标题，18px。"
+      },
+      "score": {
+        "displayName": "顶部评分",
+        "purpose": "顶部情绪温度评分，23px；手机为21px。"
+      },
+      "price-change": {
+        "displayName": "详情涨跌幅",
+        "purpose": "详情现价旁的涨跌幅，14px。"
+      },
+      "phone-breadth": {
+        "displayName": "手机涨跌家数",
+        "purpose": "手机情绪第一项数字，19px。"
       }
     },
     "shadows": [],
@@ -323,11 +351,61 @@
       "purpose": "全局可见键盘焦点。"
     },
     "notes": [
-      "色阶仅为设计面板的合成预览，不是生产主题的新tokens；行情三色使用DESIGN.md的固定值。",
-      "面板依靠色面与边界区分层次，不使用投影。",
-      "360px及以下，涨跌家数和量能两块各独占整行，避免内部文字碰撞。",
-      "组件片段仅演示现有视觉与CSS状态，不包含业务脚本。"
-    ]
+      "生产主题为light3colors；颜色与排版前置tokens记录在DESIGN.md，CSS/Canvas为实现来源。",
+      "色阶仅为设计面板的合成预览，不是生产主题的新tokens。",
+      "正文12px；11px用于短控件标签及辅助说明。图内行业/坐标注释可为10px，不推广到正文。",
+      "全部5566只参与市值布局、无预抽样；极小单元可无标签或可见面积，随视口而变，可搜索或聚焦行业读取。",
+      "面板依靠色面与边界区分层次，不使用投影；云图/观察面板6px圆角，情绪/辅助图表12px。",
+      "手机云图面板660px；360px及以下涨跌家数与量能各独占整行。",
+      "组件片段仅演示实际视觉和CSS状态，不包含业务脚本；实际交互以public文件为准。"
+    ],
+    "layout": {
+      "desktop": {
+        "topbarMinHeight": "62px",
+        "marketOverviewMinHeight": "56px",
+        "mainHeight": "calc(100dvh - 146px)",
+        "mainMinHeight": "640px",
+        "inspectorWidth": "296px",
+        "gap": "12px",
+        "horizontalMargin": "16px"
+      },
+      "phone": {
+        "mapPanelHeight": "660px",
+        "inspectorMaxHeight": "440px",
+        "drawerMaxHeight": "380px",
+        "horizontalMargin": "12px",
+        "timelineHeight": "190px",
+        "sparkHeight": "172px"
+      },
+      "focus": "Hides inspector and gives map full main-column width; same control restores inspector."
+    },
+    "map": {
+      "hierarchy": [
+        "industry",
+        "subBoardName",
+        "stock"
+      ],
+      "stockCount": 5566,
+      "samplingBudget": null,
+      "area": "total market capitalization",
+      "geometry": "d3-hierarchy 3.1.2 treemapSquarify.ratio(1.25)",
+      "labels": {
+        "stockNameSize": "12–32px",
+        "stockFigureMinSize": "11px",
+        "industryTitle": "12px",
+        "subindustryTitle": "10px",
+        "industryChange": "10px",
+        "minimumAttemptRect": "40×18px",
+        "fit": "measure complete string; omit if it cannot fit; clip per stock cell; never squeeze text"
+      },
+      "visibility": "All stocks participate; tiny cells may lack visible area or labels depending on viewport and padding. Use industry focus, list or search for details."
+    },
+    "reference": {
+      "direction": "User-specified dapanyuntu.com reference",
+      "evidence": "docs/reverse-engineering/dapanyuntu-reference.md",
+      "reaReport": "docs/reverse-engineering/rea-report.md",
+      "hyperframesReview": "docs/reverse-engineering/hyperframes-review.md"
+    }
   },
   "components": [
     {
@@ -358,9 +436,9 @@
       "name": "观察面板",
       "kind": "card",
       "refersTo": "panel",
-      "description": "白色内容面、细边界、固定标题与详情区域。",
-      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><strong>观察面板</strong><span>个股 / 行业</span></header><div class=\"ds-panel-body\">点击树图任意个股<br><span>查看行情快照 · 涨停原因 · 竞价数据</span></div></section>",
-      "css": ".ds-panel{width:316px;max-width:100%;border:1px solid var(--rule,#e1e7ef);border-radius:var(--radius,12px);background:var(--sheet,#fff);color:var(--ink-2,#34445b);overflow:hidden;font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}.ds-panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--rule,#e1e7ef)}.ds-panel-head strong{font-size:13px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-head span{font-size:11px;color:var(--muted,#617188)}.ds-panel-body{padding:28px 16px;text-align:center;line-height:2}.ds-panel-body span{color:var(--muted,#617188)}"
+      "description": "6px圆角白面、固定标题、内部滚动；默认显示市值前列8只，选股后呈现详情。",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><strong>观察面板</strong><button>观察列表</button></header><div class=\"ds-panel-body\"><strong>市值前列</strong><p>先看结构，再检视个股。</p><div>贵州茅台 <span>600519 · 白酒</span></div></div></section>",
+      "css": ".ds-panel{width:296px;max-width:100%;border:1px solid var(--rule,#e1e7ef);border-radius:6px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);overflow:hidden;font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}.ds-panel-head{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 14px;border-bottom:1px solid var(--rule,#e1e7ef)}.ds-panel-head strong{font-size:13px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-head button{border:0;background:transparent;color:var(--accent-2,#1648b8);font-size:11px}.ds-panel-body{padding:16px;line-height:1.55}.ds-panel-body>strong{font-size:18px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-body p,.ds-panel-body span{color:var(--muted,#617188);font-size:11px}"
     },
     {
       "name": "返回池列表",
@@ -385,47 +463,63 @@
       "description": "静态概览的浅蓝范围标记，不模拟市场切换按钮。",
       "html": "<div class=\"ds-market\"><span>沪深A股</span><b>—</b></div>",
       "css": ".ds-market{display:inline-grid;gap:2px;position:relative;padding:10px 18px;min-width:108px;background:var(--accent-soft,#eaf0ff);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-market::after{content:\"\";position:absolute;bottom:0;left:18px;right:18px;height:2px;background:var(--accent,#245bd7)}.ds-market b{font:600 16px/1.55 var(--font-outlier,Consolas,monospace);font-variant-numeric:tabular-nums;color:var(--ink,#17263c)}"
+    },
+    {
+      "name": "行业与专注控件",
+      "kind": "custom",
+      "refersTo": "map-control",
+      "description": "行业下拉及可恢复的专注状态；示例不执行数据切换。",
+      "html": "<div class=\"ds-map-tools\"><label>行业 <select aria-label=\"聚焦行业\"><option>全部行业</option><option>电子</option></select></label><button aria-pressed=\"false\">专注云图</button><button aria-pressed=\"true\">显示观察面板</button></div>",
+      "css": ".ds-map-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-map-tools select{padding:4px 5px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);font-size:12px;color:var(--ink,#17263c)}.ds-map-tools button{padding:5px 8px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);font:inherit}.ds-map-tools button[aria-pressed=\"true\"]{background:var(--accent-soft,#eaf0ff);color:var(--accent-2,#1648b8);border-color:var(--accent,#245bd7)}"
+    },
+    {
+      "name": "炸板次数徽标",
+      "kind": "chip",
+      "refersTo": "risk-badge",
+      "description": "详情中的浅红风险说明，不构成新的树图行情色。",
+      "html": "<span class=\"ds-risk\">炸板 1 次</span>",
+      "css": ".ds-risk{display:inline-block;padding:2px 6px;margin:0 4px 5px 0;background:var(--risk-soft,#fff0f1);color:var(--up-strong,#c52d3c);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);border-radius:4px}"
     }
   ],
   "narrative": {
-    "northStar": "清晰的市场观察台",
-    "overview": "以白色面板承载内容，冷灰底提供安静的边界，深蓝灰文字建立阅读层级，钴蓝指向当前操作与关联信息。主视觉来自真实市场树图和数据排布，界面装饰保持克制。当前实现取代旧 Almanac 主题；旧主题的洋红、衬线正文和全方角约束不再适用。\n\n整体保留紧凑、可扫读的行情工作台气质。中文采用本机无衬线字体，关键数字使用等宽数字；较大的现价和评分帮助定位，其余标签退后。产品是静态样本复盘原型，样本日期与演示说明属于可见内容，应随布局保留。",
+    "northStar": "先看清市场，再进入细节",
+    "overview": "以大盘云图实际浅色页面为用户指定参考，把主要阅读面积交给市场本身。白色工作面、冷灰底、深蓝灰文字和钴蓝界面状态构成产品框架；行情保留用户确定的红、绿、黑三色。主图由真实市值、行业层级和正常比例的中文标签建立识别路径。\n\n当前文档记录 1.2.0 已实现的设计。页面采用本机无衬线字体与等宽关键数字，细线划分功能区域，较小圆角收束主云图与观察面板。参考站的连续色阶、品牌和业务代码没有搬入产品；样本日期与静态说明保持可见。",
     "keyCharacteristics": [
-      "白色内容面板、冷灰底、细分隔线与适度圆角。",
-      "钴蓝用于选中状态、涨停标识与情绪走势；行情涨跌保留独立的三色语义。",
-      "中文无衬线与关键等宽数字配合，控制说明和图例保持可读。",
-      "树图、观察面板与辅助图表共享同一组界面色；手机端保留完整模块。"
+      "主云图优先；一级行业、二级行业和个股构成三级结构。",
+      "完整名称先测量，空间不足时隐去，不压缩汉字字宽。",
+      "行业聚焦与明确返回支持逐级查看；专注操作可收起观察面板。",
+      "观察面板初始显示市值前列列表；手机保留主要复盘模块。"
     ],
     "rules": [
       {
         "name": "The Separate Signals Rule",
-        "body": "钴蓝表达界面所指和标注，红绿黑表达市场涨跌；选中状态不得改写标的本来的涨跌色。",
+        "body": "钴蓝表达界面所指，红绿黑表达市场涨跌；选中状态不改写行情本色。",
         "section": "colors"
       },
       {
-        "name": "The Figures Rule",
-        "body": "等宽字体用于价格、涨跌幅、评分和关键计数；中文标签保持无衬线字体，避免把整块正文排成终端。",
+        "name": "The Natural Type Rule",
+        "body": "先测量完整文字，再决定是否显示；树图不用 maxWidth 横向挤压文字，也不描边补救。",
         "section": "typography"
       },
       {
-        "name": "The Flat Surfaces Rule",
-        "body": "常驻内容面保持平整；焦点靠轮廓和颜色变化表达，面板不因悬停抬升。",
-        "section": "elevation"
+        "name": "The Area Rule",
+        "body": "总市值决定面积；筛选保留原空间权重，行业聚焦明确改变当前范围。",
+        "section": "layout"
       }
     ],
     "dos": [
-      "Do 使用前置 tokens 和 CSS 变量同步 DOM 与 Canvas 的界面色。",
-      "Do 保留行情三色、绿色块深字与红黑块白字的配对。",
-      "Do 保持最小 11px 的 DOM 功能字、清晰的键盘焦点和可见状态说明。",
-      "Do 让窄屏保留观察面板、五组情绪信息、时间轴与情绪走势。",
-      "Do 在样本数据附近保留日期、静态口径与缺失数据提示。"
+      "Do 使用真实行业层级与总市值面积，并保持正常字形。",
+      "Do 保留行情三色、绿块深字、红黑块白字和独立选中轮廓。",
+      "Do 区分12px正文、11px操作标签与图内标注的不同阅读职责。",
+      "Do 为行业聚焦保留返回路径，为专注云图保留恢复面板的操作。",
+      "Do 在手机保留五组情绪、观察列表、时间轴、走势及静态样本说明。"
     ],
     "donts": [
-      "Don't 把钴蓝选中态改成行情涨跌色，或改变被选标的原本的涨跌色。",
-      "Don't 恢复旧 Almanac 的洋红、衬线正文或全方角规则。",
+      "Don't 恢复900只抽样配额或将部分股票重新铺满以冒充全行业市值。",
+      "Don't 用横向压缩、描边或极小字号塞满每一个股票块。",
+      "Don't 用装饰性留白或空观察面板挤占主云图。",
       "Don't 为常驻面板添加投影、渐变或悬停抬升。",
-      "Don't 用 Canvas 的密集标注字号缩小搜索、图例、说明或来源文字。",
-      "Don't 把静态市场概览、情绪阶段推算或单只 K 线样本包装成实时功能。"
+      "Don't 把静态样本、情绪演示或仅一只K线包装成实时能力。"
     ]
   }
 }

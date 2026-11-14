@@ -1,0 +1,17 @@
+{
+  "canvas": {
+    "x": 162,
+    "y": 0,
+    "width": 1278,
+    "height": 959,
+    "top": 0,
+    "right": 1440,
+    "bottom": 959,
+    "left": 162
+  },
+  "observedState": {
+    "industry": "电子",
+    "breadcrumb": "全部 - 电子",
+    "behavior": "Clicking the primary industry header relayouts its subindustries and stocks into the full canvas"
+  }
+}

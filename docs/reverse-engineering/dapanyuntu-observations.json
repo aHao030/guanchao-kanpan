@@ -1,0 +1,339 @@
+{
+  "url": "https://dapanyuntu.com/",
+  "viewport": {
+    "width": 1440,
+    "height": 1000,
+    "dpr": 1
+  },
+  "canvas": [
+    {
+      "width": 1278,
+      "height": 959,
+      "box": {
+        "x": 162,
+        "y": 0,
+        "width": 1278,
+        "height": 959,
+        "top": 0,
+        "right": 1440,
+        "bottom": 959,
+        "left": 162
+      }
+    }
+  ],
+  "fonts": [
+    "bold 30px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 23px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "550 22px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 16px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 13px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 9.72px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 8px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 8.64px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 10.8px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.5px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 8.1px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.55517px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.07958px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 8px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 6.5px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.99989px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.5px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.02px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 12px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 12px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.24172px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.82106px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 29.7962px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 29.7104px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 22px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 14px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.21476px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.79194px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 27px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 20px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 15px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.66302px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.19606px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 19px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.47632px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 8.07443px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 6px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.40805px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 8.0007px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.47814px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 8.07639px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.10077px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.66883px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 12.96px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 7.27787px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.8601px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 25.6424px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 13px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 11px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 11.88px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.7958px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.33947px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 22px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 16px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.65672px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.18926px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.65734px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.18992px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.92413px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.47806px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "bold 6.68165px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 7.21618px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+    "650 11px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif"
+  ],
+  "textSamples": [
+    {
+      "text": "-0.69%",
+      "font": "650 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 949.48500435346,
+      "y": 482.8531274056602
+    },
+    {
+      "text": "食品饮料",
+      "font": "bold 13px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "left",
+      "baseline": "middle",
+      "x": 623.361203058101,
+      "y": 706.9629768672131
+    },
+    {
+      "text": "+1.09%",
+      "font": "650 11px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 726.9677735860391,
+      "y": 706.9629768672131
+    },
+    {
+      "text": "交通运输",
+      "font": "bold 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "left",
+      "baseline": "middle",
+      "x": 754.9677735860391,
+      "y": 701.7229768672131
+    },
+    {
+      "text": "-0.10%",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 949.48500435346,
+      "y": 701.7229768672131
+    },
+    {
+      "text": "涨29 跌94",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.86)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 910.95424263471,
+      "y": 701.7229768672131
+    },
+    {
+      "text": "国防军工",
+      "font": "bold 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "left",
+      "baseline": "middle",
+      "x": 754.9677735860391,
+      "y": 839.1250535237256
+    },
+    {
+      "text": "-1.32%",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 949.48500435346,
+      "y": 839.1250535237256
+    },
+    {
+      "text": "涨13 跌126",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.86)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 910.95424263471,
+      "y": 839.1250535237256
+    },
+    {
+      "text": "+1.31%",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 1125.825270976936,
+      "y": 479.7731274056602
+    },
+    {
+      "text": "涨10 跌22",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.86)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 1084.372145976936,
+      "y": 479.7731274056602
+    },
+    {
+      "text": "家用电器",
+      "font": "bold 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "left",
+      "baseline": "middle",
+      "x": 977.48500435346,
+      "y": 602.566649150463
+    },
+    {
+      "text": "+1.14%",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 1125.825270976936,
+      "y": 602.566649150463
+    },
+    {
+      "text": "涨21 跌71",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.86)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 1084.372145976936,
+      "y": 602.566649150463
+    },
+    {
+      "text": "建筑装饰",
+      "font": "bold 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "left",
+      "baseline": "middle",
+      "x": 1153.825270976936,
+      "y": 479.7731274056602
+    },
+    {
+      "text": "-1.57%",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 1259,
+      "y": 479.7731274056602
+    },
+    {
+      "text": "-0.34%",
+      "font": "650 9px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "right",
+      "baseline": "middle",
+      "x": 1259,
+      "y": 602.3003501218711
+    },
+    {
+      "text": "纺织服饰",
+      "font": "bold 10px \"Avenir Next Condensed\", \"DIN Condensed\", \"PingFang SC\", \"Microsoft YaHei\", Arial, sans-serif",
+      "fill": "rgba(247, 250, 252, 0.96)",
+      "align": "left",
+      "baseline": "middle",
+      "x": 1136.4104151326849,
+      "y": 905.6780172172229
+    }
+  ],
+  "controls": [
+    {
+      "text": "筛选L面积指标总市值",
+      "title": "打开筛选 (L)",
+      "aria": null
+    },
+    {
+      "text": "投研工具",
+      "title": "投研工具",
+      "aria": "投研工具"
+    },
+    {
+      "text": "设置",
+      "title": "设置 (,)",
+      "aria": null
+    },
+    {
+      "text": "",
+      "title": "收起菜单 (B)",
+      "aria": "收起菜单"
+    },
+    {
+      "text": "",
+      "title": "",
+      "aria": "不再提示"
+    },
+    {
+      "text": "",
+      "title": "展开菜单 (B)",
+      "aria": "展开菜单"
+    },
+    {
+      "text": "",
+      "title": "暗黑模式",
+      "aria": "暗黑模式"
+    },
+    {
+      "text": "",
+      "title": "",
+      "aria": "操作提示"
+    },
+    {
+      "text": "",
+      "title": "暗黑模式 (D)",
+      "aria": "暗黑模式"
+    },
+    {
+      "text": "",
+      "title": "缩略图",
+      "aria": "缩略图"
+    },
+    {
+      "text": "分享",
+      "title": "截图分享 (C)",
+      "aria": "分享"
+    },
+    {
+      "text": "",
+      "title": "全屏 (F)",
+      "aria": "全屏"
+    }
+  ],
+  "stylesheets": [
+    "https://dapanyuntu.com/_next/static/chunks/0k48luvldzb6~.css"
+  ],
+  "scripts": [
+    "https://dapanyuntu.com/_next/static/chunks/0wstokhfsdy_y.js",
+    "https://dapanyuntu.com/_next/static/chunks/0771~t619eth2.js",
+    "https://dapanyuntu.com/_next/static/chunks/0a~vmuaju9qqc.js",
+    "https://dapanyuntu.com/_next/static/chunks/145vedg.q5p3y.js",
+    "https://dapanyuntu.com/_next/static/chunks/turbopack-09di.rujrwmif.js",
+    "https://dapanyuntu.com/_next/static/chunks/0c2jnx_lpqfk9.js",
+    "https://dapanyuntu.com/_next/static/chunks/18c_7yihc_8go.js",
+    "https://dapanyuntu.com/_next/static/chunks/0g6ivizoca62d.js",
+    "https://dapanyuntu.com/_next/static/chunks/0gym.ayspgjd~.js",
+    "https://dapanyuntu.com/_next/static/chunks/03~yq9q893hmn.js",
+    "https://dapanyuntu.com/_next/static/chunks/16.5d1~c6s_2u.js"
+  ],
+  "bodyFont": "16px / 24px Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+  "capturedDate": "2026-11-14",
+  "method": "Scrapling DOM observation, supplemented by a real Chrome Playwright screenshot and read-only Canvas fillText instrumentation"
+}
