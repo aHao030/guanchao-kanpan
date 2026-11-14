@@ -22,6 +22,14 @@ TREES.forEach(b => (b.children || []).forEach(c => stocks.push({
   ...c, code6: norm(c.code), board: b.name, boardCode: b.code,
 })));
 const stockByCode = new Map(stocks.map(s => [s.code6, s]));
+if (!stocks.length) {
+  const w = document.getElementById('treemapWrap');
+  if (w) w.insertAdjacentHTML('beforeend', '<div class="map-note">演示数据未加载：public/data/ 目录缺失</div>');
+}
+if (!stocks.length) {
+  const w = document.getElementById('treemapWrap');
+  if (w) w.insertAdjacentHTML('beforeend', '<div class="map-note">演示数据未加载：public/data/ 目录缺失</div>');
+}
 const boards = TREES.map(b => ({
   name: b.name, code: b.code, value: b.value, stockCount: b.stockCount,
   children: b.children || [],
@@ -125,6 +133,7 @@ let rects = [];        // {rect, kind, node}
 let dimSet = null;     // Set(code6) 当前池/搜索命中的集合；null=全亮
 let dimNote = '';
 let selectedCode = null;
+let hoverListCode = null;
 let pulseT = 0;
 
 function matchingSet() {
@@ -309,6 +318,11 @@ function drawFrame(ts) {
       mctx.textAlign = 'start'; mctx.textBaseline = 'alphabetic';
     }
   }
+  // 列表悬停 → 树图联动描边
+  if (hoverListCode) {
+    const rh = rects.find(x => x.kind === 'stock' && x.node.code6 === hoverListCode);
+    if (rh) { mctx.lineWidth = 2; mctx.strokeStyle = 'rgba(177,45,107,.85)'; mctx.strokeRect(rh.rect.x, rh.rect.y, rh.rect.w, rh.rect.h); }
+  }
   // 选中描边
   if (selectedCode) {
     const r = rects.find(x => x.kind === 'stock' && x.node.code6 === selectedCode);
@@ -388,6 +402,13 @@ function applyFilter() {
 const searchInput = document.getElementById('searchInput');
 let searchQuery = '';
 searchInput.addEventListener('input', () => { searchQuery = searchInput.value.trim(); applyFilter(); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  const q = searchQuery.trim();
+  if (!q) return;
+  const hits = stocks.filter(x => x.name.includes(q) || x.code6.includes(q.replace(/\D/g, '') || '\u0000'));
+  if (hits.length) selectStock(hits[0].code6);
+});
 
 /* ============ 详情抽屉 ============ */
 const drawer = document.getElementById('drawer');
@@ -395,6 +416,7 @@ const fmtYi = n => n >= 1e8 ? (n / 1e8).toFixed(1) + '亿' : n >= 1e4 ? (n / 1e4
 function kv(k, v, cls) { return `<div class="kv"><i>${k}</i><b class="${cls || ''}">${v}</b></div>`; }
 
 let drawerMode = 'empty'; // 'empty' | 'pool' | 'stock'
+let poolSort = 'rank';
 function poolStocks(pid) {
   const pool = POOLS.find(x => x.id === pid);
   const list = stocks.filter(s => pool.match(s));
@@ -408,13 +430,15 @@ function poolStocks(pid) {
   });
 }
 function renderPoolDrawer(pid) {
-  drawerMode = 'pool';
+  drawerMode = 'pool'; hoverListCode = null;
   const pool = POOLS.find(x => x.id === pid);
   const list = poolStocks(pid);
   const isLimitPool = pid === 'limit' || pid === 'lianban' || pid === 'first';
+  if (isLimitPool && poolSort === 'pct') list = list.slice().sort((a, b) => (b.changePct || 0) - (a.changePct || 0));
+  const sortBtns = isLimitPool ? `<div class="d-sort"><button class="${poolSort === 'rank' ? 'on' : ''}" data-s="rank">板数</button><button class="${poolSort === 'pct' ? 'on' : ''}" data-s="pct">涨幅</button></div>` : '';
   drawer.innerHTML = `
     <h3>${pool.label}<span class="d-code">${list.length} 只</span></h3>
-    <div class="d-hint" style="margin:2px 0 10px">${isLimitPool ? '按连板数 · 首封时间排序' : '按市值权重排序'} · 点击行看详情</div>
+    <div class="d-hint" style="margin:2px 0 10px">${isLimitPool ? '点击行看详情 · 悬停行在树图定位' : '按市值权重排序'}${sortBtns}</div>
     <ul class="d-pool-list">${list.map(sk => {
       const l = limitMap.get(sk.code6), c2 = callMap.get(sk.code6);
       const pctHtml = `<span class="bl-pct ${pctCls(sk.changePct)}">${pctText(sk.changePct)}</span>`;
@@ -427,8 +451,14 @@ function renderPoolDrawer(pid) {
       return `<li data-code="${sk.code6}"><span><span class="bl-name">${sk.name}</span>
         <span class="bl-sub"> ${fmtYi(sk.totalMarketCap)}</span></span>${pctHtml}</li>`;
     }).join('')}</ul>`;
-  drawer.querySelectorAll('li[data-code]').forEach(li =>
-    li.addEventListener('click', () => selectStock(li.dataset.code)));
+  drawer.querySelectorAll('li[data-code]').forEach(li => {
+    li.addEventListener('click', () => selectStock(li.dataset.code));
+    li.addEventListener('mouseenter', () => { hoverListCode = li.dataset.code; drawFrame(performance.now()); });
+    li.addEventListener('mouseleave', () => { hoverListCode = null; drawFrame(performance.now()); });
+  });
+  drawer.querySelectorAll('.d-sort button').forEach(b => b.addEventListener('click', () => {
+    poolSort = b.dataset.s; renderPoolDrawer(activePool);
+  }));
 }
 function renderEmptyDrawer() {
   drawer.innerHTML = `<div class="d-empty"><b>点击树图任意个股</b><br>查看实时行情 · 涨停原因 · 竞价数据<br><br>点击板块标题条查看板块成分<br><span style="opacity:.7">演示数据 · 2026-11-13 收盘快照</span></div>`;
@@ -513,8 +543,14 @@ function renderBoardDrawer(b) {
         <span class="bl-sub">${l ? ' · ' + l.lu_days + '板 ' + (l.lu_reason || '').slice(0, 10) : ' · ' + (k.subBoardName || '')}</span></span>
         <span class="bl-pct ${pctCls(k.changePct)}">${pctText(k.changePct)}</span></li>`;
     }).join('')}</ul></div>`;
-  drawer.querySelectorAll('li[data-code]').forEach(li =>
-    li.addEventListener('click', () => selectStock(li.dataset.code)));
+  drawer.querySelectorAll('li[data-code]').forEach(li => {
+    li.addEventListener('click', () => selectStock(li.dataset.code));
+    li.addEventListener('mouseenter', () => { hoverListCode = li.dataset.code; drawFrame(performance.now()); });
+    li.addEventListener('mouseleave', () => { hoverListCode = null; drawFrame(performance.now()); });
+  });
+  drawer.querySelectorAll('.d-sort button').forEach(b => b.addEventListener('click', () => {
+    poolSort = b.dataset.s; renderPoolDrawer(activePool);
+  }));
 }
 
 renderEmptyDrawer();
@@ -526,16 +562,18 @@ const MKT_ORDER = ['all', 'sse', 'szse', 'cyb', 'etf', 'cb', 'hk', 'us'];
 const mktSeen = new Set();
 OVERVIEW_MKTS.filter(m => MKT_ORDER.includes(m.market) && !mktSeen.has(m.market)).slice(0, 8).forEach(m => {
   mktSeen.add(m.market);
-  const el = document.createElement('button');
+  const el = document.createElement('div');
   el.className = 'market-chip' + (m.market === 'all' ? ' active' : '');
+  el.title = '演示原型：市场/指数切换待接实时数据';
   el.innerHTML = `<span class="m-name">${MKT_NAMES[m.market]}</span>
     <span class="m-pct ${pctCls(m.changePct)}">${pctText(m.changePct)}</span>
     <span class="m-count">${m.stockCount}</span>`;
   mktsEl.appendChild(el);
 });
 (window.MARKET_EXTRA || []).forEach(m => {
-  const el = document.createElement('button');
-  el.className = 'market-chip';
+  const el = document.createElement('div');
+  el.className = 'market-chip static';
+  el.title = '演示原型：该市场仅含概览数据';
   el.title = `上涨 ${m.advance} / 下跌 ${m.decline}`;
   el.innerHTML = `<span class="m-name">${MKT_NAMES[m.market]}</span>
     <span class="m-pct ${pctCls(m.pct)}">${pctText(m.pct)}</span>`;
@@ -545,7 +583,13 @@ OVERVIEW_MKTS.filter(m => MKT_ORDER.includes(m.market) && !mktSeen.has(m.market)
 const cur = DASH.current || {}, prev = DASH.previous_score || {};
 const score = cur.total_score, delta = score - prev.total_score;
 function stageOf(v) { return v < 25 ? '冰点' : v < 45 ? '退潮' : v < 60 ? '修复' : v < 78 ? '活跃' : '高潮'; }
+const ld = DASH.latest_date || '';
+const ldShort = ld.length >= 8 ? ld.slice(4, 6) + '-' + ld.slice(6, 8) : '—';
+document.getElementById('dataChip').textContent = '数据 · ' + ldShort + ' 收盘';
+
 const thermo = document.getElementById('thermo');
+thermo.title = `情绪评分 ${score}/100（满分口径见盘见）· ${stageOf(score)}期 · 较昨日 ${delta >= 0 ? '+' : ''}${delta} · 数据源 盘见 · 演示口径`;
+
 thermo.innerHTML = `<span class="t-score" style="color:${delta >= 0 ? 'var(--up-strong)' : 'var(--down-strong)'}">${score}</span>
   <div><div class="t-track"><i class="t-pointer" style="left:${score}%"></i></div></div>
   <span class="t-stage">${stageOf(score)}期</span>
