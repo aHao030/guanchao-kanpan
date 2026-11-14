@@ -170,6 +170,10 @@ components:
 
 # Design System: 观潮看盘
 
+## 后续修改入口（1.3.0）
+
+本轮仅整理源码与可配置性，默认视觉继续沿用1.2.1，不将现有界面视为不可替换的最终设计。主题、尺寸、标签规则及模块开关见 `public/ui.config.js`；最终CSS覆盖见 `public/theme-overrides.css`；具体可复制示例见 `docs/UI_EDITING.md`。共享核心和数据服务不依赖此Web设计。
+
 ## Overview
 
 **Creative North Star: "先看清市场，再进入细节"**

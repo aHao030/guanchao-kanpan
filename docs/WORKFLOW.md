@@ -87,3 +87,14 @@ HyperFrames用于确定性HTML视频渲染，不是行情树图库。本轮没�
 名称显示改为按实际可用尺寸分三档：大格显示完整名称（可换两行）与涨跌幅；中格以至少10px显示完整名称；小格能容纳至少两字时显示名称前缀。文字仍先测量、保持正常字宽并裁剪在单元内；极细小格可无字，悬停可查看全名。全部5,566只股票继续按原样本市值参与三级布局，不通过放大小股面积制造标签空间。
 
 本轮26项测试全部通过，完成1440px、1100px、390px、320px四个视口及两种详情态截图检查，独立复核通过。后续维护应同步 README、PRODUCT、DESIGN、surface brief、设计 sidecar 与 CHANGELOG，检查主图全宽、按需弹窗的打开/关闭、行业聚焦和三档名称显示。历史测试数与旧版截图仅属于对应版本；研究资料、来源许可与2026-11-13静态样本口径保留。
+
+
+## 1.3.0 源码基础与UI修改入口
+
+本轮按用户要求优先交付可运行源码，暂停界面风格重设计。实际读取指定快照的 engineering/codebase-design 与 engineering/tdd：将业务模型、请求适配、样本Provider及页面装配分开，通过模块公开接口、真实HTTP和页面行为验证，未复制技能源或改变其来源许可。
+
+Web与API现在共用 packages/market-core；packages/market-client 提供Fetch及微信请求适配，scripts/build.cjs 生成同源码的浏览器和SDK副本。微信适配参数对照[官方 wx.request 文档](https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html)核实，但本轮没有构建或发布小程序。
+
+UI修改入口为 public/ui.config.js 与 public/theme-overrides.css，配置实际接入布局、主题、名称规则及模块显隐。数据地址与显式兜底独立放在 public/data.config.js；修改共享源码后build，修改UI配置后刷新。默认视觉保持上一版，UI并未被视为最终定稿。
+
+本轮53项测试通过，包括原页面回归、共享核心、HTTP API、SDK、数据来源和真实UI配置覆盖；另跑通当前API客户端例子并检查四个视口。源码不包含实时行情实现、用户账户或交易能力；App/小程序目录仅提供接入示例，真实客户端工程仍待后续实现。

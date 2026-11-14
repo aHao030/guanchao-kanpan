@@ -1,54 +1,34 @@
 /* 观潮 演示原型 — 数据全部来自 2026-11-13 真实抓取样本（静态加载） */
 'use strict';
 
-/* ============ 数据归一化 ============ */
-// 画布超采样：至少 2x，保证 Windows 显示缩放下不模糊
+(async function startMarketApp() {
+
+/* ============ 数据与共享业务核心 ============ */
+const snapshot = await MarketDataSource.load({ core: MarketCore, clientSdk: MarketClient, source: window,
+  config: window.MarketDataConfig, protocol: window.location.protocol, fetchImplementation: window.fetch?.bind(window) });
+const market = MarketCore.createMarketModel(snapshot);
+window.MarketRuntime = { schemaVersion: snapshot.schemaVersion, ...snapshot.meta };
 const DPR = Math.max(window.devicePixelRatio || 1, 2);
-const norm = c => String(c == null ? '' : c).replace(/\D/g, '').slice(-6);
-
-const TREES = (window.TREEMAP && window.TREEMAP.nodes) || [];
-const OVERVIEW_MKTS = (window.OVERVIEW && window.OVERVIEW.markets) || [];
-const DASH = (window.DASHBOARD && window.DASHBOARD.data) || {};
-const LIMIT_LIST = Array.isArray(window.LIMIT) ? window.LIMIT : (window.LIMIT && window.LIMIT.data) || [];
-const CALL_LIST = Array.isArray(window.CALL) ? window.CALL : (window.CALL && window.CALL.data) || [];
-const KLINE_DEMO = (window.KLINE_600519 && window.KLINE_600519.data) || null;
-
-const limitMap = new Map(); LIMIT_LIST.forEach(s => limitMap.set(norm(s.stock_code), s));
-const callMap = new Map();  CALL_LIST.forEach(s => callMap.set(norm(s.stock_code), s));
-
-// 扁平化：板块 → 个股
-const stocks = [];
-TREES.forEach(b => (b.children || []).forEach(c => stocks.push({
-  ...c, code6: norm(c.code), board: b.name, boardCode: b.code,
-})));
+const norm = MarketCore.normalizeCode;
+const OVERVIEW_MKTS = snapshot.overview.markets || [];
+const DASH = snapshot.dashboard.data || snapshot.dashboard || {};
+const LIMIT_LIST = Array.isArray(snapshot.limit) ? snapshot.limit : snapshot.limit.data || [];
+const CALL_LIST = Array.isArray(snapshot.auction) ? snapshot.auction : snapshot.auction.data || [];
+const limitMap = new Map(LIMIT_LIST.map(s => [norm(s.stock_code), s]));
+const callMap = new Map(CALL_LIST.map(s => [norm(s.stock_code), s]));
+const stocks = market.stocks;
 const stockByCode = new Map(stocks.map(s => [s.code6, s]));
+const boards = market.boards;
+const LIMIT_STOCKS = market.limitStocks;
 if (!stocks.length) {
-  const w = document.getElementById('treemapWrap');
-  if (w) w.insertAdjacentHTML('beforeend', '<div class="map-note">演示数据未加载：public/data/ 目录缺失</div>');
+  const note = document.getElementById('mapNote');
+  note.textContent = '当前数据没有市场样本，请检查数据来源后刷新。';
+  note.hidden = false;
 }
-const boards = TREES.map(b => ({
-  name: b.name, code: b.code, value: b.value, stockCount: b.stockCount,
-  children: (b.children || []).slice().sort((a, c) => (c.value || 0) - (a.value || 0)),
-  pct: (b.children || []).reduce((s, c) => s + (c.changePct || 0) * (c.value || 1), 0) / (b.value || 1),
-}));
-
-const LIMIT_STOCKS = LIMIT_LIST.slice().sort((a, b) => (a.first_lu_time || '').localeCompare(b.first_lu_time || ''));
-const toMin = t => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ''); return m ? (+m[1]) * 60 + (+m[2]) : -1; };
+const toMin = t => { const match = /^(\d{1,2}):(\d{2})/.exec(t || ''); return match ? (+match[1]) * 60 + (+match[2]) : -1; };
 const DAY_START = 9 * 60 + 25, DAY_END = 15 * 60, LUNCH_A = 11 * 60 + 30, LUNCH_B = 13 * 60;
-
-/* ============ 池（Tab） ============ */
-const POOLS = [
-  { id: 'all', label: '全部', match: () => true, count: stocks.length },
-  { id: 'limit', label: '涨停', match: s => limitMap.has(s.code6), count: LIMIT_STOCKS.length },
-  { id: 'lianban', label: '连板', match: s => { const l = limitMap.get(s.code6); return !!l && +l.lu_days >= 2; },
-    count: LIMIT_STOCKS.filter(s => +s.lu_days >= 2).length },
-  { id: 'first', label: '首板', match: s => { const l = limitMap.get(s.code6); return !!l && +l.lu_days === 1; },
-    count: LIMIT_STOCKS.filter(s => +s.lu_days === 1).length },
-  { id: 'big', label: '大市值', match: null, count: 50 },
-];
-const big50 = new Set(stocks.slice().sort((a, b) => (b.value || 0) - (a.value || 0)).slice(0, 50).map(s => s.code6));
-POOLS.find(p => p.id === 'big').match = s => big50.has(s.code6);
-const poolMembers = new Map(POOLS.map(p => [p.id, stocks.filter(p.match)]));
+const POOLS = market.pools;
+const poolMembers = new Map(POOLS.map(pool => [pool.id, market.queryStocks({ pool: pool.id })]));
 let activePool = 'all';
 
 /* ============ 颜色（A股：红涨绿跌） ============ */
@@ -61,6 +41,7 @@ function readCanvasTheme() {
     ink: token('--ink', '#17263c'), muted: token('--muted', '#67758b'),
     rule: token('--rule', '#dce4ef'), accent: token('--accent', '#245bd7'),
     accentInk: token('--accent-ink', '#ffffff'),
+    up: token('--up', '#ef4444'), down: token('--down', '#22c55e'), flat: token('--flat', '#111418'),
     display: token('--font-display', '"Microsoft YaHei",sans-serif'),
     mono: token('--font-outlier', 'Consolas,monospace'),
   };
@@ -68,16 +49,16 @@ function readCanvasTheme() {
 let canvasTheme = readCanvasTheme();
 function pctColor(p) {
   const v = p || 0;
-  if (Math.abs(v) < 0.1) return '#111418';   // 不涨不跌 → 黑
-  return v > 0 ? '#ef4444' : '#22c55e';     // 涨红 / 跌绿
+  if (Math.abs(v) < 0.1) return canvasTheme.flat;   // 不涨不跌 → 黑
+  return v > 0 ? canvasTheme.up : canvasTheme.down;     // 涨红 / 跌绿
 }
 function fillTextOn(fill) {
-  if (fill === '#22c55e') return 'rgba(4,17,8,.92)';      // 绿块配墨字（原云图配对）
+  if (fill === canvasTheme.down) return 'rgba(4,17,8,.92)';      // 绿块配墨字（原云图配对）
   return 'rgba(255,255,255,.96)';                          // 红块/黑块配白字
 }
 
-function pctText(p) { return (p >= 0 ? '+' : '') + (Math.round(p * 100) / 100).toFixed(2) + '%'; }
-function pctCls(p) { return p > 0.005 ? 'up' : p < -0.005 ? 'down' : ''; }
+function pctText(p) { return MarketCore.formatPct(p); }
+function pctCls(p) { return MarketCore.changeClass(p); }
 
 /* ============ 三级市场云图 ============ */
 const mapCanvas = document.getElementById('treemap');
@@ -103,8 +84,7 @@ function matchingSet() {
 }
 
 function searchStocks(query) {
-  const code = query.replace(/\D/g, '');
-  return stocks.filter(s => s.name.includes(query) || (code && s.code6.includes(code)));
+  return market.queryStocks({ q: query });
 }
 
 function renderBase() {
@@ -297,23 +277,16 @@ function bindStockRows() {
   });
 }
 function poolStocks(pid) {
-  const list = poolMembers.get(pid).slice();
-  if (pid === 'big') return list.sort((a, b) => (b.value || 0) - (a.value || 0));
-  // 涨停类池：连板数降序 → 首封时间升序
-  return list.sort((a, b) => {
-    const la = limitMap.get(a.code6), lb = limitMap.get(b.code6);
-    const da = la ? +la.lu_days : 0, db = lb ? +lb.lu_days : 0;
-    if (db !== da) return db - da;
-    return (la ? la.first_lu_time || '' : '').localeCompare(lb ? lb.first_lu_time || '' : '');
-  });
+  return market.queryStocks({ pool: pid });
 }
+
 function renderPoolDrawer(pid) {
   drawerMode = 'pool'; hoverListCode = null;
   const pool = POOLS.find(x => x.id === pid);
   detailTitle.textContent = pool.label + '列表';
   let list = poolStocks(pid);
   const isLimitPool = pid === 'limit' || pid === 'lianban' || pid === 'first';
-  if (isLimitPool && poolSort === 'pct') list = list.slice().sort((a, b) => (b.changePct || 0) - (a.changePct || 0));
+  if (isLimitPool && poolSort === 'pct') list = market.queryStocks({ pool: pid, sort: 'changePct' });
   const sortBtns = isLimitPool ? `<div class="d-sort"><button class="${poolSort === 'rank' ? 'on' : ''}" data-s="rank">板数</button><button class="${poolSort === 'pct' ? 'on' : ''}" data-s="pct">涨幅</button></div>` : '';
   drawer.innerHTML = `
     <h3>${pool.label}<span class="d-code">${list.length} 只</span></h3>
@@ -346,13 +319,13 @@ function renderEmptyDrawer() {
   bindStockRows();
 }
 
-function drawKline(cv) {
+function drawKline(cv, series) {
   const ctx = cv.getContext('2d');
   const W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
   const dpr = DPR;
   cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, W, H);
-  const dd = KLINE_DEMO.daily_details || [];
+  const dd = series?.daily_details || [];
   if (!dd.length) return;
   const hi = Math.max(...dd.map(d => d.high)), lo = Math.min(...dd.map(d => d.low));
   const px = i => 14 + i * ((W - 28) / Math.max(1, dd.length - 1));
@@ -365,7 +338,7 @@ function drawKline(cv) {
   }
   dd.forEach((d, i) => {
     const x = px(i), upC = d.close >= d.open;
-    ctx.strokeStyle = upC ? '#ef4444' : '#22c55e'; ctx.fillStyle = ctx.strokeStyle;
+    ctx.strokeStyle = upC ? canvasTheme.up : canvasTheme.down; ctx.fillStyle = ctx.strokeStyle;
     ctx.beginPath(); ctx.moveTo(x, py(d.high)); ctx.lineTo(x, py(d.low)); ctx.stroke();
     const bw = Math.max(2, (W - 28) / dd.length * 0.5);
     const yo = py(d.open), yc = py(d.close);
@@ -374,11 +347,12 @@ function drawKline(cv) {
 }
 
 function selectStock(code6) {
-  const s = stockByCode.get(code6);
-  if (!s) return;
+  const detail = market.getStockDetail(code6);
+  if (!detail) return;
+  const s = detail.stock;
   if (focusedBoard && s.boardCode !== focusedBoard) focusIndustry(s.boardCode);
   selectedCode = code6;
-  const l = limitMap.get(code6), c = callMap.get(code6);
+  const l = detail.limitUp, c = detail.auction;
   detailTitle.textContent = '个股详情';
   const listName = activePool !== 'all' ? POOLS.find(x => x.id === activePool).label : (boards.find(b => b.code === focusedBoard)?.name || '股票');
   const backBtn = `<button class="d-back" id="dBack">← 返回${listName}列表</button>`;
@@ -405,17 +379,17 @@ function selectStock(code6) {
     </div><div class="d-hint">单位按源站口径（万）</div></div>`;
   }
   html += `<div class="d-sec"><h4>K 线（近 5 日）</h4>`;
-  if (code6 === '600519' && KLINE_DEMO) {
+  if (detail.kline) {
     html += `<canvas class="d-kline" id="miniKline"></canvas>`;
   } else {
-    html += `<div class="d-hint">演示数据仅含 600519 贵州茅台的 K 线样本；接入盘见（fupanla.top）数据接口后任意个股可用</div>`;
+    html += `<div class="d-hint">当前数据未包含该股 K 线</div>`;
   }
   html += `</div>`;
   drawer.innerHTML = html;
   const bk = document.getElementById('dBack');
   if (bk) bk.addEventListener('click', renderCurrentList);
   showDetails();
-  if (code6 === '600519' && KLINE_DEMO) drawKline(document.getElementById('miniKline'));
+  if (detail.kline) drawKline(document.getElementById('miniKline'), detail.kline);
   drawFrame();
 }
 
@@ -475,7 +449,7 @@ OVERVIEW_MKTS.filter(m => MKT_ORDER.includes(m.market) && !mktSeen.has(m.market)
     <span class="m-count">${m.stockCount}</span>`;
   mktsEl.appendChild(el);
 });
-(window.MARKET_EXTRA || []).filter(m => MKT_ORDER.includes(m.market)).forEach(m => {
+(snapshot.marketExtra || []).filter(m => MKT_ORDER.includes(m.market)).forEach(m => {
   const el = document.createElement('div');
   el.className = 'market-chip static';
   el.title = '演示原型：该市场仅含概览数据';
@@ -487,10 +461,11 @@ OVERVIEW_MKTS.filter(m => MKT_ORDER.includes(m.market) && !mktSeen.has(m.market)
 
 const cur = DASH.current || {}, prev = DASH.previous_score || {};
 const score = cur.total_score, delta = score - prev.total_score;
-function stageOf(v) { return v < 25 ? '冰点' : v < 45 ? '退潮' : v < 60 ? '修复' : v < 78 ? '活跃' : '高潮'; }
+function stageOf(v) { return MarketCore.emotionStage(v); }
 const ld = DASH.latest_date || '';
 const ldShort = ld.length >= 8 ? ld.slice(4, 6) + '-' + ld.slice(6, 8) : '—';
 document.getElementById('dataChip').textContent = '数据 · ' + ldShort + ' 收盘';
+document.getElementById('dataChip').title = snapshot.meta.fallback ? '数据服务暂不可用，当前使用内置样本' : '样本日期 ' + snapshot.meta.asOf;
 
 const thermo = document.getElementById('thermo');
 thermo.title = `情绪评分 ${score}/100（满分口径见盘见）· ${stageOf(score)}期 · 较昨日 ${delta >= 0 ? '+' : ''}${delta} · 数据源 盘见 · 演示口径`;
@@ -660,7 +635,7 @@ function layoutAll() {
   canvasTheme = readCanvasTheme();
   renderBase(); drawFrame(); drawTimeline(); drawSpark();
   const miniKline = document.getElementById('miniKline');
-  if (miniKline) drawKline(miniKline);
+  if (miniKline) drawKline(miniKline, market.getStockDetail(selectedCode)?.kline);
 }
 // ResizeObserver 与 window.resize 可同时触发，一帧最多完成一次昂贵的画布布局。
 let layoutPending = false;
@@ -671,9 +646,17 @@ function scheduleLayout() {
 }
 new ResizeObserver(scheduleLayout).observe(mapWrap);
 window.addEventListener('resize', scheduleLayout);
+window.addEventListener('market-ui-change', scheduleLayout);
 if (document.fonts) document.fonts.ready.then(scheduleLayout);
 
 renderEmotionStrip();
 applyFilter();
 drawTimeline();
 drawSpark();
+
+})().catch(error => {
+  const note = document.getElementById('mapNote');
+  note.textContent = '市场数据未能加载，请刷新页面或检查数据来源。';
+  note.hidden = false;
+  console.error('Market startup failed', error);
+});

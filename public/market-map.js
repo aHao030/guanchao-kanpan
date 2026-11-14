@@ -2,6 +2,7 @@
    Geometry uses the locally bundled d3-hierarchy (ISC, see vendor license). */
 'use strict';
 window.MarketTreemap = (() => {
+  const defaultLabels = { minFontSize: 10, maxFontSize: 32, minVisibleChars: 2, minCellHeight: 14 };
   function layout(boards, width, height) {
     const tree = { kind: 'root', children: boards.map(board => {
       const groups = new Map();
@@ -43,13 +44,15 @@ window.MarketTreemap = (() => {
 
   function drawLabel(ctx, stock, rect, theme, color) {
     const { x, y, w, h } = rect;
-    if (h < 14) return;
+    const labels = (window.MarketUI && window.MarketUI.labels) || defaultLabels;
+    const minimum = labels.minFontSize;
+    if (h < labels.minCellHeight) return;
     const availableWidth = w - 4, availableHeight = h - 4;
-    let size = Math.max(10, Math.min(32, Math.floor(Math.sqrt(w * h) / 4)));
+    let size = Math.max(minimum, Math.min(labels.maxFontSize, Math.floor(Math.sqrt(w * h) / 4)));
     const characters = Array.from(stock.name);
     let lines = null, lineHeight;
     let complete = true;
-    while (size >= 10) {
+    while (size >= minimum) {
       ctx.font = `600 ${size}px ${theme.display}`;
       lineHeight = Math.ceil(size * 1.12);
       if (lineHeight <= availableHeight && ctx.measureText(stock.name).width <= availableWidth) {
@@ -68,15 +71,15 @@ window.MarketTreemap = (() => {
       size--;
     }
     if (!lines) {
-      size = 10;
+      size = minimum;
       complete = false;
-      lineHeight = 12;
+      lineHeight = Math.ceil(minimum * 1.12);
       ctx.font = `600 ${size}px ${theme.display}`;
-      while (characters.length >= 2 && ctx.measureText(characters.join('')).width > availableWidth) characters.pop();
-      if (characters.length < 2 || lineHeight > availableHeight) return;
+      while (characters.length >= labels.minVisibleChars && ctx.measureText(characters.join('')).width > availableWidth) characters.pop();
+      if (characters.length < labels.minVisibleChars || lineHeight > availableHeight) return;
       lines = [characters.join('')];
     }
-    const figureSize = Math.max(10, Math.round(size * .72));
+    const figureSize = Math.max(minimum, Math.round(size * .72));
     const figureHeight = Math.ceil(figureSize * 1.12);
     const nameHeight = lines.length * lineHeight + lines.length - 1;
     const figure = (stock.changePct >= 0 ? '+' : '') + Number(stock.changePct || 0).toFixed(2) + '%';

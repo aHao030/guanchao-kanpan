@@ -1,5 +1,9 @@
 # Market workbench
 
+## Source-first direction, 1.3.0
+
+The user has paused visual redesign and requested complete maintainable source with future App and mini-program clients. The current Web design is editable, not an approved final aesthetic. Keep runtime defaults stable for this release. Public UI parameters live in `public/ui.config.js`; free CSS overrides live in `public/theme-overrides.css`. The shared business core and API do not depend on the Web layout. See `docs/UI_EDITING.md` and `docs/PLATFORM_PLAN.md`; do not claim that client adapters are packaged native or mini-program apps.
+
 Mode: Operate. This surface serves market scanning, industry exploration and stock review. Preserve the five pools, search, on-demand stock details and lists, sentiment, timeline and history. The user authorized implementation and documentation without another approval round.
 
 ## Direction contract

@@ -1,0 +1,8 @@
+/* 自由样式修改通道（最后加载）：保留 ui.config.js 管理常用选项，
+   在这里添加选择器、间距、排版或 CSS token 覆盖。修改后刷新页面即可预览。
+   示例（需要时移除示例周围的注释）：
+
+   :root { --accent: #245bd7; }
+   .brand strong { font-size: 20px; }
+
+   只修改界面不必编辑 public/app.js 或共享业务核心。 */

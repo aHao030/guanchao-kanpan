@@ -405,6 +405,14 @@
       "evidence": "docs/reverse-engineering/dapanyuntu-reference.md",
       "reaReport": "docs/reverse-engineering/rea-report.md",
       "hyperframesReview": "docs/reverse-engineering/hyperframes-review.md"
+    },
+    "sourceEditing": {
+      "version": "1.3.0",
+      "config": "public/ui.config.js",
+      "overrides": "public/theme-overrides.css",
+      "guide": "docs/UI_EDITING.md",
+      "defaultVisualVersion": "1.2.1",
+      "visualRedesignPaused": true
     }
   },
   "components": [

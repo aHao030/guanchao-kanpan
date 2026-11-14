@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>观潮看盘 · 市场结构与涨停复盘</title>
 <link rel="stylesheet" href="style.css">
+<script src="ui.config.js"></script>
+<script src="ui-settings.js"></script>
+<link rel="stylesheet" href="theme-overrides.css" data-ui-overrides>
 </head>
 <body>
 <a class="skip-link" href="#workspace">跳到市场树图</a>
@@ -38,14 +41,14 @@
   </section>
 </main>
 
-<section class="emotion-section" aria-label="情绪概览"><div class="section-heading"><h2>情绪概览</h2><span>盘见数据 · 收盘快照</span></div><section class="emotion-strip" id="emotionStrip" aria-label="市场情绪仪表盘（数据源：盘见）"></section></section>
+<section class="emotion-section" data-ui-region="emotion" aria-label="情绪概览"><div class="section-heading"><h2>情绪概览</h2><span>盘见数据 · 收盘快照</span></div><section class="emotion-strip" id="emotionStrip" aria-label="市场情绪仪表盘（数据源：盘见）"></section></section>
 
 <footer class="bottom">
-  <div class="timeline-pane">
+  <div class="timeline-pane" data-ui-region="timeline">
     <div class="pane-head"><h2>涨停时间轴</h2><span class="pane-sub">2026-11-13 · 蓝点 3板+ · 红环 炸板</span></div>
     <canvas id="timeline" role="img" aria-label="涨停发生时间，按连板高度分层"></canvas>
   </div>
-  <div class="spark-pane">
+  <div class="spark-pane" data-ui-region="history">
     <div class="pane-head"><h2>情绪走势</h2><span class="pane-sub">近 21 个交易日评分</span></div>
     <canvas id="spark" role="img" aria-label="近21个交易日情绪评分走势"></canvas>
   </div>
@@ -63,6 +66,10 @@
 <script src="data/call.js"></script>
 <script src="data/kline_600519.js"></script>
 <script src="data/market_extra.js"></script>
+<script src="shared/market-core.js"></script>
+<script src="shared/market-client.js"></script>
+<script src="data.config.js"></script>
+<script src="data-source.js"></script>
 <script src="vendor/d3-hierarchy.min.js"></script>
 <script src="market-map.js"></script>
 <script src="app.js"></script>
