@@ -1,0 +1,1 @@
+window.MARKET_EXTRA = [{"market":"etf","pct":-1.2220132921133688,"advance":266,"decline":1342},{"market":"cb","pct":1.6190127469366171,"advance":283,"decline":9},{"market":"hk","pct":-1.574529589692337,"advance":600,"decline":1319},{"market":"us","pct":-0.8927347345282637,"advance":91,"decline":97}];
