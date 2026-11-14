@@ -65,7 +65,22 @@ input { font: inherit; }
   font-size: 16px; font-weight: 600; letter-spacing: -0.02em;
   white-space: nowrap; color: var(--ink);
 }
-
+.data-chip {
+  font-family: var(--font-outlier);
+  font-size: 11px; color: var(--muted);
+  border-left: 1px solid var(--rule);
+  padding: 2px 0 2px 12px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.market-chip { cursor: default; }
+.market-chip.static { opacity: .55; }
+.d-sort { margin-left: auto; display: flex; gap: 4px; }
+.d-sort button {
+  padding: 2px 8px; border: 1px solid var(--rule-2); border-radius: 2px;
+  font: 500 11px var(--font-display); color: var(--ink-2); background: none;
+}
+.d-sort button.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .markets { display: flex; gap: 0; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .markets::-webkit-scrollbar { display: none; }
 .market-chip {
