@@ -1,0 +1,1 @@
+window.SUMMARY_ALL = {"market":"all","period":"day","updatedAt":"2026-11-13T16:59:46+08:00","summary":{"advanceCount":765,"flatCount":58,"declineCount":4748,"turnoverAmount":1667074900000,"turnoverPreviousAmount":1945868000000,"turnoverDelta":-278793100000,"indexChangePct":-1.4706392056668451,"countsSource":"ths","turnoverSource":"ths"},"source":"direct"};
