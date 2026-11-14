@@ -1,6 +1,6 @@
 # 源码结构与开发边界
 
-v1.4.0 默认界面为 React + Ant Design + ECharts 工作台。服务、共享业务核心和请求 SDK 沿用原有契约，源码与可直接运行的构建产物同时交付。独立 App 和微信小程序的页面工程尚未构建。
+v1.4.1 默认界面为 React + Ant Design + ECharts 工作台。服务、共享业务核心和请求 SDK 沿用原有契约，源码与可直接运行的构建产物同时交付。独立 App 和微信小程序的页面工程尚未构建。
 
 ~~~mermaid
 flowchart TD

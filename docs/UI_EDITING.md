@@ -1,6 +1,6 @@
 # UI 修改指南
 
-v1.4.0 的默认首页使用 React、Ant Design 和 ECharts。修改通道分为页面内即时设置、默认配置、CSS 覆盖和页面源码。业务核心、API 与 UI 保持分离。
+v1.4.1 的默认首页使用 React、Ant Design 和 ECharts。修改通道分为页面内即时设置、默认配置、CSS 覆盖和页面源码。业务核心、API 与 UI 保持分离。
 
 ## 先用右上角外观设置
 
@@ -8,7 +8,9 @@ v1.4.0 的默认首页使用 React、Ant Design 和 ECharts。修改通道分为
 
 「恢复默认」读取 `public/ui.config.js` 中的 `workbench` 默认值。「导出外观配置」下载当前 JSON 设置，方便比较和迁移默认值；当前没有外观文件导入按钮。顶部日/月按钮也可一键切换明暗。
 
-外观保存在 `guanchao.workbench.preferences.v1`，属于浏览器当前站点的本地存储。不同端口视为不同来源；设置不会自动跨浏览器或设备同步。
+首次从旧 v1 偏好迁移时采用浅色界面，保留用户自定义的涨跌颜色、字号和尺寸；后续主动修改的明暗设置仍会保存。
+
+外观保存在 `guanchao.workbench.preferences.v2`，属于浏览器当前站点的本地存储。不同端口视为不同来源；设置不会自动跨浏览器或设备同步。
 
 ## 修改项目默认值
 
@@ -16,11 +18,11 @@ v1.4.0 的默认首页使用 React、Ant Design 和 ECharts。修改通道分为
 
 ~~~js
 workbench: {
-  mode: 'dark',
+  mode: 'light',
   up: '#c94e57',
   down: '#21846e',
   flat: '#525c68',
-  accent: '#5b8de8',
+  accent: '#477a70',
   mapHeight: 490,
   labelSize: 12,
   density: 'middle'
@@ -29,10 +31,10 @@ workbench: {
 
 | 字段 | 默认值 | 使用方式 |
 | --- | --- | --- |
-| `mode` | `dark` | `dark` / `light`；使用 Ant Design 暗色/默认算法 |
+| `mode` | `light` | `dark` / `light`；使用 Ant Design 暗色/默认算法 |
 | `up` / `down` | `#c94e57` / `#21846e` | 六位十六进制颜色，同时用于行情文字、云图、资金柱图和 K 线 |
 | `flat` | `#525c68` | 平盘颜色，源码配置入口 |
-| `accent` | `#5b8de8` | 界面强调色与 Ant Design 主色 |
+| `accent` | `#477a70` | 界面强调色与 Ant Design 主色 |
 | `mapHeight` | 490 | 云图高度，页面滑块支持 320–800px |
 | `labelSize` | 12 | 云图个股文字字号，支持 10–20px |
 | `density` | `middle` | `middle` 舒适 / `small` 紧凑；用于受该设置控制的行情表格 |
@@ -66,7 +68,7 @@ ECharts 绘制在 Canvas 上，无法通过 `.chart` 下的文字选择器调整
 | --- | --- |
 | `web/main.jsx` | 四个顶部导航、云图首页、资金区、自选表格、搜索、股票列表、详情、外观设置与提醒 |
 | `web/charts.jsx` | ECharts 挂载/释放、云图、资金柱图和 K 线配置 |
-| `web/LimitBoard.jsx` | 涨停/连板/炸板/跌停切换、筛选、表格列及展开详情 |
+| `web/LimitBoard.jsx` | 涨停/连板/炸板/跌停切换、筛选、分组信息列、同页明细及响应式重排 |
 | `web/ReviewNotes.jsx` | 笔记列表、编辑表单、草稿恢复、导入导出及删除交互 |
 | `web/notes-store.js` | 笔记日期/长度校验、存储契约、同日合并规则；不承担页面排版 |
 | `web/preferences.js` | 默认设置、偏好读取/保存与深浅主题调色板 |

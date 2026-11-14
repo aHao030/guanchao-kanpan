@@ -415,7 +415,7 @@
       "visualRedesignPaused": true
     },
     "currentSurface": {
-      "version": "1.4.0",
+      "version": "1.4.1",
       "legacyTokenSnapshot": true,
       "authority": [
         "DESIGN.md",
@@ -423,7 +423,7 @@
         "public/ui.config.js"
       ],
       "runtime": "React + Ant Design + ECharts",
-      "defaultMode": "dark"
+      "defaultMode": "light"
     }
   },
   "components": [

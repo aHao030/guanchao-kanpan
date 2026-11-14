@@ -1,6 +1,6 @@
 {
   "name": "guanchao-kanpan",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "description": "观潮看盘：可运行Web、数据API与跨端共享源码",
   "engines": {

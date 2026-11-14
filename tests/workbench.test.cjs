@@ -39,9 +39,9 @@ test('global search opens real K-line details and watchlist survives reload', as
 });
 test('theme settings persist and empty search can recover on a small screen', async t => {
   const p = await pageFor(t, 320);
-  await p.getByRole('button', { name: '切换浅色', exact: true }).click();
+  await p.getByRole('button', { name: '切换深色', exact: true }).click();
   await p.reload(); await p.waitForSelector('.cloud-canvas canvas');
-  assert.equal(await p.locator('html').getAttribute('data-theme'), 'light');
+  assert.equal(await p.locator('html').getAttribute('data-theme'), 'dark');
   await p.getByRole('combobox', { name: '搜索股票 / 代码' }).fill('不存在的股票');
   await p.getByText('没有匹配的股票，请清空搜索或调整筛选').waitFor();
   await p.getByRole('combobox', { name: '搜索股票 / 代码' }).fill('');
@@ -50,5 +50,21 @@ test('theme settings persist and empty search can recover on a small screen', as
   await p.getByRole('button', { name: '外观设置', exact: true }).click();
   await p.getByText('即时预览，自动保存在当前浏览器。修改源码默认值可使用 public/ui.config.js。').waitFor();
   await p.getByRole('button', { name: '恢复默认', exact: true }).click();
-  assert.equal(await p.locator('html').getAttribute('data-theme'), 'dark');
+  assert.equal(await p.locator('html').getAttribute('data-theme'), 'light');
+});
+
+test('old dark preference adopts the light surface without losing custom quote colors', async t => {
+  const p = await browser.newPage();
+  t.after(() => p.close());
+  await p.addInitScript(() => {
+    localStorage.setItem('guanchao.workbench.preferences.v1', JSON.stringify({ mode: 'dark', up: '#c23d55', down: '#16825a', accent: '#5b8de8', labelSize: 15, mapHeight: 550 }));
+  });
+  await p.goto(base); await p.waitForSelector('.cloud-canvas canvas');
+  assert.equal(await p.locator('html').getAttribute('data-theme'), 'light');
+  const migrated = await p.evaluate(() => JSON.parse(localStorage.getItem('guanchao.workbench.preferences.v2')));
+  assert.equal(migrated.up, '#c23d55'); assert.equal(migrated.down, '#16825a');
+  assert.equal(migrated.mapHeight, 550); assert.equal(migrated.labelSize, 15);
+  await p.getByRole('button', { name: '切换深色', exact: true }).click();
+  await p.reload(); await p.waitForSelector('.cloud-canvas canvas');
+  assert.equal(await p.locator('html').getAttribute('data-theme'), 'dark', 'migration runs only once');
 });
