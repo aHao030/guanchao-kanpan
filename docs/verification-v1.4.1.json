@@ -1,0 +1,80 @@
+{
+  "screens": [
+    {
+      "name": "home",
+      "errors": [],
+      "layout": {
+        "width": 1440,
+        "scroll": 1440,
+        "theme": "light",
+        "table": 531,
+        "tableClient": 531
+      }
+    },
+    {
+      "name": "limits",
+      "errors": [],
+      "layout": {
+        "width": 1440,
+        "scroll": 1440,
+        "theme": "light",
+        "table": 1374,
+        "tableClient": 1374
+      }
+    },
+    {
+      "name": "compact",
+      "errors": [],
+      "layout": {
+        "width": 1024,
+        "scroll": 1024,
+        "theme": "light",
+        "table": 982,
+        "tableClient": 982
+      }
+    },
+    {
+      "name": "mobile",
+      "errors": [],
+      "layout": {
+        "width": 390,
+        "scroll": 390,
+        "theme": "light",
+        "table": 364,
+        "tableClient": 364
+      }
+    },
+    {
+      "name": "small",
+      "errors": [],
+      "layout": {
+        "width": 320,
+        "scroll": 320,
+        "theme": "light",
+        "table": 294,
+        "tableClient": 294
+      }
+    }
+  ],
+  "date": "2026-11-14",
+  "tests": {
+    "total": 66,
+    "passed": 66,
+    "newChecks": [
+      "Legacy dark preference migration preserves quote colors and dimensions",
+      "Full inline stock details and no clipped/horizontal scroll at1440/1024/390/320"
+    ]
+  },
+  "colors": {
+    "up": "#c94e57",
+    "down": "#21846e",
+    "unchanged": true
+  },
+  "sourceArchive": {
+    "noNodeModules": true,
+    "server": "passed",
+    "lightTheme": "passed",
+    "inlineLimitInformation": "passed"
+  },
+  "followup": "Compact pagination adjusted to one line; 5 workbench-page checks rerun and passed."
+}

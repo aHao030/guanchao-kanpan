@@ -25,7 +25,7 @@ async function openPage(t, route) {
   return page;
 }
 
-test('龙虎榜 shows actual U/D/Z pools and supports search, expansion and stock details', async t => {
+test('龙虎榜 shows actual U/D/Z pools and supports search, inline information and stock details', async t => {
   const page = await openPage(t, 'limits');
   await page.getByRole('heading', { name: '盘中龙虎榜', exact: true }).waitFor();
   assert.match(await page.getByRole('tab', { name: /^涨停/ }).innerText(), /37/);
@@ -42,14 +42,35 @@ test('龙虎榜 shows actual U/D/Z pools and supports search, expansion and stoc
   await page.getByRole('tab', { name: /^涨停/ }).click();
   await page.getByRole('textbox', { name: '搜索龙虎榜' }).fill('皮阿诺');
   await page.getByRole('button', { name: /皮阿诺/ }).waitFor();
-  await page.locator('.ant-table-row-expand-icon').first().click();
+  assert.equal(await page.locator('.ant-table-row-expand-icon').count(), 0);
   await page.getByText('定制家居+群核科技酷家乐+定增推进+控股权巩固', { exact: true }).last().waitFor();
-  assert.match(await page.locator('.gcl-detail').innerText(), /10:56:51/);
+  assert.match(await page.locator('.gcl-data-panel tbody').innerText(), /10:56:51/);
   await page.getByRole('button', { name: /皮阿诺/ }).click();
   await page.locator('.ant-drawer').getByRole('heading', { name: '皮阿诺', exact: true }).waitFor();
   await page.locator('.ant-drawer-close').click();
   await page.getByRole('textbox', { name: '搜索龙虎榜' }).fill('没有这只股票');
   await page.getByText('当前条件下没有股票，可重置筛选后查看。').waitFor();
+});
+
+test('limit stock information reflows without horizontal scrolling or hidden details', async t => {
+  const page = await openPage(t, 'limits');
+  const fixture = require('../server/providers/sample-provider.cjs').createSampleProvider().loadSnapshot().limit.data;
+  const longest = fixture.slice().sort((a, b) => (b.lu_reason + b.concepts).length - (a.lu_reason + a.concepts).length)[0];
+  await page.getByRole('textbox', { name: '搜索龙虎榜' }).fill(longest.stock_name);
+  for (const width of [1440, 1024, 390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    const row = page.locator('.gcl-data-panel tbody tr.ant-table-row').first();
+    await row.waitFor();
+    for (const text of [longest.lu_reason, longest.concepts, longest.first_lu_time, longest.last_lu_time].filter(Boolean)) assert.ok((await row.innerText()).includes(text), `${text} must be directly visible at ${width}`);
+    const layout = await page.evaluate(() => {
+      const table = document.querySelector('.gcl-data-panel');
+      const groups = [...table.querySelectorAll('tbody tr.ant-table-row > td')];
+      return { pageOverflow: document.documentElement.scrollWidth > innerWidth + 1,
+        clipped: groups.some(el => el.scrollWidth > el.clientWidth + 1 || el.getBoundingClientRect().right > innerWidth + 1),
+        scrolling: [...table.querySelectorAll('*')].some(el => ['auto', 'scroll'].includes(getComputedStyle(el).overflowX) && el.scrollWidth > el.clientWidth + 1) };
+    });
+    assert.deepEqual(layout, { pageOverflow: false, clipped: false, scrolling: false }, `information must fit at ${width}`);
+  }
 });
 
 test('复盘 notes save/reload/edit/export/delete/import with validated local persistence', async t => {
