@@ -276,7 +276,7 @@
       },
       "title": {
         "displayName": "面板标题",
-        "purpose": "观察面板与通用面板标题。"
+        "purpose": "通用面板标题；详情弹窗标题为14px。"
       },
       "body": {
         "displayName": "正文",
@@ -355,7 +355,7 @@
       "色阶仅为设计面板的合成预览，不是生产主题的新tokens。",
       "正文12px；11px用于短控件标签及辅助说明。图内行业/坐标注释可为10px，不推广到正文。",
       "全部5566只参与市值布局、无预抽样；极小单元可无标签或可见面积，随视口而变，可搜索或聚焦行业读取。",
-      "面板依靠色面与边界区分层次，不使用投影；云图/观察面板6px圆角，情绪/辅助图表12px。",
+      "常驻面板依靠色面与边界区分层次，不使用投影；云图6px圆角，详情弹窗/情绪/辅助图表12px。详情弹窗使用柔和投影与遮罩。",
       "手机云图面板660px；360px及以下涨跌家数与量能各独占整行。",
       "组件片段仅演示实际视觉和CSS状态，不包含业务脚本；实际交互以public文件为准。"
     ],
@@ -365,19 +365,20 @@
         "marketOverviewMinHeight": "56px",
         "mainHeight": "calc(100dvh - 146px)",
         "mainMinHeight": "640px",
-        "inspectorWidth": "296px",
-        "gap": "12px",
+        "mapWidth": "100%",
+        "dialogWidth": "min(480px, calc(100vw - 32px))",
+        "dialogMaxHeight": "calc(100dvh - 48px)",
         "horizontalMargin": "16px"
       },
       "phone": {
         "mapPanelHeight": "660px",
-        "inspectorMaxHeight": "440px",
-        "drawerMaxHeight": "380px",
+        "dialogWidth": "calc(100vw - 24px)",
+        "dialogMaxHeight": "calc(100dvh - 32px)",
         "horizontalMargin": "12px",
         "timelineHeight": "190px",
         "sparkHeight": "172px"
       },
-      "focus": "Hides inspector and gives map full main-column width; same control restores inspector."
+      "details": "Map fills the main region by default. Stock, search Enter, timeline and list actions open native dialog#detailDialog; industry focus does not open it. Persistent inspector and focus toggle are removed."
     },
     "map": {
       "hierarchy": [
@@ -390,13 +391,12 @@
       "area": "total market capitalization",
       "geometry": "d3-hierarchy 3.1.2 treemapSquarify.ratio(1.25)",
       "labels": {
-        "stockNameSize": "12–32px",
+        "stockNameMinSize": "10px",
         "stockFigureMinSize": "11px",
         "industryTitle": "12px",
         "subindustryTitle": "10px",
         "industryChange": "10px",
-        "minimumAttemptRect": "40×18px",
-        "fit": "measure complete string; omit if it cannot fit; clip per stock cell; never squeeze text"
+        "fit": "measure complete names; large cells may wrap names to two lines and show percentage; medium cells show complete names at 10px or larger; small cells show a prefix only if at least two characters fit; omit in tiny cells with full names on hover; clip per stock cell; never squeeze text"
       },
       "visibility": "All stocks participate; tiny cells may lack visible area or labels depending on viewport and padding. Use industry focus, list or search for details."
     },
@@ -433,12 +433,12 @@
       "css": ".ds-snapshot{display:inline-block;padding:3px 7px;border-radius:4px;color:var(--accent-2,#1648b8);background:var(--accent-soft,#eaf0ff);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}"
     },
     {
-      "name": "观察面板",
-      "kind": "card",
+      "name": "详情与列表弹窗",
+      "kind": "dialog",
       "refersTo": "panel",
-      "description": "6px圆角白面、固定标题、内部滚动；默认显示市值前列8只，选股后呈现详情。",
-      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><strong>观察面板</strong><button>观察列表</button></header><div class=\"ds-panel-body\"><strong>市值前列</strong><p>先看结构，再检视个股。</p><div>贵州茅台 <span>600519 · 白酒</span></div></div></section>",
-      "css": ".ds-panel{width:296px;max-width:100%;border:1px solid var(--rule,#e1e7ef);border-radius:6px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);overflow:hidden;font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}.ds-panel-head{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 14px;border-bottom:1px solid var(--rule,#e1e7ef)}.ds-panel-head strong{font-size:13px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-head button{border:0;background:transparent;color:var(--accent-2,#1648b8);font-size:11px}.ds-panel-body{padding:16px;line-height:1.55}.ds-panel-body>strong{font-size:18px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-body p,.ds-panel-body span{color:var(--muted,#617188);font-size:11px}"
+      "description": "按需打开的原生dialog；12px圆角、明确关闭入口、正文内部滚动，不占主云图常驻空间。片段仅展示静态外观。",
+      "html": "<section class=\"ds-panel\" aria-label=\"详情弹窗外观示例\"><header class=\"ds-panel-head\"><strong>个股详情</strong><button>关闭</button></header><div class=\"ds-panel-body\"><strong>贵州茅台</strong><p>600519 · 白酒</p><div>详情或列表按需展示</div></div></section>",
+      "css": ".ds-panel{width:480px;max-width:100%;border:0;border-radius:12px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);overflow:hidden;box-shadow:0 16px 48px rgba(23,38,60,.2);font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}.ds-panel-head{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:12px 16px;border-bottom:1px solid var(--rule,#e1e7ef)}.ds-panel-head strong{font-size:14px;font-weight:600;color:var(--ink,#17263c)}.ds-panel-head button{border:0;background:transparent;color:var(--accent-2,#1648b8);font-size:11px}.ds-panel-body{padding:16px;line-height:1.55;overflow-y:auto}.ds-panel-body>strong{font-size:18px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-body p{color:var(--muted,#617188);font-size:11px}"
     },
     {
       "name": "返回池列表",
@@ -465,12 +465,12 @@
       "css": ".ds-market{display:inline-grid;gap:2px;position:relative;padding:10px 18px;min-width:108px;background:var(--accent-soft,#eaf0ff);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-market::after{content:\"\";position:absolute;bottom:0;left:18px;right:18px;height:2px;background:var(--accent,#245bd7)}.ds-market b{font:600 16px/1.55 var(--font-outlier,Consolas,monospace);font-variant-numeric:tabular-nums;color:var(--ink,#17263c)}"
     },
     {
-      "name": "行业与专注控件",
+      "name": "行业与列表控件",
       "kind": "custom",
       "refersTo": "map-control",
-      "description": "行业下拉及可恢复的专注状态；示例不执行数据切换。",
-      "html": "<div class=\"ds-map-tools\"><label>行业 <select aria-label=\"聚焦行业\"><option>全部行业</option><option>电子</option></select></label><button aria-pressed=\"false\">专注云图</button><button aria-pressed=\"true\">显示观察面板</button></div>",
-      "css": ".ds-map-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-map-tools select{padding:4px 5px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);font-size:12px;color:var(--ink,#17263c)}.ds-map-tools button{padding:5px 8px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);font:inherit}.ds-map-tools button[aria-pressed=\"true\"]{background:var(--accent-soft,#eaf0ff);color:var(--accent-2,#1648b8);border-color:var(--accent,#245bd7)}"
+      "description": "行业下拉只聚焦云图；查看列表按需打开弹窗。示例不执行交互。",
+      "html": "<div class=\"ds-map-tools\"><label>行业 <select aria-label=\"聚焦行业\"><option>全部行业</option><option>电子</option></select></label><button aria-haspopup=\"dialog\">查看列表</button></div>",
+      "css": ".ds-map-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-map-tools select{padding:4px 5px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);font-size:12px;color:var(--ink,#17263c)}.ds-map-tools button{padding:5px 8px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);font:inherit}"
     },
     {
       "name": "炸板次数徽标",
@@ -483,12 +483,12 @@
   ],
   "narrative": {
     "northStar": "先看清市场，再进入细节",
-    "overview": "以大盘云图实际浅色页面为用户指定参考，把主要阅读面积交给市场本身。白色工作面、冷灰底、深蓝灰文字和钴蓝界面状态构成产品框架；行情保留用户确定的红、绿、黑三色。主图由真实市值、行业层级和正常比例的中文标签建立识别路径。\n\n当前文档记录 1.2.0 已实现的设计。页面采用本机无衬线字体与等宽关键数字，细线划分功能区域，较小圆角收束主云图与观察面板。参考站的连续色阶、品牌和业务代码没有搬入产品；样本日期与静态说明保持可见。",
+    "overview": "以大盘云图实际浅色页面为用户指定参考，把主要阅读面积交给市场本身。白色工作面、冷灰底、深蓝灰文字和钴蓝界面状态构成产品框架；行情保留用户确定的红、绿、黑三色。主图由真实市值、行业层级和正常比例的中文标签建立识别路径。\n\n当前文档记录 1.2.1 已实现的设计。页面采用本机无衬线字体与等宽关键数字，细线划分功能区域，较小圆角收束全宽主云图；个股详情与列表按需弹出。参考站的连续色阶、品牌和业务代码没有搬入产品；样本日期与静态说明保持可见。",
     "keyCharacteristics": [
       "主云图优先；一级行业、二级行业和个股构成三级结构。",
-      "完整名称先测量，空间不足时隐去，不压缩汉字字宽。",
-      "行业聚焦与明确返回支持逐级查看；专注操作可收起观察面板。",
-      "观察面板初始显示市值前列列表；手机保留主要复盘模块。"
+      "名称先测量，按空间显示完整名、可读前缀或省略，不压缩汉字字宽。",
+      "行业聚焦与明确返回支持逐级查看；主云图默认全宽。",
+      "个股详情与列表按需打开弹窗；手机保留主要复盘模块。"
     ],
     "rules": [
       {
@@ -498,7 +498,7 @@
       },
       {
         "name": "The Natural Type Rule",
-        "body": "先测量完整文字，再决定是否显示；树图不用 maxWidth 横向挤压文字，也不描边补救。",
+        "body": "先测量完整文字，再决定显示完整名、至少两字的名称前缀或省略；树图不用 maxWidth 横向挤压文字，也不描边补救。",
         "section": "typography"
       },
       {
@@ -511,13 +511,13 @@
       "Do 使用真实行业层级与总市值面积，并保持正常字形。",
       "Do 保留行情三色、绿块深字、红黑块白字和独立选中轮廓。",
       "Do 区分12px正文、11px操作标签与图内标注的不同阅读职责。",
-      "Do 为行业聚焦保留返回路径，为专注云图保留恢复面板的操作。",
+      "Do 为行业聚焦保留返回路径，为详情与列表弹窗保留关闭操作。",
       "Do 在手机保留五组情绪、观察列表、时间轴、走势及静态样本说明。"
     ],
     "donts": [
       "Don't 恢复900只抽样配额或将部分股票重新铺满以冒充全行业市值。",
       "Don't 用横向压缩、描边或极小字号塞满每一个股票块。",
-      "Don't 用装饰性留白或空观察面板挤占主云图。",
+      "Don't 用常驻侧栏或装饰性留白挤占主云图。",
       "Don't 为常驻面板添加投影、渐变或悬停抬升。",
       "Don't 把静态样本、情绪演示或仅一只K线包装成实时能力。"
     ]
