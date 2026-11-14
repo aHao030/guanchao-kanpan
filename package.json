@@ -1,0 +1,15 @@
+{
+  "name": "guanchao-kanpan",
+  "version": "1.1.0",
+  "private": true,
+  "description": "观潮看盘：市场结构与涨停复盘静态原型",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "test:server": "node --test tests/server.test.cjs",
+    "test:ui": "node --test tests/app.behavior.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

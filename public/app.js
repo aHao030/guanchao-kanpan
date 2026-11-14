@@ -26,13 +26,9 @@ if (!stocks.length) {
   const w = document.getElementById('treemapWrap');
   if (w) w.insertAdjacentHTML('beforeend', '<div class="map-note">演示数据未加载：public/data/ 目录缺失</div>');
 }
-if (!stocks.length) {
-  const w = document.getElementById('treemapWrap');
-  if (w) w.insertAdjacentHTML('beforeend', '<div class="map-note">演示数据未加载：public/data/ 目录缺失</div>');
-}
 const boards = TREES.map(b => ({
   name: b.name, code: b.code, value: b.value, stockCount: b.stockCount,
-  children: b.children || [],
+  children: (b.children || []).slice().sort((a, c) => (c.value || 0) - (a.value || 0)),
   pct: (b.children || []).reduce((s, c) => s + (c.changePct || 0) * (c.value || 1), 0) / (b.value || 1),
 }));
 
@@ -46,36 +42,34 @@ const POOLS = [
   { id: 'limit', label: '涨停', match: s => limitMap.has(s.code6), count: LIMIT_STOCKS.length },
   { id: 'lianban', label: '连板', match: s => { const l = limitMap.get(s.code6); return !!l && +l.lu_days >= 2; },
     count: LIMIT_STOCKS.filter(s => +s.lu_days >= 2).length },
-  { id: 'first', label: '首板', match: s => { const l = limitMap.get(s.code6); return !!l && +s.lu_days === 1; },
+  { id: 'first', label: '首板', match: s => { const l = limitMap.get(s.code6); return !!l && +l.lu_days === 1; },
     count: LIMIT_STOCKS.filter(s => +s.lu_days === 1).length },
   { id: 'big', label: '大市值', match: null, count: 50 },
 ];
 const big50 = new Set(stocks.slice().sort((a, b) => (b.value || 0) - (a.value || 0)).slice(0, 50).map(s => s.code6));
 POOLS.find(p => p.id === 'big').match = s => big50.has(s.code6);
+const poolMembers = new Map(POOLS.map(p => [p.id, stocks.filter(p.match)]));
 let activePool = 'all';
 
 /* ============ 颜色（A股：红涨绿跌） ============ */
-/* 大盘云图 classic dark 主题（自其前端包逆向移植：暗画布 + 高饱和块，与原站一致） */
-const BG_TOP = [23, 27, 34], BG_BOT = [16, 20, 27];
-const BOARD_FILL = '#20252d', BOARD_HEADER = '#181d24';
-const SUB_BORDER = 'rgba(148,163,184,.3)', BOARD_BORDER = 'rgba(148,163,184,.48)';
-const PAL = {
-  flat: [65, 69, 84],
-  posSoft: [165, 66, 74], posStrong: [245, 54, 57],
-  negSoft: [53, 117, 78], negStrong: [0, 214, 65],
-};
-function lerp(a, b, t) { return a.map((v, i) => Math.round(v + (b[i] - v) * t)); }
-function rgb(c) { return `rgb(${c[0]},${c[1]},${c[2]})`; }
-function mixc(a, b, k) { return rgb(lerp(a, b, Math.min(1, Math.max(0, k)))); }
-/* RdYlGn 11 阶分档取色（d3-scale-chromatic / ColorBrewer 官方色值，finviz 式离散热力） */
-const UP_RAMP = ['#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b'];   // ≥5 / 3~5 / 2~3 / 1~2 / 0.4~1
-const DOWN_RAMP = ['#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']; // -0.4~-1 / -1~-2 / -2~-3 / -3~-5 / ≤-5
-const FLAT_FILL = '#d9d9d9';
-const LIGHT_FILLS = new Set(['#fdae61', '#fee08b', '#d9ef8b', '#a6d96a', '#e8e8e8', '#f46d43']);
+// 装饰色与 CSS 共用 tokens；行情三色遵循项目约定，不随主题变化。
+function readCanvasTheme() {
+  const css = getComputedStyle(document.documentElement);
+  const token = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
+  return {
+    surface: token('--sheet', '#ffffff'), panel: token('--paper-2', '#edf2f8'),
+    ink: token('--ink', '#17263c'), muted: token('--muted', '#67758b'),
+    rule: token('--rule', '#dce4ef'), accent: token('--accent', '#245bd7'),
+    accentInk: token('--accent-ink', '#ffffff'),
+    display: token('--font-display', '"Microsoft YaHei",sans-serif'),
+    mono: token('--font-outlier', 'Consolas,monospace'),
+  };
+}
+let canvasTheme = readCanvasTheme();
 function pctColor(p) {
   const v = p || 0;
   if (Math.abs(v) < 0.1) return '#111418';   // 不涨不跌 → 黑
-  return v > 0 ? '#dc2626' : '#15803d';       // 涨红 / 跌绿
+  return v > 0 ? '#ef4444' : '#22c55e';     // 涨红 / 跌绿
 }
 function fillTextOn(fill) {
   if (fill === '#22c55e') return 'rgba(4,17,8,.92)';      // 绿块配墨字（原云图配对）
@@ -131,66 +125,65 @@ const baseCanvas = document.createElement('canvas');
 const bctx = baseCanvas.getContext('2d');
 let rects = [];        // {rect, kind, node}
 let dimSet = null;     // Set(code6) 当前池/搜索命中的集合；null=全亮
-let dimNote = '';
 let selectedCode = null;
 let hoverListCode = null;
-let pulseT = 0;
+
+// 样本数据不变：行业名额与市值排序只计算一次，输入搜索时无需重复分配。
+const MIN_PER_BOARD = 4;
+const boardCounts = allocateBoardCounts();
+function allocateBoardCounts() {
+  const BUDGET = 900;
+  const totalCap = boards.reduce((acc, b) => acc + (b.value || 0), 0);
+  const counts = new Map();
+  const metas = boards.map(b => ({ code: b.code, q: (b.value || 0) / (totalCap || 1) * BUDGET, cap: b.children.length }));
+  let assigned = 0;
+  for (const m of metas) {
+    const n = Math.min(m.cap, Math.max(MIN_PER_BOARD, Math.floor(m.q)));
+    counts.set(m.code, n); assigned += n;
+  }
+  let rem = BUDGET - assigned;
+  const byRemainder = metas.slice().sort((a, b) => (b.q - Math.floor(b.q)) - (a.q - Math.floor(a.q)));
+  const reversed = byRemainder.slice().reverse();
+  while (rem !== 0) {
+    let moved = false;
+    for (const m of rem > 0 ? byRemainder : reversed) {
+      const cur = counts.get(m.code);
+      if (rem > 0 && cur < m.cap) { counts.set(m.code, cur + 1); rem--; moved = true; }
+      else if (rem < 0 && cur > MIN_PER_BOARD) { counts.set(m.code, cur - 1); rem++; moved = true; }
+      if (!rem) break;
+    }
+    if (!moved) break;
+  }
+  return counts;
+}
 
 function matchingSet() {
-  const pool = POOLS.find(p => p.id === activePool);
-  const set = new Set(stocks.filter(s => pool.match(s)).map(s => s.code6));
   const q = searchQuery.trim();
   if (q) {
-    const hits = new Set(stocks.filter(s =>
-      s.name.includes(q) || s.code6.includes(q.replace(/\D/g, '') || '\u0000')
-    ).map(s => s.code6));
+    const hits = new Set(searchStocks(q).map(s => s.code6));
     return { set: hits, note: hits.size ? '' : '无匹配个股' };
   }
-  return { set, note: '' };
+  return { set: new Set(poolMembers.get(activePool).map(s => s.code6)), note: '' };
+}
+
+function searchStocks(query) {
+  const code = query.replace(/\D/g, '');
+  return stocks.filter(s => s.name.includes(query) || (code && s.code6.includes(code)));
 }
 
 function renderBase() {
   const { clientWidth: W, clientHeight: H } = mapWrap;
   if (!W || !H) return;
   const dpr = DPR;
-  for (const cv of [mapCanvas, baseCanvas]) { cv.width = W * dpr; cv.height = H * dpr; }
+  for (const cv of [mapCanvas, baseCanvas]) {
+    const width = Math.round(W * dpr), height = Math.round(H * dpr);
+    if (cv.width !== width) cv.width = width;
+    if (cv.height !== height) cv.height = height;
+  }
   mctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   bctx.clearRect(0, 0, W, H);
-  bctx.fillStyle = '#eef0f3'; bctx.fillRect(0, 0, W, H);
-
-  /* 按行业总市值比例动态分配各板块显示的个股数量（最大余数法）：大行业多显示、小行业少显示 */
-  const BUDGET = 900, MIN_PER_BOARD = 4;
-  const totalCap = boards.reduce((acc, b) => acc + (b.value || 0), 0);
-  const boardCounts = new Map();
-  {
-    const metas = boards.map(b => ({ code: b.code, q: (b.value || 0) / (totalCap || 1) * BUDGET, cap: (b.children || []).length }));
-    let assigned = 0;
-    for (const m of metas) {
-      const n = Math.min(m.cap, Math.max(MIN_PER_BOARD, Math.floor(m.q)));
-      boardCounts.set(m.code, n); assigned += n;
-    }
-    let rem = BUDGET - assigned;
-    const byRemainder = metas.slice().sort((a2, b2) => (b2.q - Math.floor(b2.q)) - (a2.q - Math.floor(a2.q)));
-    let guard = 0;
-    while (rem !== 0 && guard++ < 4000) {
-      let moved = false;
-      if (rem > 0) {
-        for (const m of byRemainder) {
-          if (rem <= 0) break;
-          const cur = boardCounts.get(m.code) || 0;
-          if (cur < m.cap) { boardCounts.set(m.code, cur + 1); rem--; moved = true; }
-        }
-      } else {
-        for (const m of byRemainder.slice().reverse()) {
-          if (rem >= 0) break;
-          const cur = boardCounts.get(m.code) || 0;
-          if (cur > MIN_PER_BOARD) { boardCounts.set(m.code, cur - 1); rem++; moved = true; }
-        }
-      }
-      if (!moved) break;
-    }
-  }
+  bctx.fillStyle = canvasTheme.surface; bctx.fillRect(0, 0, W, H);
 
   rects = [];
   const boardItems = boards.map(b => ({ v: Math.max(b.value, 1e8), b }));
@@ -204,7 +197,7 @@ function renderBase() {
     // 板块底色（池过滤时整板压暗，命中的个股块才能跳出来）
     const boardHit = dimSet === null || (b.children || []).some(c => dimSet.has(norm(c.code)));
     bctx.globalAlpha = boardHit ? 1 : 0.35;
-    bctx.fillStyle = '#c9ced6';
+    bctx.fillStyle = canvasTheme.panel;
     bctx.fillRect(x, y, w, h);
     rects.push({ rect, kind: 'board', node: b });
     const bodyY = y + (h > 46 ? HEAD : 0);
@@ -212,11 +205,10 @@ function renderBase() {
     if (bodyH < 3 || w < 8) continue;
     // 按市值比例分配的显示名额；池/搜索命中的额外个股自动补入
     const nShow = boardCounts.get(b.code) || MIN_PER_BOARD;
-    const members = (b.children || []).slice().sort((a2, b2) => (b2.value || 0) - (a2.value || 0));
-    const shown = members.slice(0, nShow).map(c => c.code);
+    const members = b.children;
     const filtering = activePool !== 'all' || searchQuery.trim() !== '';
-    if (filtering && dimSet !== null) members.slice(nShow).forEach(c => { if (dimSet.has(norm(c.code))) shown.push(c.code); });
-    const kids = members.filter(c => shown.includes(c.code)).map(c => ({ v: Math.max(c.value || 0, 1e7), c }));
+    const kids = members.filter((c, i) => i < nShow || (filtering && dimSet !== null && dimSet.has(norm(c.code))))
+      .map(c => ({ v: Math.max(c.value || 0, 1e7), c }));
     const childRects = [];
     squarify(kids, x, bodyY, w, bodyH, childRects);
     for (const cr of childRects) {
@@ -234,13 +226,13 @@ function renderBase() {
       const fillTxt = fillTextOn(fill);
       const haloTxt = haloOn(fill);
       if (r.w > 34 && r.h > 19) {
-        bctx.font = '600 11px "Hanken Grotesk","Microsoft YaHei",sans-serif';
+        bctx.font = `600 12px ${canvasTheme.display}`;
         bctx.textBaseline = 'top';
         const nm = s.name.length > (r.w > 64 ? 7 : 4) ? s.name.slice(0, r.w > 64 ? 7 : 4) : s.name;
         bctx.lineWidth = 2; bctx.strokeStyle = haloTxt; bctx.strokeText(nm, r.x + 4, r.y + 3, r.w - 8);
         bctx.fillStyle = fillTxt;
         bctx.fillText(nm, r.x + 4, r.y + 3, r.w - 8);
-        bctx.font = '500 11px "IBM Plex Mono",monospace';
+        bctx.font = `500 11px ${canvasTheme.mono}`;
         const pt2 = (r.h > 30) ? pctText(s.changePct) : null;
         if (pt2) {
           bctx.lineWidth = 2; bctx.strokeStyle = haloTxt; bctx.strokeText(pt2, r.x + 4, r.y + 16);
@@ -248,7 +240,7 @@ function renderBase() {
           bctx.fillText(pt2, r.x + 4, r.y + 16);
         }
       } else if (r.w > 19 && r.h > 11) {
-        bctx.font = '600 10px "Hanken Grotesk","Microsoft YaHei",sans-serif';
+        bctx.font = `600 10px ${canvasTheme.display}`;
         bctx.textBaseline = 'middle';
         const nm2 = s.name.slice(0, 3);
         bctx.lineWidth = 2; bctx.strokeStyle = haloTxt; bctx.strokeText(nm2, r.x + 2, r.y + r.h / 2, r.w - 4);
@@ -260,43 +252,43 @@ function renderBase() {
     // 板块标题条
     bctx.globalAlpha = boardHit ? 1 : 0.35;
     if (h > 46) {
-      bctx.fillStyle = '#c9ced6';
+      bctx.fillStyle = canvasTheme.panel;
       bctx.fillRect(x, y, w, HEAD);
-      bctx.fillStyle = '#232830';
+      bctx.fillStyle = canvasTheme.ink;
       bctx.fillRect(x, y + HEAD - 2, w, 2);
-      bctx.font = '600 12px "Hanken Grotesk","Microsoft YaHei",sans-serif';
+      bctx.font = `600 12px ${canvasTheme.display}`;
       bctx.textBaseline = 'middle';
       if (w < 110) {
         bctx.fillText(b.name.slice(0, 4), x + 5, y + HEAD / 2, w - 10);
       } else {
         bctx.fillText(b.name, x + 5, y + HEAD / 2, Math.max(20, w - 70));
-        bctx.font = '500 11px "IBM Plex Mono",monospace';
-        bctx.fillStyle = 'rgba(56,62,72,.75)';
+        bctx.font = `500 11px ${canvasTheme.mono}`;
+        bctx.fillStyle = canvasTheme.muted;
         const pt = pctText(b.pct);
         bctx.fillText(pt, x + w - bctx.measureText(pt).width - 5, y + HEAD / 2);
       }
     }
-    bctx.strokeStyle = 'rgba(148,163,184,.48)';
+    bctx.strokeStyle = canvasTheme.rule;
     bctx.strokeRect(x + .5, y + .5, w - 1, h - 1);
     bctx.globalAlpha = 1;
   }
 }
 
-function drawFrame(ts) {
+function drawFrame() {
   const { clientWidth: W, clientHeight: H } = mapWrap;
   mctx.clearRect(0, 0, W, H);
   mctx.drawImage(baseCanvas, 0, 0, W, H);
-  // 涨停描边（静态规则线，Almanac：除状态外无动画）
-  mctx.lineWidth = 2;
-  mctx.strokeStyle = 'rgba(177,45,107,.92)';
+  // 涨停描边（静态规则线）
   for (const r of rects) {
     if (r.kind !== 'stock') continue;
     if (!limitMap.has(r.node.code6)) continue;
     if (dimSet !== null && !dimSet.has(r.node.code6)) continue;
+    mctx.lineWidth = 2;
+    mctx.strokeStyle = canvasTheme.accent;
     mctx.strokeRect(r.rect.x + 1, r.rect.y + 1, r.rect.w - 2, r.rect.h - 2);
     // 池模式下给命中块直接标注名称
     if (dimSet !== null && r.rect.w > 30 && r.rect.h > 13) {
-      mctx.font = '700 10px "Microsoft YaHei",sans-serif';
+      mctx.font = `700 10px ${canvasTheme.display}`;
       mctx.textBaseline = 'middle';
       mctx.lineWidth = 2;
       const fill3 = pctColor(r.node.changePct);
@@ -309,10 +301,10 @@ function drawFrame(ts) {
     // 连板角标
     const l = limitMap.get(r.node.code6);
     if (+l.lu_days >= 2 && r.rect.w > 14 && r.rect.h > 14) {
-      mctx.fillStyle = '#b12d6b';
+      mctx.fillStyle = canvasTheme.accent;
       mctx.fillRect(r.rect.x + r.rect.w - 12, r.rect.y + 2, 10, 10);
-      mctx.fillStyle = '#f2e9ee';
-      mctx.font = '500 9px "IBM Plex Mono",monospace';
+      mctx.fillStyle = canvasTheme.accentInk;
+      mctx.font = `500 9px ${canvasTheme.mono}`;
       mctx.textAlign = 'center'; mctx.textBaseline = 'middle';
       mctx.fillText(l.lu_days, r.rect.x + r.rect.w - 6, r.rect.y + 6.5);
       mctx.textAlign = 'start'; mctx.textBaseline = 'alphabetic';
@@ -321,7 +313,7 @@ function drawFrame(ts) {
   // 列表悬停 → 树图联动描边
   if (hoverListCode) {
     const rh = rects.find(x => x.kind === 'stock' && x.node.code6 === hoverListCode);
-    if (rh) { mctx.lineWidth = 2; mctx.strokeStyle = 'rgba(177,45,107,.85)'; mctx.strokeRect(rh.rect.x, rh.rect.y, rh.rect.w, rh.rect.h); }
+    if (rh) { mctx.lineWidth = 2; mctx.strokeStyle = canvasTheme.accent; mctx.strokeRect(rh.rect.x, rh.rect.y, rh.rect.w, rh.rect.h); }
   }
   // 选中描边
   if (selectedCode) {
@@ -336,12 +328,13 @@ function drawFrame(ts) {
 }
 
 function hitTest(mx, my) {
-  let best = null;
-  for (const r of rects) {
+  // 最后绘制的子块在上层，命中后即可返回。
+  for (let i = rects.length - 1; i >= 0; i--) {
+    const r = rects[i];
     const { x, y, w, h } = r.rect;
-    if (mx >= x && mx <= x + w && my >= y && my <= y + h) best = r;
+    if (mx >= x && mx <= x + w && my >= y && my <= y + h) return r;
   }
-  return best;
+  return null;
 }
 
 const tooltip = document.getElementById('tooltip');
@@ -379,22 +372,39 @@ POOLS.forEach(p => {
   const b = document.createElement('button');
   b.className = 'pool-tab'; b.role = 'tab';
   b.setAttribute('aria-selected', p.id === activePool);
+  b.tabIndex = p.id === activePool ? 0 : -1;
   b.innerHTML = `${p.label}<span class="pt-count">${p.count}</span>`;
   b.addEventListener('click', () => {
     activePool = p.id;
-    poolTabsEl.querySelectorAll('.pool-tab').forEach((el, i) => el.setAttribute('aria-selected', POOLS[i].id === activePool));
+    poolTabsEl.querySelectorAll('.pool-tab').forEach((el, i) => {
+      const active = POOLS[i].id === activePool;
+      el.setAttribute('aria-selected', active);
+      el.tabIndex = active ? 0 : -1;
+    });
     applyFilter();
   });
   poolTabsEl.appendChild(b);
 });
+poolTabsEl.addEventListener('keydown', e => {
+  const tabs = Array.from(poolTabsEl.querySelectorAll('.pool-tab'));
+  const current = tabs.indexOf(e.target);
+  if (current < 0) return;
+  let next;
+  if (e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+  else if (e.key === 'ArrowLeft') next = (current + tabs.length - 1) % tabs.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = tabs.length - 1;
+  else return;
+  e.preventDefault(); tabs[next].click(); tabs[next].focus();
+});
 function applyFilter() {
   const { set, note } = matchingSet();
-  dimSet = set; dimNote = note;
+  dimSet = activePool === 'all' && !searchQuery.trim() ? null : set;
   const noteEl = document.getElementById('mapNote');
   if (note) { noteEl.textContent = note; noteEl.hidden = false; } else noteEl.hidden = true;
-  poolMetaEl.textContent = `显示 ${set.size} / ${stocks.length} 只（按行业市值比例分配 · 大行业多显示） · 金框=涨停 · 角标=连板数`;
+  poolMetaEl.textContent = `范围 ${set.size} / ${stocks.length} 只 · 云图按市值抽样 · 描边=涨停 · 角标=连板数`;
   renderBase();
-  drawFrame(performance.now());
+  drawFrame();
   if (activePool !== 'all') renderPoolDrawer(activePool);
   else if (drawerMode === 'pool') { drawerMode = 'empty'; renderEmptyDrawer(); }
 }
@@ -406,7 +416,7 @@ searchInput.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   const q = searchQuery.trim();
   if (!q) return;
-  const hits = stocks.filter(x => x.name.includes(q) || x.code6.includes(q.replace(/\D/g, '') || '\u0000'));
+  const hits = searchStocks(q);
   if (hits.length) selectStock(hits[0].code6);
 });
 
@@ -417,10 +427,23 @@ function kv(k, v, cls) { return `<div class="kv"><i>${k}</i><b class="${cls || '
 
 let drawerMode = 'empty'; // 'empty' | 'pool' | 'stock'
 let poolSort = 'rank';
+function bindStockRows() {
+  drawer.querySelectorAll('li[data-code]').forEach(li => {
+    li.tabIndex = 0; li.setAttribute('role', 'button');
+    li.addEventListener('click', () => selectStock(li.dataset.code));
+    li.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault(); selectStock(li.dataset.code);
+    });
+    li.addEventListener('mouseenter', () => { hoverListCode = li.dataset.code; drawFrame(); });
+    li.addEventListener('mouseleave', () => { hoverListCode = null; drawFrame(); });
+    li.addEventListener('focus', () => { hoverListCode = li.dataset.code; drawFrame(); });
+    li.addEventListener('blur', () => { hoverListCode = null; drawFrame(); });
+  });
+}
 function poolStocks(pid) {
-  const pool = POOLS.find(x => x.id === pid);
-  const list = stocks.filter(s => pool.match(s));
-  if (pid === 'big') return list;
+  const list = poolMembers.get(pid).slice();
+  if (pid === 'big') return list.sort((a, b) => (b.value || 0) - (a.value || 0));
   // 涨停类池：连板数降序 → 首封时间升序
   return list.sort((a, b) => {
     const la = limitMap.get(a.code6), lb = limitMap.get(b.code6);
@@ -432,7 +455,7 @@ function poolStocks(pid) {
 function renderPoolDrawer(pid) {
   drawerMode = 'pool'; hoverListCode = null;
   const pool = POOLS.find(x => x.id === pid);
-  const list = poolStocks(pid);
+  let list = poolStocks(pid);
   const isLimitPool = pid === 'limit' || pid === 'lianban' || pid === 'first';
   if (isLimitPool && poolSort === 'pct') list = list.slice().sort((a, b) => (b.changePct || 0) - (a.changePct || 0));
   const sortBtns = isLimitPool ? `<div class="d-sort"><button class="${poolSort === 'rank' ? 'on' : ''}" data-s="rank">板数</button><button class="${poolSort === 'pct' ? 'on' : ''}" data-s="pct">涨幅</button></div>` : '';
@@ -451,17 +474,13 @@ function renderPoolDrawer(pid) {
       return `<li data-code="${sk.code6}"><span><span class="bl-name">${sk.name}</span>
         <span class="bl-sub"> ${fmtYi(sk.totalMarketCap)}</span></span>${pctHtml}</li>`;
     }).join('')}</ul>`;
-  drawer.querySelectorAll('li[data-code]').forEach(li => {
-    li.addEventListener('click', () => selectStock(li.dataset.code));
-    li.addEventListener('mouseenter', () => { hoverListCode = li.dataset.code; drawFrame(performance.now()); });
-    li.addEventListener('mouseleave', () => { hoverListCode = null; drawFrame(performance.now()); });
-  });
+  bindStockRows();
   drawer.querySelectorAll('.d-sort button').forEach(b => b.addEventListener('click', () => {
     poolSort = b.dataset.s; renderPoolDrawer(activePool);
   }));
 }
 function renderEmptyDrawer() {
-  drawer.innerHTML = `<div class="d-empty"><b>点击树图任意个股</b><br>查看实时行情 · 涨停原因 · 竞价数据<br><br>点击板块标题条查看板块成分<br><span style="opacity:.7">演示数据 · 2026-11-13 收盘快照</span></div>`;
+  drawer.innerHTML = `<div class="d-empty"><b>点击树图任意个股</b><br>查看行情快照 · 涨停原因 · 竞价数据<br><br>点击板块标题条查看板块成分<br><span style="opacity:.7">演示数据 · 2026-11-13 收盘快照</span></div>`;
 }
 
 function drawKline(cv) {
@@ -476,14 +495,14 @@ function drawKline(cv) {
   const px = i => 14 + i * ((W - 28) / Math.max(1, dd.length - 1));
   const py = v => 8 + (hi - v) / (hi - lo || 1) * (H - 18);
   // 网格 + 价格
-  ctx.strokeStyle = '#b3b9c1'; ctx.fillStyle = '#5f6570'; ctx.font = '10px "IBM Plex Mono",monospace';
+  ctx.strokeStyle = canvasTheme.rule; ctx.fillStyle = canvasTheme.muted; ctx.font = `10px ${canvasTheme.mono}`;
   for (const v of [hi, (hi + lo) / 2, lo]) {
     ctx.beginPath(); ctx.moveTo(0, py(v)); ctx.lineTo(W, py(v)); ctx.stroke();
     ctx.fillText(v.toFixed(0), 3, py(v) - 2);
   }
   dd.forEach((d, i) => {
     const x = px(i), upC = d.close >= d.open;
-    ctx.strokeStyle = upC ? '#b02327' : '#0c6b44'; ctx.fillStyle = upC ? '#b02327' : '#0c6b44';
+    ctx.strokeStyle = upC ? '#ef4444' : '#22c55e'; ctx.fillStyle = ctx.strokeStyle;
     ctx.beginPath(); ctx.moveTo(x, py(d.high)); ctx.lineTo(x, py(d.low)); ctx.stroke();
     const bw = Math.max(2, (W - 28) / dd.length * 0.5);
     const yo = py(d.open), yc = py(d.close);
@@ -492,9 +511,9 @@ function drawKline(cv) {
 }
 
 function selectStock(code6) {
-  selectedCode = code6;
   const s = stockByCode.get(code6);
   if (!s) return;
+  selectedCode = code6;
   const l = limitMap.get(code6), c = callMap.get(code6);
   const backBtn = (drawerMode === 'pool' && activePool !== 'all') ? `<button class="d-back" id="dBack">← 返回${POOLS.find(x => x.id === activePool).label}列表</button>` : '';
   let html = `${backBtn}<h3>${s.name}<span class="d-code">${s.code}</span></h3>
@@ -530,6 +549,7 @@ function selectStock(code6) {
   const bk = document.getElementById('dBack');
   if (bk) bk.addEventListener('click', () => renderPoolDrawer(activePool));
   if (code6 === '600519' && KLINE_DEMO) drawKline(document.getElementById('miniKline'));
+  drawFrame();
 }
 
 function renderBoardDrawer(b) {
@@ -543,14 +563,7 @@ function renderBoardDrawer(b) {
         <span class="bl-sub">${l ? ' · ' + l.lu_days + '板 ' + (l.lu_reason || '').slice(0, 10) : ' · ' + (k.subBoardName || '')}</span></span>
         <span class="bl-pct ${pctCls(k.changePct)}">${pctText(k.changePct)}</span></li>`;
     }).join('')}</ul></div>`;
-  drawer.querySelectorAll('li[data-code]').forEach(li => {
-    li.addEventListener('click', () => selectStock(li.dataset.code));
-    li.addEventListener('mouseenter', () => { hoverListCode = li.dataset.code; drawFrame(performance.now()); });
-    li.addEventListener('mouseleave', () => { hoverListCode = null; drawFrame(performance.now()); });
-  });
-  drawer.querySelectorAll('.d-sort button').forEach(b => b.addEventListener('click', () => {
-    poolSort = b.dataset.s; renderPoolDrawer(activePool);
-  }));
+  bindStockRows();
 }
 
 renderEmptyDrawer();
@@ -603,7 +616,9 @@ setTimeout(() => { toast.hidden = true; }, 5200);
 
 /* ============ 底部：时间轴 + 情绪走势 ============ */
 const tlCanvas = document.getElementById('timeline');
+let timelinePoints = [];
 function drawTimeline() {
+  timelinePoints = [];
   const W = tlCanvas.clientWidth, H = tlCanvas.clientHeight; if (!W) return;
   const dpr = DPR;
   tlCanvas.width = W * dpr; tlCanvas.height = H * dpr;
@@ -612,13 +627,16 @@ function drawTimeline() {
   const padL = 44, padR = 12, span = W - padL - padR;
   const px = m => padL + (m - DAY_START) / (DAY_END - DAY_START) * span;
   // 刻度 + 午休带
-  ctx.font = '10px "IBM Plex Mono",monospace'; ctx.fillStyle = '#5f6570'; ctx.strokeStyle = '#b3b9c1';
-  for (const t of [565, 660, 690, 810, 840, 900]) {
+  ctx.font = `10px ${canvasTheme.mono}`; ctx.fillStyle = canvasTheme.muted; ctx.strokeStyle = canvasTheme.rule;
+  const ticks = W < 500 ? [565, 690, 780, 900] : [565, 660, 690, 810, 840, 900];
+  for (const t of ticks) {
     const x = px(t);
-    ctx.fillText(`${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`, x - 14, H - 4);
+    const label = `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+    const textWidth = ctx.measureText(label).width;
+    ctx.fillText(label, Math.max(0, Math.min(W - textWidth, x - textWidth / 2)), H - 4);
     ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, H - 16); ctx.stroke();
   }
-  ctx.fillStyle = 'rgba(201,206,214,.45)';
+  ctx.fillStyle = canvasTheme.panel;
   ctx.fillRect(px(LUNCH_A), 4, px(LUNCH_B) - px(LUNCH_A), H - 20);
   // 泳道：连板数越高越靠上
   const lanes = 4;
@@ -627,31 +645,32 @@ function drawTimeline() {
     const x = px(Math.max(DAY_START, Math.min(DAY_END, m)));
     const lane = Math.min(lanes - 1, Math.max(0, (+s.lu_days || 1) - 1));
     const y = H - 26 - lane * (H - 40) / lanes;
+    timelinePoints.push({ stock: s, x, y });
     const r = 3.5;
     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fillStyle = +s.lu_days >= 3 ? '#b12d6b' : pctColor(+s.chg || 9);
+    ctx.fillStyle = +s.lu_days >= 3 ? canvasTheme.accent : pctColor(+s.chg || 9);
     ctx.fill();
-    if (+s.lu_days >= 2) { ctx.strokeStyle = 'rgba(177,45,107,.7)'; ctx.stroke(); }
+    if (+s.lu_days >= 2) { ctx.strokeStyle = canvasTheme.accent; ctx.stroke(); }
     if (+s.open_times > 0) { ctx.strokeStyle = 'rgba(229,72,77,.9)'; ctx.beginPath(); ctx.arc(x, y, r + 2.5, 0, Math.PI * 2); ctx.stroke(); }
   });
-  ctx.fillStyle = '#565c66'; ctx.font = '500 10px "Newsreader","Microsoft YaHei",serif';
+  ctx.fillStyle = canvasTheme.muted; ctx.font = `500 10px ${canvasTheme.display}`;
   ctx.fillText('①首板', 6, H - 26 - 0 * (H - 40) / lanes + 3);
   ctx.fillText('②连板', 6, H - 26 - 1 * (H - 40) / lanes + 3);
   ctx.fillText('③', 6, H - 26 - 2 * (H - 40) / lanes + 3);
   ctx.fillText('④+', 6, H - 26 - 3 * (H - 40) / lanes + 3);
 }
-tlCanvas.addEventListener('mousemove', e => {
+function timelineHit(e) {
   const b = tlCanvas.getBoundingClientRect();
   const mx = e.clientX - b.left, my = e.clientY - b.top;
   let best = null, bd = 9;
-  for (const s of LIMIT_STOCKS) {
-    const m = toMin(s.first_lu_time); if (m < 0) continue;
-    const x = parseFloat(tlCanvas.dataset.padL || 44) + (m - DAY_START) / (DAY_END - DAY_START) * (tlCanvas.clientWidth - 56);
-    const lane = Math.min(3, Math.max(0, (+s.lu_days || 1) - 1));
-    const y = tlCanvas.clientHeight - 26 - lane * (tlCanvas.clientHeight - 40) / 4;
-    const d = Math.hypot(mx - x, my - y);
-    if (d < bd) { bd = d; best = s; }
+  for (const point of timelinePoints) {
+    const d = Math.hypot(mx - point.x, my - point.y);
+    if (d < bd) { bd = d; best = point.stock; }
   }
+  return best;
+}
+tlCanvas.addEventListener('mousemove', e => {
+  const best = timelineHit(e);
   if (best) { tooltip.hidden = false;
     tooltip.innerHTML = `<div class="tt-name">${best.stock_name} <span style="color:var(--ink-3)">${best.lu_days}板</span></div>
       <div class="tt-row"><span>首封 ${best.first_lu_time} · 炸 ${best.open_times} 次</span><b></b></div>`;
@@ -661,15 +680,8 @@ tlCanvas.addEventListener('mousemove', e => {
 });
 tlCanvas.addEventListener('mouseleave', () => { tooltip.hidden = true; });
 tlCanvas.addEventListener('click', e => {
-  const b = tlCanvas.getBoundingClientRect();
-  const mx = e.clientX - b.left, my = e.clientY - b.top;
-  for (const s of LIMIT_STOCKS) {
-    const m = toMin(s.first_lu_time); if (m < 0) continue;
-    const x = 44 + (m - DAY_START) / (DAY_END - DAY_START) * (tlCanvas.clientWidth - 56);
-    const lane = Math.min(3, Math.max(0, (+s.lu_days || 1) - 1));
-    const y = tlCanvas.clientHeight - 26 - lane * (tlCanvas.clientHeight - 40) / 4;
-    if (Math.hypot(mx - x, my - y) < 9) { selectStock(norm(s.stock_code)); return; }
-  }
+  const best = timelineHit(e);
+  if (best) selectStock(norm(best.stock_code));
 });
 
 const sparkCanvas = document.getElementById('spark');
@@ -686,20 +698,20 @@ function drawSpark() {
   const px = i => 8 + i * ((W - 20) / (hist.length - 1));
   const py = v => 10 + (hi - v) / (hi - lo) * (H - 26);
   // 中线 50
-  ctx.strokeStyle = '#b3b9c1'; ctx.setLineDash([]);
+  ctx.strokeStyle = canvasTheme.rule; ctx.setLineDash([]);
   ctx.beginPath(); ctx.moveTo(8, py(50)); ctx.lineTo(W - 8, py(50)); ctx.stroke();
   ctx.setLineDash([]);
   // 面积 + 线
   ctx.beginPath(); ctx.moveTo(px(0), py(scores[0]));
   scores.forEach((v, i) => ctx.lineTo(px(i), py(v)));
-  ctx.strokeStyle = '#b12d6b'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.strokeStyle = canvasTheme.accent; ctx.lineWidth = 2; ctx.stroke();
   ctx.lineTo(px(scores.length - 1), H - 14); ctx.lineTo(px(0), H - 14); ctx.closePath();
-  ctx.fillStyle = 'rgba(177,45,107,.08)'; ctx.fill();
+  ctx.save(); ctx.fillStyle = canvasTheme.accent; ctx.globalAlpha = 0.08; ctx.fill(); ctx.restore();
   // 端点标注
-  ctx.fillStyle = '#232830'; ctx.font = '500 11px "IBM Plex Mono",monospace';
+  ctx.fillStyle = canvasTheme.ink; ctx.font = `500 11px ${canvasTheme.mono}`;
   const last = scores[scores.length - 1];
   ctx.fillText(String(last), px(scores.length - 1) - 8, py(last) - 6);
-  ctx.fillStyle = '#5f6570'; ctx.font = '10px "IBM Plex Mono",monospace';
+  ctx.fillStyle = canvasTheme.muted; ctx.font = `10px ${canvasTheme.mono}`;
   ctx.fillText('100', 8, 12); ctx.fillText('0', 8, H - 4);
   ctx.fillText(hist[0].trade_date.slice(4, 6) + '/' + hist[0].trade_date.slice(6, 8), 24, H - 4);
   const lt = hist[hist.length - 1].trade_date;
@@ -752,9 +764,24 @@ function renderEmotionStrip() {
   ].join('');
 }
 
-function layoutAll() { renderBase(); drawFrame(performance.now()); drawTimeline(); drawSpark(); renderEmotionStrip(); }
-new ResizeObserver(() => layoutAll()).observe(mapWrap);
-window.addEventListener('resize', layoutAll);
+function layoutAll() {
+  canvasTheme = readCanvasTheme();
+  renderBase(); drawFrame(); drawTimeline(); drawSpark();
+  const miniKline = document.getElementById('miniKline');
+  if (miniKline) drawKline(miniKline);
+}
+// ResizeObserver 与 window.resize 可同时触发，一帧最多完成一次昂贵的画布布局。
+let layoutPending = false;
+function scheduleLayout() {
+  if (layoutPending) return;
+  layoutPending = true;
+  requestAnimationFrame(() => { layoutPending = false; layoutAll(); });
+}
+new ResizeObserver(scheduleLayout).observe(mapWrap);
+window.addEventListener('resize', scheduleLayout);
+if (document.fonts) document.fonts.ready.then(scheduleLayout);
 
+renderEmotionStrip();
 applyFilter();
-layoutAll();
+drawTimeline();
+drawSpark();

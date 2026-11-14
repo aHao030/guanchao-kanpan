@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-14T10:41:32.289Z",
+  "title": "Design System: 观潮看盘",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "冷雾底",
+        "tonalRamp": [
+          "oklch(15.00% 0.0057 264.53)",
+          "oklch(26.43% 0.0057 264.53)",
+          "oklch(37.86% 0.0057 264.53)",
+          "oklch(49.29% 0.0057 264.53)",
+          "oklch(60.71% 0.0057 264.53)",
+          "oklch(72.14% 0.0057 264.53)",
+          "oklch(83.57% 0.0057 264.53)",
+          "oklch(95.00% 0.0057 264.53)"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "浅冷灰",
+        "tonalRamp": [
+          "oklch(15.00% 0.0097 252.81)",
+          "oklch(26.43% 0.0097 252.81)",
+          "oklch(37.86% 0.0097 252.81)",
+          "oklch(49.29% 0.0097 252.81)",
+          "oklch(60.71% 0.0097 252.81)",
+          "oklch(72.14% 0.0097 252.81)",
+          "oklch(83.57% 0.0097 252.81)",
+          "oklch(95.00% 0.0097 252.81)"
+        ]
+      },
+      "paper-3": {
+        "role": "neutral",
+        "displayName": "边界冷灰",
+        "tonalRamp": [
+          "oklch(15.00% 0.0185 258.35)",
+          "oklch(26.43% 0.0185 258.35)",
+          "oklch(37.86% 0.0185 258.35)",
+          "oklch(49.29% 0.0185 258.35)",
+          "oklch(60.71% 0.0185 258.35)",
+          "oklch(72.14% 0.0185 258.35)",
+          "oklch(83.57% 0.0185 258.35)",
+          "oklch(95.00% 0.0185 258.35)"
+        ]
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "白页",
+        "tonalRamp": [
+          "oklch(15.00% 0.0000 0.00)",
+          "oklch(26.43% 0.0000 0.00)",
+          "oklch(37.86% 0.0000 0.00)",
+          "oklch(49.29% 0.0000 0.00)",
+          "oklch(60.71% 0.0000 0.00)",
+          "oklch(72.14% 0.0000 0.00)",
+          "oklch(83.57% 0.0000 0.00)",
+          "oklch(95.00% 0.0000 0.00)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "主墨",
+        "tonalRamp": [
+          "oklch(15.00% 0.0462 257.85)",
+          "oklch(26.43% 0.0462 257.85)",
+          "oklch(37.86% 0.0462 257.85)",
+          "oklch(49.29% 0.0462 257.85)",
+          "oklch(60.71% 0.0462 257.85)",
+          "oklch(72.14% 0.0462 257.85)",
+          "oklch(83.57% 0.0462 257.85)",
+          "oklch(95.00% 0.0462 257.85)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "正文墨",
+        "tonalRamp": [
+          "oklch(15.00% 0.0446 257.42)",
+          "oklch(26.43% 0.0446 257.42)",
+          "oklch(37.86% 0.0446 257.42)",
+          "oklch(49.29% 0.0446 257.42)",
+          "oklch(60.71% 0.0446 257.42)",
+          "oklch(72.14% 0.0446 257.42)",
+          "oklch(83.57% 0.0446 257.42)",
+          "oklch(95.00% 0.0446 257.42)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "说明灰",
+        "tonalRamp": [
+          "oklch(15.00% 0.0409 257.42)",
+          "oklch(26.43% 0.0409 257.42)",
+          "oklch(37.86% 0.0409 257.42)",
+          "oklch(49.29% 0.0409 257.42)",
+          "oklch(60.71% 0.0409 257.42)",
+          "oklch(72.14% 0.0409 257.42)",
+          "oklch(83.57% 0.0409 257.42)",
+          "oklch(95.00% 0.0409 257.42)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "细线",
+        "tonalRamp": [
+          "oklch(15.00% 0.0126 255.51)",
+          "oklch(26.43% 0.0126 255.51)",
+          "oklch(37.86% 0.0126 255.51)",
+          "oklch(49.29% 0.0126 255.51)",
+          "oklch(60.71% 0.0126 255.51)",
+          "oklch(72.14% 0.0126 255.51)",
+          "oklch(83.57% 0.0126 255.51)",
+          "oklch(95.00% 0.0126 255.51)"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "强线",
+        "tonalRamp": [
+          "oklch(15.00% 0.0240 256.11)",
+          "oklch(26.43% 0.0240 256.11)",
+          "oklch(37.86% 0.0240 256.11)",
+          "oklch(49.29% 0.0240 256.11)",
+          "oklch(60.71% 0.0240 256.11)",
+          "oklch(72.14% 0.0240 256.11)",
+          "oklch(83.57% 0.0240 256.11)",
+          "oklch(95.00% 0.0240 256.11)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "钴蓝",
+        "tonalRamp": [
+          "oklch(15.00% 0.1993 263.14)",
+          "oklch(26.43% 0.1993 263.14)",
+          "oklch(37.86% 0.1993 263.14)",
+          "oklch(49.29% 0.1993 263.14)",
+          "oklch(60.71% 0.1993 263.14)",
+          "oklch(72.14% 0.1993 263.14)",
+          "oklch(83.57% 0.1993 263.14)",
+          "oklch(95.00% 0.1993 263.14)"
+        ]
+      },
+      "accent-2": {
+        "role": "primary",
+        "displayName": "深钴蓝",
+        "tonalRamp": [
+          "oklch(15.00% 0.1847 262.98)",
+          "oklch(26.43% 0.1847 262.98)",
+          "oklch(37.86% 0.1847 262.98)",
+          "oklch(49.29% 0.1847 262.98)",
+          "oklch(60.71% 0.1847 262.98)",
+          "oklch(72.14% 0.1847 262.98)",
+          "oklch(83.57% 0.1847 262.98)",
+          "oklch(95.00% 0.1847 262.98)"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "浅蓝雾",
+        "tonalRamp": [
+          "oklch(15.00% 0.0212 268.43)",
+          "oklch(26.43% 0.0212 268.43)",
+          "oklch(37.86% 0.0212 268.43)",
+          "oklch(49.29% 0.0212 268.43)",
+          "oklch(60.71% 0.0212 268.43)",
+          "oklch(72.14% 0.0212 268.43)",
+          "oklch(83.57% 0.0212 268.43)",
+          "oklch(95.00% 0.0212 268.43)"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "反白",
+        "tonalRamp": [
+          "oklch(15.00% 0.0000 0.00)",
+          "oklch(26.43% 0.0000 0.00)",
+          "oklch(37.86% 0.0000 0.00)",
+          "oklch(49.29% 0.0000 0.00)",
+          "oklch(60.71% 0.0000 0.00)",
+          "oklch(72.14% 0.0000 0.00)",
+          "oklch(83.57% 0.0000 0.00)",
+          "oklch(95.00% 0.0000 0.00)"
+        ]
+      },
+      "up": {
+        "role": "secondary",
+        "displayName": "涨红",
+        "tonalRamp": [
+          "oklch(15.00% 0.2078 25.33)",
+          "oklch(26.43% 0.2078 25.33)",
+          "oklch(37.86% 0.2078 25.33)",
+          "oklch(49.29% 0.2078 25.33)",
+          "oklch(60.71% 0.2078 25.33)",
+          "oklch(72.14% 0.2078 25.33)",
+          "oklch(83.57% 0.2078 25.33)",
+          "oklch(95.00% 0.2078 25.33)"
+        ]
+      },
+      "down": {
+        "role": "secondary",
+        "displayName": "跌绿",
+        "tonalRamp": [
+          "oklch(15.00% 0.1920 149.58)",
+          "oklch(26.43% 0.1920 149.58)",
+          "oklch(37.86% 0.1920 149.58)",
+          "oklch(49.29% 0.1920 149.58)",
+          "oklch(60.71% 0.1920 149.58)",
+          "oklch(72.14% 0.1920 149.58)",
+          "oklch(83.57% 0.1920 149.58)",
+          "oklch(95.00% 0.1920 149.58)"
+        ]
+      },
+      "flat": {
+        "role": "secondary",
+        "displayName": "平黑",
+        "tonalRamp": [
+          "oklch(15.00% 0.0094 255.63)",
+          "oklch(26.43% 0.0094 255.63)",
+          "oklch(37.86% 0.0094 255.63)",
+          "oklch(49.29% 0.0094 255.63)",
+          "oklch(60.71% 0.0094 255.63)",
+          "oklch(72.14% 0.0094 255.63)",
+          "oklch(83.57% 0.0094 255.63)",
+          "oklch(95.00% 0.0094 255.63)"
+        ]
+      },
+      "up-strong": {
+        "role": "secondary",
+        "displayName": "正文涨红",
+        "tonalRamp": [
+          "oklch(15.00% 0.1872 21.27)",
+          "oklch(26.43% 0.1872 21.27)",
+          "oklch(37.86% 0.1872 21.27)",
+          "oklch(49.29% 0.1872 21.27)",
+          "oklch(60.71% 0.1872 21.27)",
+          "oklch(72.14% 0.1872 21.27)",
+          "oklch(83.57% 0.1872 21.27)",
+          "oklch(95.00% 0.1872 21.27)"
+        ]
+      },
+      "down-strong": {
+        "role": "secondary",
+        "displayName": "正文跌绿",
+        "tonalRamp": [
+          "oklch(15.00% 0.1121 157.13)",
+          "oklch(26.43% 0.1121 157.13)",
+          "oklch(37.86% 0.1121 157.13)",
+          "oklch(49.29% 0.1121 157.13)",
+          "oklch(60.71% 0.1121 157.13)",
+          "oklch(72.14% 0.1121 157.13)",
+          "oklch(83.57% 0.1121 157.13)",
+          "oklch(95.00% 0.1121 157.13)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "brand": {
+        "displayName": "品牌",
+        "purpose": "顶部品牌名；手机端缩至19px。"
+      },
+      "headline": {
+        "displayName": "主标题",
+        "purpose": "市场主标题。"
+      },
+      "title": {
+        "displayName": "面板标题",
+        "purpose": "观察面板与通用面板标题。"
+      },
+      "body": {
+        "displayName": "正文",
+        "purpose": "普通界面正文和列表。"
+      },
+      "label": {
+        "displayName": "说明",
+        "purpose": "图例、计数、标签和来源说明；DOM功能字至少11px。"
+      },
+      "numeric": {
+        "displayName": "关键数字",
+        "purpose": "情绪概览的大数字；等宽数字。"
+      },
+      "price": {
+        "displayName": "现价",
+        "purpose": "个股详情的主要价格。"
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "pool-state",
+        "value": "color 160ms, background 160ms",
+        "purpose": "标的池悬停与选中状态过渡；系统请求减少动效时关闭。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1700px"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1200px"
+      },
+      {
+        "name": "tablet",
+        "value": "960px"
+      },
+      {
+        "name": "phone",
+        "value": "700px"
+      },
+      {
+        "name": "narrow-phone",
+        "value": "360px"
+      }
+    ],
+    "focus": {
+      "value": "2px solid var(--accent)",
+      "offset": "3px",
+      "purpose": "全局可见键盘焦点。"
+    },
+    "notes": [
+      "色阶仅为设计面板的合成预览，不是生产主题的新tokens；行情三色使用DESIGN.md的固定值。",
+      "面板依靠色面与边界区分层次，不使用投影。",
+      "360px及以下，涨跌家数和量能两块各独占整行，避免内部文字碰撞。",
+      "组件片段仅演示现有视觉与CSS状态，不包含业务脚本。"
+    ]
+  },
+  "components": [
+    {
+      "name": "标的池导航",
+      "kind": "nav",
+      "refersTo": "pool-tab",
+      "description": "冷灰组底上的按钮与钴蓝选中态。",
+      "html": "<div class=\"ds-pool\" role=\"tablist\" aria-label=\"标的池\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">全部</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">涨停</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">连板</button></div>",
+      "css": ".ds-pool{display:inline-flex;gap:3px;padding:3px;background:var(--paper,#f3f5f9);border-radius:6px;font-family:var(--font-body,\"Segoe UI\",sans-serif)}.ds-tab{border:0;background:transparent;color:var(--muted,#617188);border-radius:4px;padding:6px 10px;font:400 11px/1.4 var(--font-body,\"Segoe UI\",sans-serif);cursor:pointer;transition:color 160ms,background 160ms}.ds-tab:hover{background:var(--paper-3,#dce4f0);color:var(--ink,#17263c)}.ds-tab[aria-selected=\"true\"]{background:var(--accent,#245bd7);color:var(--accent-ink,#fff);font-weight:600}.ds-tab:focus-visible{outline:2px solid var(--accent,#245bd7);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-tab{transition:none}}"
+    },
+    {
+      "name": "股票搜索",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "细边界输入，钴蓝边界与浅蓝外轮廓提示焦点。",
+      "html": "<label class=\"ds-search\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><circle cx=\"7\" cy=\"7\" r=\"4.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M10.5 10.5L14 14\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg><input type=\"search\" aria-label=\"搜索股票代码或名称\" placeholder=\"搜索股票代码或名称\"></label>",
+      "css": ".ds-search{display:flex;align-items:center;gap:9px;width:228px;min-height:36px;padding:7px 11px;border:1px solid var(--rule,#e1e7ef);background:var(--paper,#f3f5f9);border-radius:7px;color:var(--muted,#617188)}.ds-search:focus-within{border-color:var(--accent,#245bd7);outline:2px solid var(--accent-soft,#eaf0ff)}.ds-search input{min-width:0;width:100%;border:0;background:transparent;outline:none;color:var(--ink,#17263c);font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif);caret-color:var(--accent,#245bd7)}.ds-search input::placeholder{color:var(--muted,#617188)}"
+    },
+    {
+      "name": "样本标记",
+      "kind": "chip",
+      "refersTo": "snapshot-tag",
+      "description": "顶部数据性质说明，属于信息标签。",
+      "html": "<span class=\"ds-snapshot\">样本复盘</span>",
+      "css": ".ds-snapshot{display:inline-block;padding:3px 7px;border-radius:4px;color:var(--accent-2,#1648b8);background:var(--accent-soft,#eaf0ff);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}"
+    },
+    {
+      "name": "观察面板",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "白色内容面、细边界、固定标题与详情区域。",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><strong>观察面板</strong><span>个股 / 行业</span></header><div class=\"ds-panel-body\">点击树图任意个股<br><span>查看行情快照 · 涨停原因 · 竞价数据</span></div></section>",
+      "css": ".ds-panel{width:316px;max-width:100%;border:1px solid var(--rule,#e1e7ef);border-radius:var(--radius,12px);background:var(--sheet,#fff);color:var(--ink-2,#34445b);overflow:hidden;font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}.ds-panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--rule,#e1e7ef)}.ds-panel-head strong{font-size:13px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-head span{font-size:11px;color:var(--muted,#617188)}.ds-panel-body{padding:28px 16px;text-align:center;line-height:2}.ds-panel-body span{color:var(--muted,#617188)}"
+    },
+    {
+      "name": "返回池列表",
+      "kind": "button",
+      "refersTo": "button-back",
+      "description": "详情中的次级返回动作。",
+      "html": "<button class=\"ds-back\">← 返回涨停列表</button>",
+      "css": ".ds-back{padding:5px 9px;background:var(--paper,#f3f5f9);color:var(--accent-2,#1648b8);border:0;border-radius:4px;font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);cursor:pointer}.ds-back:hover{background:var(--accent-soft,#eaf0ff)}.ds-back:focus-visible{outline:2px solid var(--accent,#245bd7);outline-offset:3px}"
+    },
+    {
+      "name": "股票列表行",
+      "kind": "button",
+      "refersTo": "stock-list-item",
+      "description": "行间细线、名称与辅助信息；可见焦点配合列表操作。",
+      "html": "<button class=\"ds-stock-row\"><span><strong>贵州茅台</strong><small>600519 · 白酒</small></span><span class=\"ds-stock-code\">600519</span></button>",
+      "css": ".ds-stock-row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:280px;max-width:100%;padding:10px 0;border:0;border-bottom:1px solid var(--rule,#e1e7ef);background:transparent;text-align:left;color:var(--ink-2,#34445b);font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif);cursor:pointer}.ds-stock-row strong{display:block;color:var(--ink,#17263c);font-size:12px;font-weight:600}.ds-stock-row small{display:block;margin-top:2px;color:var(--muted,#617188);font-size:11px}.ds-stock-code{font:400 11px var(--font-outlier,Consolas,monospace);color:var(--muted,#617188)}.ds-stock-row:hover{background:var(--paper,#f3f5f9)}.ds-stock-row:focus-visible{outline:2px solid var(--accent,#245bd7);outline-offset:3px}"
+    },
+    {
+      "name": "市场概览当前范围",
+      "kind": "custom",
+      "refersTo": "market-summary-active",
+      "description": "静态概览的浅蓝范围标记，不模拟市场切换按钮。",
+      "html": "<div class=\"ds-market\"><span>沪深A股</span><b>—</b></div>",
+      "css": ".ds-market{display:inline-grid;gap:2px;position:relative;padding:10px 18px;min-width:108px;background:var(--accent-soft,#eaf0ff);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-market::after{content:\"\";position:absolute;bottom:0;left:18px;right:18px;height:2px;background:var(--accent,#245bd7)}.ds-market b{font:600 16px/1.55 var(--font-outlier,Consolas,monospace);font-variant-numeric:tabular-nums;color:var(--ink,#17263c)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "清晰的市场观察台",
+    "overview": "以白色面板承载内容，冷灰底提供安静的边界，深蓝灰文字建立阅读层级，钴蓝指向当前操作与关联信息。主视觉来自真实市场树图和数据排布，界面装饰保持克制。当前实现取代旧 Almanac 主题；旧主题的洋红、衬线正文和全方角约束不再适用。\n\n整体保留紧凑、可扫读的行情工作台气质。中文采用本机无衬线字体，关键数字使用等宽数字；较大的现价和评分帮助定位，其余标签退后。产品是静态样本复盘原型，样本日期与演示说明属于可见内容，应随布局保留。",
+    "keyCharacteristics": [
+      "白色内容面板、冷灰底、细分隔线与适度圆角。",
+      "钴蓝用于选中状态、涨停标识与情绪走势；行情涨跌保留独立的三色语义。",
+      "中文无衬线与关键等宽数字配合，控制说明和图例保持可读。",
+      "树图、观察面板与辅助图表共享同一组界面色；手机端保留完整模块。"
+    ],
+    "rules": [
+      {
+        "name": "The Separate Signals Rule",
+        "body": "钴蓝表达界面所指和标注，红绿黑表达市场涨跌；选中状态不得改写标的本来的涨跌色。",
+        "section": "colors"
+      },
+      {
+        "name": "The Figures Rule",
+        "body": "等宽字体用于价格、涨跌幅、评分和关键计数；中文标签保持无衬线字体，避免把整块正文排成终端。",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surfaces Rule",
+        "body": "常驻内容面保持平整；焦点靠轮廓和颜色变化表达，面板不因悬停抬升。",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do 使用前置 tokens 和 CSS 变量同步 DOM 与 Canvas 的界面色。",
+      "Do 保留行情三色、绿色块深字与红黑块白字的配对。",
+      "Do 保持最小 11px 的 DOM 功能字、清晰的键盘焦点和可见状态说明。",
+      "Do 让窄屏保留观察面板、五组情绪信息、时间轴与情绪走势。",
+      "Do 在样本数据附近保留日期、静态口径与缺失数据提示。"
+    ],
+    "donts": [
+      "Don't 把钴蓝选中态改成行情涨跌色，或改变被选标的原本的涨跌色。",
+      "Don't 恢复旧 Almanac 的洋红、衬线正文或全方角规则。",
+      "Don't 为常驻面板添加投影、渐变或悬停抬升。",
+      "Don't 用 Canvas 的密集标注字号缩小搜索、图例、说明或来源文字。",
+      "Don't 把静态市场概览、情绪阶段推算或单只 K 线样本包装成实时功能。"
+    ]
+  }
+}

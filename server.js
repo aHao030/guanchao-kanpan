@@ -11,17 +11,39 @@ function refreshVersion() {
 }
 refreshVersion();
 fs.watch(path.join(ROOT), () => refreshVersion());
-http.createServer((req, res) => {
-  const p = path.normalize(decodeURIComponent(req.url.split('?')[0])).replace(/^(\.\.[\/\\])+/, '');
-  const file = path.join(ROOT, p === '/' || p === '\\' ? 'index.html' : p);
-  if (!file.startsWith(ROOT)) { res.writeHead(403); res.end(); return; }
+const server = http.createServer((req, res) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET, HEAD' });
+    res.end('Method Not Allowed');
+    return;
+  }
+  let requestPath;
+  try {
+    requestPath = decodeURIComponent(req.url.split('?')[0]);
+    if (requestPath.includes('\0')) throw new URIError('Invalid path');
+  } catch {
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Bad Request');
+    return;
+  }
+  const normalizedPath = requestPath.replace(/\\/g, '/');
+  const file = normalizedPath === '/' ? path.join(ROOT, 'index.html') : path.resolve(ROOT, '.' + normalizedPath);
+  const relative = path.relative(ROOT, file);
+  if (relative === '..' || relative.startsWith('..' + path.sep) || path.isAbsolute(relative)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Forbidden');
+    return;
+  }
   fs.readFile(file, (err, buf) => {
     if (err) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); res.end('Not Found'); return; }
     if (file.endsWith('index.html')) {
       const html = buf.toString().replace(/app\.js(\?v=\d+)?/g, 'app.js?v=' + jsVersion);
       buf = Buffer.from(html);
     }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
-    res.end(buf);
+    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Content-Length': buf.length, 'Cache-Control': 'no-store' });
+    res.end(req.method === 'HEAD' ? undefined : buf);
   });
-}).listen(8791, '127.0.0.1', () => console.log('观潮看盘 demo: http://127.0.0.1:8791'));
+});
+const host = process.env.HOST || '127.0.0.1';
+const port = process.env.PORT === undefined ? 8791 : Number(process.env.PORT);
+server.listen(port, host, () => console.log(`观潮看盘 demo: http://${host}:${server.address().port}`));
