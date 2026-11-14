@@ -16,7 +16,7 @@ async function openPage(t) {
   page.on('pageerror', error => errors.push(error.message));
   t.after(async () => { await page.close(); assert.deepEqual(errors, [], 'page must not throw script errors'); });
   await page.route('https://fonts.**', route => route.abort());
-  await page.goto(pathToFileURL(path.resolve(__dirname, '../public/index.html')).href);
+  await page.goto(pathToFileURL(path.resolve(__dirname, '../public/legacy.html')).href);
   return page;
 }
 

@@ -1,0 +1,111 @@
+{
+  "date": "2026-11-14",
+  "tests": {
+    "total": 64,
+    "passed": 64,
+    "scope": "53 shared and legacy checks; 4 note storage and 7 new workbench browser checks"
+  },
+  "screens": [
+    {
+      "name": "home-dark",
+      "errors": [],
+      "layout": {
+        "width": 1440,
+        "scroll": 1440,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      },
+      "industryFocus": "passed"
+    },
+    {
+      "name": "home-light",
+      "errors": [],
+      "layout": {
+        "width": 1440,
+        "scroll": 1440,
+        "theme": "light",
+        "up": "#bf4a53",
+        "down": "#21846e"
+      }
+    },
+    {
+      "name": "limits",
+      "errors": [],
+      "layout": {
+        "width": 1440,
+        "scroll": 1440,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      }
+    },
+    {
+      "name": "notes",
+      "errors": [],
+      "layout": {
+        "width": 1440,
+        "scroll": 1440,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      },
+      "historyChart": "passed"
+    },
+    {
+      "name": "compact",
+      "errors": [],
+      "layout": {
+        "width": 1024,
+        "scroll": 1024,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      }
+    },
+    {
+      "name": "mobile",
+      "errors": [],
+      "layout": {
+        "width": 390,
+        "scroll": 390,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      }
+    },
+    {
+      "name": "small",
+      "errors": [],
+      "layout": {
+        "width": 320,
+        "scroll": 320,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      }
+    },
+    {
+      "name": "notes-mobile",
+      "errors": [],
+      "layout": {
+        "width": 390,
+        "scroll": 390,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      }
+    },
+    {
+      "name": "limits-mobile",
+      "errors": [],
+      "layout": {
+        "width": 390,
+        "scroll": 390,
+        "theme": "dark",
+        "up": "#d16970",
+        "down": "#429684"
+      }
+    }
+  ]
+}

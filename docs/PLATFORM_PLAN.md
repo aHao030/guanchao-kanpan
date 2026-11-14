@@ -1,6 +1,6 @@
 # 跨端接入与当前交付范围
 
-目前可运行的是 Web 页面、只读样本数据 API、共享业务核心和客户端 SDK。独立桌面 App、手机 App 的工程与界面，以及微信小程序页面、打包和发布流程尚未实现；当前源码不能直接当作已经完成的三端安装包。App 框架保持待定。
+v1.4.0 可运行的是 React + Ant Design + ECharts Web 工作台、只读样本数据 API、共享业务核心和客户端 SDK。默认界面提供云图看盘、盘中龙虎榜、复盘笔记、自选股，旧版页面保留在 `/legacy.html`。独立桌面 App、手机 App 的工程与界面，以及微信小程序页面、打包和发布流程尚未实现；当前源码不能直接当作已经完成的三端安装包。App 框架保持待定。
 
 当前数据仍是 **2026-11-13 静态样本，非实时行情**。API 接入成功只代表请求链路可用，不代表已有实时数据源。样本 provider 首次加载后在服务进程内缓存；更新 `public/data/*` 后需要重启服务，API 才会重新读入。
 
@@ -11,16 +11,18 @@
 | `packages/market-core/index.js` | 股票代码处理、数据契约校验、行业与股票模型、标的池、查询排序、个股详情 | 纯 JavaScript，无 DOM、网络、文件系统依赖，可在各端业务层复用。 |
 | `packages/market-client/index.js` | 统一 API 客户端、Fetch 与 `wx.request` 适配器、超时与错误处理 | 支持 Fetch 的运行环境用 Fetch 适配；微信小程序用微信适配器；其他运行环境可实现同一 `request()` 接口。 |
 | `server/` | `/api/v1` 只读服务与样本 provider | 各端可访问同一个服务；未来接入正式数据源主要替换服务端 provider。 |
-| `public/` | 当前 Web UI、Canvas 绘图、DOM 交互、样式与 UI 配置 | Web 直接使用；原生 App 和小程序需要各自实现页面、组件与交互。 |
+| `web/`、`public/` | React 页面源码与打包分发、Ant Design 表格/表单/弹窗、ECharts 图表、UI 配置 | Web 直接使用；原生 App 和小程序需要各自实现页面、组件与交互。Ant Design Web 组件不能直接放进小程序页面。 |
+| `web/notes-store.js` | 本机笔记版本契约、日期/长度校验、合并规则 | 可迁移数据契约；当前直接使用浏览器存储，原生和小程序需替换持久化适配。 |
 | `examples/` | 可运行 Fetch 消费示例、微信客户端工厂示例 | 接入参考，不包含独立 App 或完整小程序工程。 |
 
 共享核心使用 `schemaVersion: 1` 的快照；API 响应使用 `{ data, meta }` 包装。保留契约即可更换界面，不需要为每个平台重写筛选、排序和个股查询规则。API 详见 [API 文档](API.md)，界面入口详见 [UI 修改指南](UI_EDITING.md)。
 
 ## 构建与服务
 
-需要 Node.js 20 或更高版本。在项目根目录运行：
+需要 Node.js 20 或更高版本。已交付包包含构建产物，可直接 `npm start`；开发和重新构建时在项目根目录运行：
 
 ```powershell
+npm ci
 npm run build
 npm start
 ```
@@ -30,12 +32,16 @@ npm start
 ```text
 public/shared/market-core.js
 public/shared/market-client.js
+public/workbench.js
+public/workbench.css
 dist/sdk/market-core.js
 dist/sdk/market-client.js
 dist/sdk/ui.config.js
 ```
 
-`dist/sdk/ui.config.js` 是公开的 Web UI 配置副本，不会自动生成 App 或小程序界面。生成文件不要直接编辑；更改源文件后重新构建，并重新复制 SDK 到外部工程。
+Web 由 esbuild 打包，浏览器直接使用本地 React、Ant Design 与 ECharts 分发，不依赖 CDN。`dist/sdk/ui.config.js` 是公开的 Web UI 配置副本，其中 `workbench` 保存新工作台默认外观；它不会自动生成 App 或小程序界面。生成文件不要直接编辑；更改源文件后重新构建，并重新复制 SDK 到外部工程。
+
+外观设置、自选股、复盘笔记和草稿当前保存在浏览器本地存储，尚无账户或跨设备同步。笔记可导出/导入版本 1 JSON。未来 App/小程序需要确定设备存储、同步、导入导出和冲突处理流程；现有只读 API 不负责保存笔记。
 
 ## Fetch 接入示例
 
@@ -116,7 +122,8 @@ Page({
 | --- | --- | --- | --- |
 | 共享数据模型、筛选、排序 | 已接入 core | 复用 core | 复用 core |
 | 访问同一 API | 已接入 Fetch SDK | 复用 SDK；按运行环境选网络适配 | 已有 `wx.request` 适配，接入工程 |
-| 页面与交互 | 已有，可通过 UI 修改入口调整 | 选择框架后实现页面、导航与绘图；若采用 WebView，可评估复用 Web UI | 实现 WXML/WXSS、组件、Canvas 及交互 |
+| 页面与交互 | Ant Design + ECharts 工作台，可通过外观设置与源码调整 | 选择框架后实现页面、导航与绘图；若采用 WebView，可评估复用 Web UI | 实现 WXML/WXSS、平台组件、绘图及交互，不能直接使用 Ant Design DOM 组件 |
+| 笔记、自选与外观持久化 | 当前浏览器本机保存；笔记支持备份迁移 | 实现设备存储，明确是否使用账户同步 | 适配微信存储与文件能力，明确同步策略 |
 | 工程与发布 | 可本地运行 | 待建工程、设备适配、打包签名与发布 | 待建工程、网络配置、真机验证、审核与发布 |
 | 正式数据源 | 三端共同依赖服务端 provider 接入，不是各端分别保存凭据 | 同左 | 同左 |
 

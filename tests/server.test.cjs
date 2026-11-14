@@ -61,7 +61,7 @@ test('preview uses a configured free port and serves a fresh application page', 
   assert.equal(page.status, 200);
   assert.equal(page.headers['cache-control'], 'no-store');
   assert.match(page.headers['content-type'], /text\/html.*utf-8/);
-  assert.match(page.body, /app\.js\?v=\d+/);
+  assert.match(page.body, /workbench\.js/);
 });
 
 test('an invalid URL receives a bad-request response without taking down the preview', async t => {

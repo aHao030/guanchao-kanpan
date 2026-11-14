@@ -21,3 +21,6 @@ const artifacts = spawnSync(process.execPath, [path.join(__dirname, 'build.cjs')
 process.stdout.write(artifacts.stdout);
 if (artifacts.status !== 0) { process.stderr.write(artifacts.stderr); process.exit(1); }
 console.log('Checked ' + files.length + ' source files.');
+const web = spawnSync(process.execPath, [path.join(__dirname, 'build-web.cjs'), '--check'], { encoding: 'utf8', windowsHide: true });
+process.stdout.write(web.stdout);
+if (web.status !== 0) { process.stderr.write(web.stderr); process.exit(1); }

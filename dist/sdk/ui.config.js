@@ -7,6 +7,8 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
   return {
+    // 新版 Ant Design / ECharts 工作台默认值。浏览器外观设置可覆盖这些值。
+    workbench: { mode: 'dark', up: '#c94e57', down: '#21846e', flat: '#525c68', accent: '#5b8de8', mapHeight: 490, labelSize: 12, density: 'middle' },
     theme: {
       tokens: {
         paper: '#f3f5f9', 'paper-2': '#edf2f8', 'paper-3': '#dce4f0', sheet: '#ffffff',
