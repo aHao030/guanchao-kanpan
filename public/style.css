@@ -55,7 +55,7 @@ input{min-width:0}
 .m-count{font:11px var(--font-outlier);color:var(--muted);grid-column:2;grid-row:1}
 .m-pct{font-size:16px;font-weight:600;grid-row:2;grid-column:1/-1}
 /* The treemap is the main content. */
-.layout{display:grid;grid-template-columns:minmax(0,1fr);flex:none;height:calc(100dvh - 146px);min-height:640px;margin:12px 16px 0}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);flex:none;height:calc(100dvh - var(--map-viewport-offset,146px));min-height:var(--map-min-height,640px);margin:12px var(--desktop-gutter,16px) 0}
 .map-pane{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
 .map-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;flex:none;min-height:44px}
 .map-heading{display:flex;gap:10px;align-items:center;min-width:max-content}
@@ -133,7 +133,7 @@ h1{display:inline;margin:0 12px 0 0;color:var(--ink);font-size:16px;font-weight:
 .bl-sub{display:block;margin-top:2px;color:var(--muted);font-size:11px;line-height:1.5}
 .bl-pct{font-size:12px;font-weight:500;white-space:nowrap}
 /* Five compact sentiment columns; all remain present at every width. */
-.emotion-section{flex:none;margin:16px 16px 0}
+.emotion-section{flex:none;margin:16px var(--desktop-gutter,16px) 0}
 .section-heading{display:flex;align-items:center;gap:12px;margin-bottom:9px}
 .section-heading h2{margin:0;color:var(--ink);font-size:12px;font-weight:650}
 .section-heading>span{color:var(--muted);font-size:11px}
@@ -152,7 +152,7 @@ h1{display:inline;margin:0 12px 0 0;color:var(--ink);font-size:16px;font-weight:
 .lg:last-child b{color:var(--accent)}
 .lg i{display:block;color:var(--muted);font-style:normal;font-size:11px;margin-top:2px}
 /* Independent, readable plotting areas. */
-.bottom{display:grid;grid-template-columns:minmax(0,1fr) 296px;flex:none;height:157px;gap:12px;margin:16px 16px 0}
+.bottom{display:grid;grid-template-columns:minmax(0,1fr) 296px;flex:none;height:157px;gap:12px;margin:16px var(--desktop-gutter,16px) 0}
 .timeline-pane,.spark-pane{min-width:0;display:flex;flex-direction:column;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius);padding:12px 16px}
 .bottom .pane-head{justify-content:space-between;margin-bottom:10px}
 .bottom .pane-head h2{font-size:12px}
@@ -173,11 +173,11 @@ h1{display:inline;margin:0 12px 0 0;color:var(--ink);font-size:16px;font-weight:
  .brand{margin-right:auto}.session-meta{order:3}
  .thermo{margin-left:auto;padding-left:0;border:0;order:4}
  .search{margin-left:0;width:220px}.market-overview{padding-inline:18px}.overview-label{display:none}
- .layout{height:700px;min-height:640px;margin:16px 18px 0}
+ .layout{height:700px;min-height:var(--map-min-height,640px);margin:16px var(--tablet-gutter,18px) 0}
  .map-title-row{flex-wrap:wrap}.pool-tabs{flex-wrap:wrap}
- .emotion-section{margin:16px 18px 0}.emotion-strip{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:20px}
+ .emotion-section{margin:16px var(--tablet-gutter,18px) 0}.emotion-strip{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:20px}
  .em-cell:nth-child(4){border-left:0}
- .bottom{margin:16px 18px 0;grid-template-columns:minmax(0,1fr) 270px;height:172px}
+ .bottom{margin:16px var(--tablet-gutter,18px) 0;grid-template-columns:minmax(0,1fr) 270px;height:172px}
  .source-note{padding-inline:20px}
 }
 @media(max-width:700px){
@@ -186,8 +186,8 @@ h1{display:inline;margin:0 12px 0 0;color:var(--ink);font-size:16px;font-weight:
  .session-meta{width:100%;justify-content:space-between;order:2;margin-top:4px}
  .thermo{order:1;gap:6px;margin:0}.t-score{font-size:21px}.t-delta,.t-tag{display:none}
  .market-overview{padding-inline:6px;min-height:66px}.market-chip{min-width:110px;flex:none;padding-inline:14px}
- .layout{display:flex;flex-direction:column;gap:14px;margin:14px 12px 0;min-height:0;height:auto}
- .map-pane{flex:none;height:660px}.map-title-row{padding:10px;flex-wrap:wrap;gap:8px}
+ .layout{display:flex;flex-direction:column;gap:14px;margin:14px var(--mobile-gutter,12px) 0;min-height:0;height:auto}
+ .map-pane{flex:none;height:var(--mobile-map-height,660px)}.map-title-row{padding:10px;flex-wrap:wrap;gap:8px}
  .map-heading{flex:1}.map-tools{gap:6px}.map-instruction{display:none}
  .map-legend{gap:8px;font-size:11px}.map-controls{padding-inline:10px}
  .pool-tabs{flex-wrap:nowrap;width:100%;justify-content:space-between;overflow-x:auto}.pool-tab{padding:7px 5px;font-size:11px;flex:none}
@@ -196,13 +196,13 @@ h1{display:inline;margin:0 12px 0 0;color:var(--ink);font-size:16px;font-weight:
  .treemap-wrap{margin-inline:0}.drawer{min-height:0}
  .detail-dialog{width:calc(100vw - 24px);max-height:calc(100dvh - 32px)}
  .d-empty{padding:22px 8px}.d-empty::before{margin-bottom:12px}
- .emotion-section{margin:16px 12px 0}.emotion-strip{grid-template-columns:repeat(2,minmax(0,1fr));padding-block:16px;row-gap:18px}
+ .emotion-section{margin:16px var(--mobile-gutter,12px) 0}.emotion-strip{grid-template-columns:repeat(2,minmax(0,1fr));padding-block:16px;row-gap:18px}
  .em-cell{padding-inline:14px}.em-cell:nth-child(odd){border-left:0}
  .em-cell:first-child .em-main{font-size:19px;white-space:nowrap}
  .em-cell:nth-child(4){border-left:1px solid var(--rule)}
  .em-cell:last-child{grid-column:1/-1;padding-top:14px;border-top:1px solid var(--rule)}
  .em-cell:last-child .em-main{font-family:var(--font-body)}
- .bottom{display:flex;flex-direction:column;height:auto;gap:14px;margin:14px 12px 0}
+ .bottom{display:flex;flex-direction:column;height:auto;gap:14px;margin:14px var(--mobile-gutter,12px) 0}
  .timeline-pane{height:190px}.spark-pane{height:172px}.bottom .pane-head{flex-wrap:wrap;gap:4px}
  .source-note{flex-direction:column;gap:3px;padding:12px 16px 18px}.toast{bottom:16px}
 }
@@ -210,3 +210,4 @@ h1{display:inline;margin:0 12px 0 0;color:var(--ink);font-size:16px;font-weight:
  .em-cell:nth-child(-n+2){grid-column:1/-1;border-left:0}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+.bottom[data-single-plot="true"]{grid-template-columns:minmax(0,1fr)}

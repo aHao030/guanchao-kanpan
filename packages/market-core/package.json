@@ -1,0 +1,7 @@
+{
+  "name": "@guanchao/market-core",
+  "version": "1.3.0",
+  "private": true,
+  "main": "index.js",
+  "description": "不依赖DOM与网络的市场模型、筛选、排序及详情查询"
+}

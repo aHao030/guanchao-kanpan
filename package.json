@@ -1,17 +1,23 @@
 {
   "name": "guanchao-kanpan",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "private": true,
-  "description": "观潮看盘：市场结构与涨停复盘静态原型",
+  "description": "观潮看盘：可运行Web、数据API与跨端共享源码",
+  "engines": { "node": ">=20" },
+  "workspaces": ["packages/*"],
   "scripts": {
     "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build": "node scripts/build.cjs",
+    "check": "node scripts/check.cjs",
+    "example:client": "node examples/clients/fetch-client.cjs",
     "vendor": "node scripts/vendor.cjs",
     "test": "node --test",
     "test:server": "node --test tests/server.test.cjs",
     "test:ui": "node --test tests/app.behavior.test.cjs"
   },
   "devDependencies": {
-    "d3-hierarchy": "^3.1.2",
+    "d3-hierarchy": "3.1.2",
     "playwright": "1.62.1"
   }
 }
