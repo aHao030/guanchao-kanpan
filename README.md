@@ -92,3 +92,5 @@ HTTP 页面默认通过 SDK 读取 API；失败时允许显式回退内置样本
 [本次参考页面核对](docs/REFERENCE_REDESIGN.md) · [工作流记录](docs/WORKFLOW.md) · [产品说明](PRODUCT.md) · [设计规范](DESIGN.md) · [第三方许可](THIRD_PARTY_NOTICES.md)
 
 本次参考站公开页面与组件字段已核对；`/m/call_biz` 实际是需要登录的连板竞价页，未获取受保护数据。复盘笔记为本项目自主实现。历史 [大盘云图参考](docs/reverse-engineering/dapanyuntu-reference.md)、[REA 分析](docs/reverse-engineering/rea-report.md)、[HyperFrames 评阅](docs/reverse-engineering/hyperframes-review.md)继续保留。REA 完整源码和许可独立保存于私有仓库 [aHao030/rea](https://github.com/aHao030/rea)，研究工具不参与页面运行。
+
+源码 ZIP 解压后已独立验证：目录不含 node_modules，Node 数据服务、内置 Web 产物、API 和笔记保存/刷新均可运行；没有外部 CDN 请求。

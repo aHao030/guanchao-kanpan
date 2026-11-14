@@ -107,5 +107,14 @@
         "down": "#429684"
       }
     }
-  ]
+  ],
+  "sourceArchive": {
+    "noNodeModules": true,
+    "server": "passed",
+    "apiVersion": "1.4.0",
+    "bundledWeb": "passed",
+    "localNotesSaveReload": "passed",
+    "externalRequests": [],
+    "pageErrors": []
+  }
 }
