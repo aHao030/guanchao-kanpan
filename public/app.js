@@ -67,7 +67,7 @@ const LIGHT_FILLS = new Set(['#fdae61', '#fee08b', '#d9ef8b', '#a6d96a', '#e8e8e
 function pctColor(p) {
   const v = p || 0;
   if (Math.abs(v) < 0.1) return '#111418';   // 不涨不跌 → 黑
-  return v > 0 ? '#ef4444' : '#22c55e';       // 涨红 / 跌绿
+  return v > 0 ? '#dc2626' : '#15803d';       // 涨红 / 跌绿
 }
 function fillTextOn(fill) {
   if (fill === '#22c55e') return 'rgba(4,17,8,.92)';      // 绿块配墨字（原云图配对）
@@ -148,9 +148,7 @@ function renderBase() {
   mctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   bctx.clearRect(0, 0, W, H);
-  const grad = bctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, '#f6f8fb'); grad.addColorStop(1, '#e8eef6');
-  bctx.fillStyle = grad; bctx.fillRect(0, 0, W, H);
+  bctx.fillStyle = '#eef0f3'; bctx.fillRect(0, 0, W, H);
 
   /* 按行业总市值比例动态分配各板块显示的个股数量（最大余数法）：大行业多显示、小行业少显示 */
   const BUDGET = 900, MIN_PER_BOARD = 4;
@@ -196,8 +194,8 @@ function renderBase() {
     const { x, y, w, h } = rect;
     // 板块底色（池过滤时整板压暗，命中的个股块才能跳出来）
     const boardHit = dimSet === null || (b.children || []).some(c => dimSet.has(norm(c.code)));
-    bctx.globalAlpha = boardHit ? 1 : 0.25;
-    bctx.fillStyle = '#ffffff';
+    bctx.globalAlpha = boardHit ? 1 : 0.35;
+    bctx.fillStyle = '#c9ced6';
     bctx.fillRect(x, y, w, h);
     rects.push({ rect, kind: 'board', node: b });
     const bodyY = y + (h > 46 ? HEAD : 0);
@@ -221,19 +219,19 @@ function renderBase() {
       const fill = pctColor(s.changePct);
       bctx.fillStyle = fill;
       bctx.fillRect(r.x + .5, r.y + .5, Math.max(0, r.w - 1), Math.max(0, r.h - 1));
-      bctx.strokeStyle = 'rgba(255,255,255,.65)';
+      bctx.strokeStyle = 'rgba(255,255,255,.75)';
       bctx.strokeRect(r.x + .5, r.y + .5, Math.max(0, r.w - 1), Math.max(0, r.h - 1));
       // 文本（饱和块上白字，浅色块上墨字）
       const fillTxt = fillTextOn(fill);
       const haloTxt = haloOn(fill);
       if (r.w > 34 && r.h > 19) {
-        bctx.font = '600 11px "Segoe UI","Microsoft YaHei",sans-serif';
+        bctx.font = '600 11px "Hanken Grotesk","Microsoft YaHei",sans-serif';
         bctx.textBaseline = 'top';
         const nm = s.name.length > (r.w > 64 ? 7 : 4) ? s.name.slice(0, r.w > 64 ? 7 : 4) : s.name;
         bctx.lineWidth = 2; bctx.strokeStyle = haloTxt; bctx.strokeText(nm, r.x + 4, r.y + 3, r.w - 8);
         bctx.fillStyle = fillTxt;
         bctx.fillText(nm, r.x + 4, r.y + 3, r.w - 8);
-        bctx.font = '700 11px "Segoe UI",sans-serif';
+        bctx.font = '500 11px "IBM Plex Mono",monospace';
         const pt2 = (r.h > 30) ? pctText(s.changePct) : null;
         if (pt2) {
           bctx.lineWidth = 2; bctx.strokeStyle = haloTxt; bctx.strokeText(pt2, r.x + 4, r.y + 16);
@@ -241,7 +239,7 @@ function renderBase() {
           bctx.fillText(pt2, r.x + 4, r.y + 16);
         }
       } else if (r.w > 19 && r.h > 11) {
-        bctx.font = '600 10px "Microsoft YaHei",sans-serif';
+        bctx.font = '600 10px "Hanken Grotesk","Microsoft YaHei",sans-serif';
         bctx.textBaseline = 'middle';
         const nm2 = s.name.slice(0, 3);
         bctx.lineWidth = 2; bctx.strokeStyle = haloTxt; bctx.strokeText(nm2, r.x + 2, r.y + r.h / 2, r.w - 4);
@@ -251,24 +249,25 @@ function renderBase() {
       bctx.globalAlpha = 1;
     }
     // 板块标题条
-    bctx.globalAlpha = boardHit ? 1 : 0.3;
+    bctx.globalAlpha = boardHit ? 1 : 0.35;
     if (h > 46) {
-      bctx.fillStyle = 'rgba(255,255,255,.85)';
+      bctx.fillStyle = '#c9ced6';
       bctx.fillRect(x, y, w, HEAD);
-      bctx.fillStyle = '#182430';
-      bctx.font = '700 12px "Microsoft YaHei",sans-serif';
+      bctx.fillStyle = '#232830';
+      bctx.fillRect(x, y + HEAD - 2, w, 2);
+      bctx.font = '600 12px "Hanken Grotesk","Microsoft YaHei",sans-serif';
       bctx.textBaseline = 'middle';
       if (w < 110) {
         bctx.fillText(b.name.slice(0, 4), x + 5, y + HEAD / 2, w - 10);
       } else {
         bctx.fillText(b.name, x + 5, y + HEAD / 2, Math.max(20, w - 70));
-        bctx.font = '700 11px "Segoe UI",sans-serif';
-        bctx.fillStyle = 'rgba(24,36,48,.75)';
+        bctx.font = '500 11px "IBM Plex Mono",monospace';
+        bctx.fillStyle = 'rgba(56,62,72,.75)';
         const pt = pctText(b.pct);
         bctx.fillText(pt, x + w - bctx.measureText(pt).width - 5, y + HEAD / 2);
       }
     }
-    bctx.strokeStyle = 'rgba(71,85,105,.34)';
+    bctx.strokeStyle = 'rgba(148,163,184,.48)';
     bctx.strokeRect(x + .5, y + .5, w - 1, h - 1);
     bctx.globalAlpha = 1;
   }
@@ -278,10 +277,9 @@ function drawFrame(ts) {
   const { clientWidth: W, clientHeight: H } = mapWrap;
   mctx.clearRect(0, 0, W, H);
   mctx.drawImage(baseCanvas, 0, 0, W, H);
-  // 涨停金描边（脉动，浅底用深琥珀保证可见）
-  const pulse = 0.55 + 0.45 * Math.sin(ts / 500);
+  // 涨停描边（静态规则线，Almanac：除状态外无动画）
   mctx.lineWidth = 2;
-  mctx.strokeStyle = `rgba(178,120,10,${(0.5 + 0.5 * pulse).toFixed(3)})`;
+  mctx.strokeStyle = 'rgba(177,45,107,.92)';
   for (const r of rects) {
     if (r.kind !== 'stock') continue;
     if (!limitMap.has(r.node.code6)) continue;
@@ -302,12 +300,10 @@ function drawFrame(ts) {
     // 连板角标
     const l = limitMap.get(r.node.code6);
     if (+l.lu_days >= 2 && r.rect.w > 14 && r.rect.h > 14) {
-      mctx.fillStyle = '#c2820c';
-      mctx.beginPath();
-      mctx.arc(r.rect.x + r.rect.w - 6, r.rect.y + 6, 5, 0, Math.PI * 2);
-      mctx.fill();
-      mctx.fillStyle = '#ffffff';
-      mctx.font = '800 9px "Segoe UI",sans-serif';
+      mctx.fillStyle = '#b12d6b';
+      mctx.fillRect(r.rect.x + r.rect.w - 12, r.rect.y + 2, 10, 10);
+      mctx.fillStyle = '#f2e9ee';
+      mctx.font = '500 9px "IBM Plex Mono",monospace';
       mctx.textAlign = 'center'; mctx.textBaseline = 'middle';
       mctx.fillText(l.lu_days, r.rect.x + r.rect.w - 6, r.rect.y + 6.5);
       mctx.textAlign = 'start'; mctx.textBaseline = 'alphabetic';
@@ -382,7 +378,7 @@ function applyFilter() {
   dimSet = set; dimNote = note;
   const noteEl = document.getElementById('mapNote');
   if (note) { noteEl.textContent = note; noteEl.hidden = false; } else noteEl.hidden = true;
-  poolMetaEl.textContent = `显示 ${total} 只（按行业市值比例分配 · 大行业多显示） · 金框=涨停 · 角标=连板数`;
+  poolMetaEl.textContent = `显示 ${set.size} / ${stocks.length} 只（按行业市值比例分配 · 大行业多显示） · 金框=涨停 · 角标=连板数`;
   renderBase();
   drawFrame(performance.now());
   if (activePool !== 'all') renderPoolDrawer(activePool);
@@ -450,14 +446,14 @@ function drawKline(cv) {
   const px = i => 14 + i * ((W - 28) / Math.max(1, dd.length - 1));
   const py = v => 8 + (hi - v) / (hi - lo || 1) * (H - 18);
   // 网格 + 价格
-  ctx.strokeStyle = '#dde5ec'; ctx.fillStyle = '#7e95aa'; ctx.font = '10px "Segoe UI"';
+  ctx.strokeStyle = '#b3b9c1'; ctx.fillStyle = '#5f6570'; ctx.font = '10px "IBM Plex Mono",monospace';
   for (const v of [hi, (hi + lo) / 2, lo]) {
     ctx.beginPath(); ctx.moveTo(0, py(v)); ctx.lineTo(W, py(v)); ctx.stroke();
     ctx.fillText(v.toFixed(0), 3, py(v) - 2);
   }
   dd.forEach((d, i) => {
     const x = px(i), upC = d.close >= d.open;
-    ctx.strokeStyle = upC ? '#d13438' : '#0e7a4e'; ctx.fillStyle = upC ? '#d13438' : '#0e7a4e';
+    ctx.strokeStyle = upC ? '#b02327' : '#0c6b44'; ctx.fillStyle = upC ? '#b02327' : '#0c6b44';
     ctx.beginPath(); ctx.moveTo(x, py(d.high)); ctx.lineTo(x, py(d.low)); ctx.stroke();
     const bw = Math.max(2, (W - 28) / dd.length * 0.5);
     const yo = py(d.open), yc = py(d.close);
@@ -572,13 +568,13 @@ function drawTimeline() {
   const padL = 44, padR = 12, span = W - padL - padR;
   const px = m => padL + (m - DAY_START) / (DAY_END - DAY_START) * span;
   // 刻度 + 午休带
-  ctx.font = '10px "Segoe UI"'; ctx.fillStyle = '#7e95aa'; ctx.strokeStyle = '#dde5ec';
+  ctx.font = '10px "IBM Plex Mono",monospace'; ctx.fillStyle = '#5f6570'; ctx.strokeStyle = '#b3b9c1';
   for (const t of [565, 660, 690, 810, 840, 900]) {
     const x = px(t);
     ctx.fillText(`${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`, x - 14, H - 4);
     ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, H - 16); ctx.stroke();
   }
-  ctx.fillStyle = 'rgba(221,229,236,.55)';
+  ctx.fillStyle = 'rgba(201,206,214,.45)';
   ctx.fillRect(px(LUNCH_A), 4, px(LUNCH_B) - px(LUNCH_A), H - 20);
   // 泳道：连板数越高越靠上
   const lanes = 4;
@@ -589,12 +585,12 @@ function drawTimeline() {
     const y = H - 26 - lane * (H - 40) / lanes;
     const r = 3.5;
     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fillStyle = +s.lu_days >= 3 ? '#c2820c' : pctColor(+s.chg || 9);
+    ctx.fillStyle = +s.lu_days >= 3 ? '#b12d6b' : pctColor(+s.chg || 9);
     ctx.fill();
-    if (+s.lu_days >= 2) { ctx.strokeStyle = 'rgba(178,120,10,.7)'; ctx.stroke(); }
+    if (+s.lu_days >= 2) { ctx.strokeStyle = 'rgba(177,45,107,.7)'; ctx.stroke(); }
     if (+s.open_times > 0) { ctx.strokeStyle = 'rgba(229,72,77,.9)'; ctx.beginPath(); ctx.arc(x, y, r + 2.5, 0, Math.PI * 2); ctx.stroke(); }
   });
-  ctx.fillStyle = '#9db1c4'; ctx.font = '10px "Microsoft YaHei"';
+  ctx.fillStyle = '#565c66'; ctx.font = '500 10px "Newsreader","Microsoft YaHei",serif';
   ctx.fillText('①首板', 6, H - 26 - 0 * (H - 40) / lanes + 3);
   ctx.fillText('②连板', 6, H - 26 - 1 * (H - 40) / lanes + 3);
   ctx.fillText('③', 6, H - 26 - 2 * (H - 40) / lanes + 3);
@@ -646,20 +642,20 @@ function drawSpark() {
   const px = i => 8 + i * ((W - 20) / (hist.length - 1));
   const py = v => 10 + (hi - v) / (hi - lo) * (H - 26);
   // 中线 50
-  ctx.strokeStyle = '#dde5ec'; ctx.setLineDash([3, 3]);
+  ctx.strokeStyle = '#b3b9c1'; ctx.setLineDash([]);
   ctx.beginPath(); ctx.moveTo(8, py(50)); ctx.lineTo(W - 8, py(50)); ctx.stroke();
   ctx.setLineDash([]);
   // 面积 + 线
   ctx.beginPath(); ctx.moveTo(px(0), py(scores[0]));
   scores.forEach((v, i) => ctx.lineTo(px(i), py(v)));
-  ctx.strokeStyle = '#d13438'; ctx.lineWidth = 1.6; ctx.stroke();
+  ctx.strokeStyle = '#b12d6b'; ctx.lineWidth = 2; ctx.stroke();
   ctx.lineTo(px(scores.length - 1), H - 14); ctx.lineTo(px(0), H - 14); ctx.closePath();
-  ctx.fillStyle = 'rgba(209,52,56,.09)'; ctx.fill();
+  ctx.fillStyle = 'rgba(177,45,107,.08)'; ctx.fill();
   // 端点标注
-  ctx.fillStyle = '#182430'; ctx.font = '700 11px "Segoe UI"';
+  ctx.fillStyle = '#232830'; ctx.font = '500 11px "IBM Plex Mono",monospace';
   const last = scores[scores.length - 1];
   ctx.fillText(String(last), px(scores.length - 1) - 8, py(last) - 6);
-  ctx.fillStyle = '#7e95aa'; ctx.font = '10px "Segoe UI"';
+  ctx.fillStyle = '#5f6570'; ctx.font = '10px "IBM Plex Mono",monospace';
   ctx.fillText('100', 8, 12); ctx.fillText('0', 8, H - 4);
   ctx.fillText(hist[0].trade_date.slice(4, 6) + '/' + hist[0].trade_date.slice(6, 8), 24, H - 4);
   const lt = hist[hist.length - 1].trade_date;
@@ -718,4 +714,3 @@ window.addEventListener('resize', layoutAll);
 
 applyFilter();
 layoutAll();
-requestAnimationFrame(function loop(t) { drawFrame(t); requestAnimationFrame(loop); });
