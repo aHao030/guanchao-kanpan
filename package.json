@@ -1,6 +1,6 @@
 {
   "name": "guanchao-kanpan",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "description": "观潮看盘：市场结构与涨停复盘静态原型",
   "scripts": {

@@ -20,9 +20,16 @@ async function openPage(t) {
   return page;
 }
 
+async function openPoolList(page, name) {
+  await page.getByRole('tab', { name }).click();
+  assert.equal(await page.locator('#detailDialog').isVisible(), false, 'choosing a pool should only filter the map');
+  await page.locator('#poolListBtn').click();
+  assert.equal(await page.locator('#detailDialog').isVisible(), true, 'the list should open only when requested');
+}
+
 test('首板池显示样本中的 30 只首板股票', async t => {
   const page = await openPage(t);
-  await page.getByRole('tab', { name: /^首板/ }).click();
+  await openPoolList(page, /^首板/);
   assert.equal(await page.locator('#drawer li[data-code]').count(), 30);
   assert.match(await page.locator('#drawer').innerText(), /1板/);
 });
@@ -55,12 +62,13 @@ test('行情云图保留项目约定的红涨、绿跌、黑平三色', async t 
 
 test('涨停股票详情可以返回池列表', async t => {
   const page = await openPage(t);
-  await page.getByRole('tab', { name: /^涨停/ }).click();
+  await openPoolList(page, /^涨停/);
   const first = page.locator('#drawer li[data-code]').first();
   const stockName = await first.locator('.bl-name').innerText();
   await first.click();
-  assert.match(await page.locator('#drawer h3').innerText(), new RegExp(stockName));
+  assert.ok((await page.locator('#drawer h3').innerText()).includes(stockName));
   await page.locator('#drawer').getByRole('button', { name: /返回涨停列表/ }).click();
+  assert.equal(await page.locator('#detailDialog').isVisible(), true);
   assert.equal(await page.locator('#drawer li[data-code]').count(), 37);
 });
 
@@ -68,7 +76,7 @@ test('涨停池可切换涨幅排序且没有脚本错误', async t => {
   const page = await openPage(t);
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.getByRole('tab', { name: /^涨停/ }).click();
+  await openPoolList(page, /^涨停/);
   await page.locator('#drawer').getByRole('button', { name: '涨幅', exact: true }).click();
   assert.deepEqual(errors, []);
   assert.equal(await page.locator('#drawer li[data-code]').count(), 37);
@@ -78,7 +86,7 @@ test('涨停池可切换涨幅排序且没有脚本错误', async t => {
 
 test('大市值池按市值顺序显示样本中的前 50 只股票', async t => {
   const page = await openPage(t);
-  await page.getByRole('tab', { name: /^大市值/ }).click();
+  await openPoolList(page, /^大市值/);
   assert.equal(await page.locator('#drawer li[data-code]').count(), 50);
   assert.deepEqual(await page.locator('#drawer li[data-code]').evaluateAll(rows => rows.slice(0, 3).map(row => row.dataset.code)),
     ['601288', '601398', '601857']);
@@ -90,6 +98,7 @@ test('搜索后回车打开详情，并立即在云图标出所选股票', async
   await search.fill('600519');
   const before = await page.locator('#treemap').evaluate(canvas => canvas.toDataURL());
   await search.press('Enter');
+  assert.equal(await page.locator('#detailDialog').isVisible(), true);
   assert.match(await page.locator('#drawer h3').innerText(), /贵州茅台/);
   const selected = await page.locator('#treemap').evaluate(canvas => canvas.toDataURL());
   assert.ok(selected !== before, 'selection must redraw the canvas without waiting for resize');
@@ -119,6 +128,7 @@ test('调整窗口后，时间轴悬停与点击仍指向同一只股票', async
   assert.equal(await page.locator('#tooltip').isVisible(), true);
   const name = (await page.locator('#tooltip .tt-name').innerText()).split(/\s/)[0];
   await page.mouse.click(bounds.x + point.x, bounds.y + point.y);
+  assert.equal(await page.locator('#detailDialog').isVisible(), true);
   assert.ok((await page.locator('#drawer h3').innerText()).includes(name));
 });
 
@@ -129,6 +139,10 @@ test('键盘可切换标的池并打开股票详情', async t => {
   const limitTab = page.getByRole('tab', { name: /^涨停/ });
   assert.equal(await limitTab.getAttribute('aria-selected'), 'true');
   assert.equal(await limitTab.getAttribute('tabindex'), '0');
+  assert.equal(await page.locator('#detailDialog').isVisible(), false);
+  await page.locator('#poolListBtn').focus();
+  await page.keyboard.press('Enter');
+  assert.equal(await page.locator('#detailDialog').isVisible(), true);
   const first = page.locator('#drawer li[data-code]').first();
   const name = await first.locator('.bl-name').innerText();
   await first.focus();

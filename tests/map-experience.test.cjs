@@ -68,23 +68,37 @@ test('聚焦银行后可返回全市场，画布和范围标识同步改变', as
   assert.match(await page.locator('#mapTitle').innerText(), /银行/);
   const focused = await page.locator('#treemap').evaluate(canvas => canvas.toDataURL());
   assert.notEqual(focused, before, 'focus must redraw the map, not only change its title');
+  assert.equal(await page.locator('#detailDialog').isVisible(), false, 'industry focus should keep the map unobstructed');
+  await page.locator('#poolListBtn').click();
+  assert.equal(await page.locator('#detailDialog').isVisible(), true);
+  assert.match(await page.locator('#drawer h3').innerText(), /银行/);
+  await page.locator('#closeDetails').click();
+  assert.equal(await page.locator('#detailDialog').isVisible(), false);
   await page.locator('#mapBack').click();
   assert.match(await page.locator('#mapTitle').innerText(), /全市场/);
   assert.match(await page.locator('#poolMeta').innerText(), /5566/);
 });
 
-test('专注云图扩大绘图区，再次操作恢复观察面板布局', async t => {
+test('云图默认占满主区，不再保留观察面板或专注切换', async t => {
   const page = await openMap(t);
-  const focus = page.locator('#mapFocus');
-  assert.equal(await focus.count(), 1, 'map focus control must be available');
+  assert.equal(await page.locator('.inspector').count(), 0, 'the persistent inspector must be removed');
+  assert.equal(await page.locator('#mapFocus').count(), 0, 'the full-width map no longer needs a focus toggle');
+  assert.doesNotMatch(await page.locator('body').innerText(), /观察面板/);
+  const bounds = await page.locator('#treemap').boundingBox();
+  assert.ok(bounds.width > 1350, `map should use the available viewport width, got ${bounds.width}`);
+});
+
+test('详情列表只在请求时弹出，Escape关闭后云图保持全宽', async t => {
+  const page = await openMap(t);
+  const details = page.locator('#detailDialog');
+  assert.equal(await details.count(), 1, 'stock details remain available on demand');
+  assert.equal(await details.isVisible(), false);
   const before = await page.locator('#treemap').boundingBox();
-  await focus.click();
-  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-  const expanded = await page.locator('#treemap').boundingBox();
-  assert.ok(expanded.width > before.width + 200, 'focus mode should reclaim the inspector column for the map');
-  await focus.click();
-  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-  const restored = await page.locator('#treemap').boundingBox();
-  assert.ok(Math.abs(restored.width - before.width) < 1, 'second click should restore the original map width');
-  assert.equal(await page.locator('.inspector').isVisible(), true);
+  await page.locator('#poolListBtn').click();
+  assert.equal(await details.isVisible(), true);
+  assert.equal(await page.locator('#drawer li[data-code]').count(), 8, 'the default list must remain available');
+  await page.keyboard.press('Escape');
+  assert.equal(await details.isVisible(), false);
+  const after = await page.locator('#treemap').boundingBox();
+  assert.ok(Math.abs(after.width - before.width) < 1, 'opening details must not steal space from the map');
 });

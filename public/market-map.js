@@ -43,26 +43,56 @@ window.MarketTreemap = (() => {
 
   function drawLabel(ctx, stock, rect, theme, color) {
     const { x, y, w, h } = rect;
-    if (w < 40 || h < 18) return;
-    let size = Math.min(32, Math.floor(Math.sqrt(w * h) / 7));
-    size = Math.max(12, size);
-    while (size >= 12) {
+    if (h < 14) return;
+    const availableWidth = w - 4, availableHeight = h - 4;
+    let size = Math.max(10, Math.min(32, Math.floor(Math.sqrt(w * h) / 4)));
+    const characters = Array.from(stock.name);
+    let lines = null, lineHeight;
+    let complete = true;
+    while (size >= 10) {
       ctx.font = `600 ${size}px ${theme.display}`;
-      if (ctx.measureText(stock.name).width <= w - 9 && size + 5 <= h) break;
+      lineHeight = Math.ceil(size * 1.12);
+      if (lineHeight <= availableHeight && ctx.measureText(stock.name).width <= availableWidth) {
+        lines = [stock.name];
+        break;
+      }
+      if (lineHeight * 2 + 1 <= availableHeight) {
+        let bestWidth = Infinity;
+        for (let split = 1; split < characters.length; split++) {
+          const pair = [characters.slice(0, split).join(''), characters.slice(split).join('')];
+          const width = Math.max(...pair.map(line => ctx.measureText(line).width));
+          if (width <= availableWidth && width < bestWidth) { lines = pair; bestWidth = width; }
+        }
+        if (lines) break;
+      }
       size--;
     }
-    if (size < 12) return;
-    const figureSize = Math.max(11, Math.round(size * .72));
+    if (!lines) {
+      size = 10;
+      complete = false;
+      lineHeight = 12;
+      ctx.font = `600 ${size}px ${theme.display}`;
+      while (characters.length >= 2 && ctx.measureText(characters.join('')).width > availableWidth) characters.pop();
+      if (characters.length < 2 || lineHeight > availableHeight) return;
+      lines = [characters.join('')];
+    }
+    const figureSize = Math.max(10, Math.round(size * .72));
+    const figureHeight = Math.ceil(figureSize * 1.12);
+    const nameHeight = lines.length * lineHeight + lines.length - 1;
     const figure = (stock.changePct >= 0 ? '+' : '') + Number(stock.changePct || 0).toFixed(2) + '%';
-    const twoLines = h >= size + figureSize + 13;
+    ctx.font = `500 ${figureSize}px ${theme.mono}`;
+    const showFigure = complete && nameHeight + figureHeight + 3 <= availableHeight && ctx.measureText(figure).width <= availableWidth;
+    const labelHeight = nameHeight + (showFigure ? figureHeight + 3 : 0);
+    const top = y + (h - labelHeight) / 2;
     ctx.save();
     ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
     ctx.fillStyle = color;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(stock.name, x + w / 2, y + h / 2 - (twoLines ? figureSize / 2 + 2 : 0));
-    if (twoLines) {
+    ctx.font = `600 ${size}px ${theme.display}`;
+    lines.forEach((line, i) => ctx.fillText(line, x + w / 2, top + lineHeight / 2 + i * (lineHeight + 1)));
+    if (showFigure) {
       ctx.font = `500 ${figureSize}px ${theme.mono}`;
-      if (ctx.measureText(figure).width <= w - 8) ctx.fillText(figure, x + w / 2, y + h / 2 + size / 2 + 2);
+      ctx.fillText(figure, x + w / 2, top + nameHeight + 3 + figureHeight / 2);
     }
     ctx.restore();
   }

@@ -245,14 +245,38 @@ let searchQuery = '';
 searchInput.addEventListener('input', () => { searchQuery = searchInput.value.trim(); applyFilter(); });
 searchInput.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
+  e.preventDefault();
   const q = searchQuery.trim();
   if (!q) return;
   const hits = searchStocks(q);
   if (hits.length) selectStock(hits[0].code6);
 });
 
-/* ============ 详情抽屉 ============ */
+/* ============ 按需打开的列表与详情 ============ */
 const drawer = document.getElementById('drawer');
+const detailDialog = document.getElementById('detailDialog');
+const detailTitle = document.getElementById('detailTitle');
+function showDetails() {
+  tooltip.hidden = true;
+  if (!detailDialog.open) detailDialog.showModal();
+}
+function renderCurrentList() {
+  const board = boards.find(b => b.code === focusedBoard);
+  if (activePool !== 'all') renderPoolDrawer(activePool);
+  else if (board) renderBoardDrawer(board);
+  else renderEmptyDrawer();
+}
+document.getElementById('poolListBtn').addEventListener('click', () => {
+  renderCurrentList();
+  showDetails();
+});
+document.getElementById('closeDetails').addEventListener('click', () => detailDialog.close());
+detailDialog.addEventListener('close', () => { hoverListCode = null; drawFrame(); });
+detailDialog.addEventListener('click', e => {
+  if (e.target !== detailDialog) return;
+  const r = detailDialog.getBoundingClientRect();
+  if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) detailDialog.close();
+});
 const fmtYi = n => n >= 1e8 ? (n / 1e8).toFixed(1) + '亿' : n >= 1e4 ? (n / 1e4).toFixed(0) + '万' : n;
 function kv(k, v, cls) { return `<div class="kv"><i>${k}</i><b class="${cls || ''}">${v}</b></div>`; }
 
@@ -286,6 +310,7 @@ function poolStocks(pid) {
 function renderPoolDrawer(pid) {
   drawerMode = 'pool'; hoverListCode = null;
   const pool = POOLS.find(x => x.id === pid);
+  detailTitle.textContent = pool.label + '列表';
   let list = poolStocks(pid);
   const isLimitPool = pid === 'limit' || pid === 'lianban' || pid === 'first';
   if (isLimitPool && poolSort === 'pct') list = list.slice().sort((a, b) => (b.changePct || 0) - (a.changePct || 0));
@@ -312,11 +337,12 @@ function renderPoolDrawer(pid) {
 }
 function renderEmptyDrawer() {
   drawerMode = 'empty'; hoverListCode = null;
+  detailTitle.textContent = '股票列表';
   const list = poolStocks('big').slice(0, 8);
   drawer.innerHTML = '<h3>市值前列<span class="d-code">沪深 A 股</span></h3>' +
     '<p class="d-hint">先看结构，再检视个股。点击云图或下方列表查看行情快照。</p>' +
     '<ul class="d-board-list">' + list.map(s => '<li data-code="' + s.code6 + '"><span><span class="bl-name">' + s.name + '</span><span class="bl-sub">' + s.code6 + ' · ' + s.board + '</span></span><span class="bl-pct ' + pctCls(s.changePct) + '">' + pctText(s.changePct) + '</span></li>').join('') + '</ul>' +
-    '<p class="d-hint inspector-guide">行业标题可点击放大；「全部行业」可随时返回。图中面积表示总市值，红涨、绿跌、黑平盘。</p>';
+    '<p class="d-hint list-guide">行业标题可点击放大；「全部行业」可随时返回。图中面积表示总市值，红涨、绿跌、黑平盘。</p>';
   bindStockRows();
 }
 
@@ -353,7 +379,9 @@ function selectStock(code6) {
   if (focusedBoard && s.boardCode !== focusedBoard) focusIndustry(s.boardCode);
   selectedCode = code6;
   const l = limitMap.get(code6), c = callMap.get(code6);
-  const backBtn = (drawerMode === 'pool' && activePool !== 'all') ? `<button class="d-back" id="dBack">← 返回${POOLS.find(x => x.id === activePool).label}列表</button>` : '';
+  detailTitle.textContent = '个股详情';
+  const listName = activePool !== 'all' ? POOLS.find(x => x.id === activePool).label : (boards.find(b => b.code === focusedBoard)?.name || '股票');
+  const backBtn = `<button class="d-back" id="dBack">← 返回${listName}列表</button>`;
   let html = `${backBtn}<h3>${s.name}<span class="d-code">${s.code}</span></h3>
     <div style="font-size:11px;color:var(--ink-3)">${s.board} / ${s.subBoardName || '-'} · 总市值 ${fmtYi(s.totalMarketCap)}</div>
     <div class="d-price-line"><span class="d-price">${s.price}</span>
@@ -385,13 +413,15 @@ function selectStock(code6) {
   html += `</div>`;
   drawer.innerHTML = html;
   const bk = document.getElementById('dBack');
-  if (bk) bk.addEventListener('click', () => renderPoolDrawer(activePool));
+  if (bk) bk.addEventListener('click', renderCurrentList);
+  showDetails();
   if (code6 === '600519' && KLINE_DEMO) drawKline(document.getElementById('miniKline'));
   drawFrame();
 }
 
 function renderBoardDrawer(b) {
   drawerMode = 'board';
+  detailTitle.textContent = b.name + '成分';
   const kids = stocks.filter(s => s.board === b.name).sort((x, y) => (y.value || 0) - (x.value || 0)).slice(0, 20);
   drawer.innerHTML = `<h3>${b.name}<span class="d-code">板块 · ${b.stockCount} 只</span></h3>
     <div class="d-price-line"><span class="d-pct ${pctCls(b.pct)}" style="font-size:18px">${pctText(b.pct)}</span>
@@ -431,13 +461,6 @@ function focusIndustry(code) {
 }
 industrySelect.addEventListener('change', () => focusIndustry(industrySelect.value));
 document.getElementById('mapBack').addEventListener('click', () => focusIndustry(''));
-document.getElementById('mapFocus').addEventListener('click', e => {
-  const active = document.body.classList.toggle('map-focus');
-  e.currentTarget.setAttribute('aria-pressed', String(active));
-  e.currentTarget.textContent = active ? '显示观察面板' : '专注云图';
-  scheduleLayout();
-});
-document.getElementById('resetInspector').addEventListener('click', renderEmptyDrawer);
 const mktsEl = document.getElementById('markets');
 const MKT_NAMES = { all: '沪深A股', sse: '上证', szse: '深证', hs300: '沪深300', zza50: 'A50', zza500: '中证500', main: '主板', cyb: '创业板', kcb: '科创', bj: '北交', etf: 'ETF', cb: '转债', hk: '港股' };
 const MKT_ORDER = ['all', 'sse', 'szse', 'cyb', 'etf', 'cb', 'hk'];
