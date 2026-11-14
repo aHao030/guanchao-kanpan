@@ -15,3 +15,9 @@
 REA 的源码、MIT 许可证、第三方许可与原始归属保存在独立私有仓库 [aHao030/rea](https://github.com/aHao030/rea)。分析工具与本产品运行时相互独立。
 
 HyperFrames 的 Apache-2.0 源码本轮仅作只读研究，未复制其实现、资产或引入其运行时。具体适用性判断见 `docs/reverse-engineering/hyperframes-review.md`。
+
+## v1.4.0 Web dependencies
+
+React / React DOM / scheduler (Meta, MIT), Ant Design and Ant Design Icons (Ant Group and contributors, MIT), Apache ECharts / zrender (Apache Software Foundation and contributors, Apache-2.0 / BSD-3-Clause as supplied). Exact package versions and transitive dependencies are pinned in package-lock.json.
+
+The bundled copyright notices are preserved in public/workbench.js.LEGAL.txt. Full license and notice files from installed dependencies are preserved in THIRD_PARTY_LICENSES.txt. Design skill sources were read for guidance, not copied into the application runtime; provenance and actual usage are in docs/DESIGN_SKILLS.md.

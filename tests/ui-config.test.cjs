@@ -32,7 +32,7 @@ test('修改 UI 配置后真实页面应用主题、布局、标签参数和模�
   const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
   const server = http.createServer((req, res) => {
     const pathname = new URL(req.url, 'http://127.0.0.1').pathname;
-    const file = path.join(publicRoot, pathname === '/' ? 'index.html' : pathname);
+    const file = path.join(publicRoot, pathname === '/' ? 'legacy.html' : pathname);
     fs.readFile(file, (error, body) => {
       res.writeHead(error ? 404 : 200, { 'Content-Type': mime[path.extname(file)] || 'text/plain' });
       res.end(error ? 'Not Found' : body);

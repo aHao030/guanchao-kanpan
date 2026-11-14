@@ -1,87 +1,96 @@
-# 观潮看盘 — 完整源码
+# 观潮看盘
 
-当前版本 **1.3.0**。本仓库包含可运行 Web、只读数据服务、共享业务核心、跨端请求 SDK、内置样本、构建脚本和回归测试。界面可独立修改，当前 UI 继续作为后续重设计的基础。
+当前版本 **1.4.0**。以云图为首页的 A 股看盘与复盘工作台：云图下方接资金流向监控，主菜单提供盘中龙虎榜、复盘笔记和自选股。界面采用 **React 19.3.1、Ant Design 6.7.0、ECharts 6.1.0**，默认深色，支持一键切换浅色和自定义涨跌颜色。
 
-行情仍使用 **2026-11-13 收盘样本**，没有接入实时行情。独立 App 和小程序的页面工程、打包与发布尚未完成；本版已提供可复用的业务核心、API、Fetch 与微信请求适配代码。
+仓库包含完整 Web 源码、构建产物、只读数据 API、共享业务核心、跨端请求 SDK、内置样本和测试。行情仍为 **2026-11-13 收盘样本**；当前未接入实时行情或分钟级资金数据。独立 App、小程序可复用核心与 API，页面工程和打包发布尚未完成。
 
-## 获取和运行
+## 运行已交付源码
 
-需要 Node.js 20+。源码包已包含共享模块生成物与本地绘图库，运行当前系统无需先安装 npm 依赖：
+需要 Node.js 20+。源码包保留本地构建产物，解压后无需先安装 npm 依赖即可启动：
 
-```powershell
-node server.js
-```
+~~~powershell
+npm start
+~~~
 
-默认访问 [本地系统](http://127.0.0.1:8791)。本轮当前预览和数据服务运行于 [8792](http://127.0.0.1:8792/)。端口冲突时可以指定：
+默认访问 [本地系统](http://127.0.0.1:8791/)。端口冲突时指定新端口：
 
-```powershell
+~~~powershell
 $env:PORT = '8792'
-node server.js
-```
+npm start
+~~~
 
-开发与验证：
+Ant Design、React 和 ECharts 已打包进本地 `public/workbench.js`，运行页面不依赖 CDN。服务器使用 Node 原生模块；重新构建或运行测试需要安装锁定依赖：
 
-```powershell
+~~~powershell
 npm ci
 npm run build
 npm run check
 npm test
-```
+~~~
 
-页面自动化测试需要本机 Google Chrome。启动服务本身没有 npm 运行依赖。修改共享模块后执行build；修改UI配置或CSS后直接刷新。数据服务缓存首份成功样本，更新样本需重启。
+浏览器测试需要本机 Google Chrome。`npm run dev` 监听服务端代码；`npm run dev:web` 执行一次 Web 构建，修改 `web/` 后需重新构建并刷新。更新样本文件后需重启服务，以重新载入已缓存的样本。
+
+## 四个工作页面
+
+| 页面 | 已实现能力 |
+| --- | --- |
+| 云图看盘 | ECharts 行业市值云图、个股名称和涨跌幅、行业聚焦、五种标的池、搜索与股票列表、按需个股详情和 K 线。云图下方为资金快照、个股/行业排行与资金明细。 |
+| 盘中龙虎榜 | 涨停 37、连板 7、炸板 21、跌停 33 个样本；可搜索、按行业筛选、排序、分页和展开明细。涨停记录包含封板时间、开板次数、封单、封成比、主力净额及原因。 |
+| 复盘笔记 | 按日期记录市场判断、核心题材、个股复盘和明日计划；保存、搜索、草稿恢复、删除、JSON 备份与合并导入。 |
+| 自选股 | 从搜索或详情加入/移出自选，表格排序与导出；按当前快照的绝对涨跌幅阈值查看异动提醒。 |
+
+5,566 只样本股票参与云图。极小单元无法保证显示完整名称，可通过行业放大、搜索或股票列表读取。K 线样本只有贵州茅台（600519），其他标的明确显示缺失。
+
+这里的「盘中龙虎榜」记录涨跌停与炸板事件，不是交易所盘后营业部席位榜。跌停、炸板记录缺少封板时间、封单等明细，界面保留缺失标记。资金合计 **61.07 亿元**只覆盖 37 只涨停样本，不代表全市场；分钟级曲线显示等待数据接入。异动提醒也基于当前快照，不是实时推送。
+
+笔记、草稿、自选和外观设置保存在当前浏览器、当前站点来源的本地存储中。更换设备、浏览器或端口不会自动同步。笔记支持导出后再导入；当前没有账号或云同步服务。
 
 ## UI 修改通道
 
 | 想修改什么 | 入口 |
 | --- | --- |
-| 配色、字体、主图尺寸、标签字号、模块开关 | [public/ui.config.js](public/ui.config.js) |
-| 自定义样式，覆盖基础主题 | [public/theme-overrides.css](public/theme-overrides.css) |
-| 整页结构、控件与交互 | [public/index.html](public/index.html)、[style.css](public/style.css)、[app.js](public/app.js) |
-| 云图绘制方式 | [public/market-map.js](public/market-map.js) |
-| 数据地址、API或样本模式、失败兜底 | [public/data.config.js](public/data.config.js) |
+| 明暗、涨跌颜色、强调色、云图高度、名称字号、表格密度 | 页面右上角「外观设置」，即时预览并保存到当前浏览器 |
+| 给所有新用户设定默认外观 | [public/ui.config.js](public/ui.config.js) 的 `workbench` 对象 |
+| 自定义间距、排版和 CSS 样式 | [public/theme-overrides.css](public/theme-overrides.css)，刷新生效 |
+| 导航、首页、详情、自选与设置 | [web/main.jsx](web/main.jsx)、[web/workbench.css](web/workbench.css) |
+| 龙虎榜与笔记页面 | [web/LimitBoard.jsx](web/LimitBoard.jsx)、[web/ReviewNotes.jsx](web/ReviewNotes.jsx)、[web/pages.css](web/pages.css) |
+| 云图、资金柱图、K 线配置 | [web/charts.jsx](web/charts.jsx) |
+| API 地址、样本模式和失败回退 | [public/data.config.js](public/data.config.js) |
 
-具体可复制的修改示例、优先级和恢复方法见 [UI 修改指南](docs/UI_EDITING.md)。UI设置是公开配置，不存放账号或token。数据规则在共享核心，修改界面不需要重新实现筛选和详情关联。
+详细修改示例、配置优先级、恢复方法和旧界面边界见 [UI 修改指南](docs/UI_EDITING.md)。公开 UI 配置不存放账号、密钥或 token。
 
-## 源码组成
+## 源码与接口
 
-- `packages/market-core`：无DOM、网络和文件依赖的共享模型，统一池分类、查询排序、代码归一化、详情关联与情绪口径。
+- `web/`：新版 React 页面与 ECharts 配置，修改后通过 esbuild 生成 `public/workbench.js/css`。
+- `packages/market-core`：无 DOM、网络或文件依赖的股票模型、查询排序、标的池及详情关联。
 - `packages/market-client`：统一只读接口客户端，提供 Fetch 与微信 `wx.request` 适配。
-- `server/`：可注入Provider的数据服务、API及静态文件服务；`server.js`为启动入口。
-- `public/`：Web界面、UI修改入口、数据加载器及内置样本。
-- `dist/sdk/`：同一共享源码生成的可复制SDK。
-- `examples/`：可运行的Fetch客户端例子，以及小程序接入工厂示例。
-- `tests/`：业务、真实HTTP、跨端请求、UI配置和页面行为回归。
+- `server/`：样本 Provider、JSON API 与静态文件服务；`server.js` 为启动入口。
+- `public/`：新首页入口、已打包页面、UI/数据配置、共享模块、原始样本及保留的旧版页面。
+- `dist/sdk/`、`examples/`：可复制 SDK、Fetch 例子和小程序接入示例。
 
-[源码结构](docs/SOURCE_LAYOUT.md) · [数据接口](docs/API.md) · [App与小程序接入计划](docs/PLATFORM_PLAN.md) · [更新日志](CHANGELOG.md)
+API 契约沿用 v1.3.0：
 
-API入口示例：
-
-```text
+~~~text
 /api/v1/health
 /api/v1/snapshot
 /api/v1/stocks?pool=first&limit=20
 /api/v1/stocks/600519
-```
+~~~
 
-HTTP页面默认读取统一API；API失败时可显式回退内置样本，日期提示会说明兜底。直接打开file页面则使用样本。所有成功API响应保留 `{data,meta}`，客户端可识别样本模式和来源日期。
+HTTP 页面默认通过 SDK 读取 API；失败时允许显式回退内置样本，并提示数据状态。成功 API 响应保留 `{ data, meta }`，包括模式和来源日期。接口本身为只读，笔记未写入服务端。
 
-运行客户端例子（默认跟随PORT或8791）：
+[源码结构](docs/SOURCE_LAYOUT.md) · [API 文档](docs/API.md) · [App 与小程序计划](docs/PLATFORM_PLAN.md) · [更新日志](CHANGELOG.md)
 
-```powershell
-$env:API_BASE_URL = 'http://127.0.0.1:8792'
-npm run example:client
-```
+## 验证范围
 
-## 当前功能与边界
+构建与源码一致性检查通过，64 项测试全部通过：其中 53 项覆盖共享基础与旧版兼容，4 项覆盖笔记存储，7 项覆盖新工作台真实浏览器操作。1440px 深浅模式、1024px、390px、320px 检查没有脚本错误或整页横向溢出；详见 [验证记录](docs/verification-v1.4.0.json)。
 
-保留三级行业云图、全部/涨停/连板/首板/大市值池、搜索、行业聚焦、按需详情与列表、情绪五项、涨停时间轴和情绪走势。观察面板已移除，主图默认全宽；美股概览已移除。
+`npm run test:workbench` 和 `tests/workbench-pages.test.cjs` 面向新的工作台；`tests/notes-store.test.cjs` 验证笔记契约和合并行为。原有页面行为、Canvas 标签和 UI 配置测试明确指向保留的 `public/legacy.html`，用于检查旧页面兼容性；不能把它们当作新版 React 页面已经验收的证据。业务核心、API 和请求 SDK 的测试继续适用于两版页面的共享基础。
 
-5,566只样本股票全部参与布局，极小单元可无标签或可见面积，可通过搜索或行业聚焦查看。K线样本仅有600519，其余股票详情会明确缺失。当前没有实时数据、账户系统或交易执行；App和小程序还需要实现各自页面、平台生命周期和打包工程。
+## 来源与设计研究
 
-本版53项回归全部通过，并完成当前API例子及四个视口的默认页面检查。源码ZIP已在独立解压目录、没有node_modules的情况下验证服务启动、SDK查询、Web读取API、详情及K线。验证范围不等于已完成真机App或小程序验收。
+[本次参考页面核对](docs/REFERENCE_REDESIGN.md) · [工作流记录](docs/WORKFLOW.md) · [产品说明](PRODUCT.md) · [设计规范](DESIGN.md) · [第三方许可](THIRD_PARTY_NOTICES.md)
 
-## 来源与研究
+本次参考站公开页面与组件字段已核对；`/m/call_biz` 实际是需要登录的连板竞价页，未获取受保护数据。复盘笔记为本项目自主实现。历史 [大盘云图参考](docs/reverse-engineering/dapanyuntu-reference.md)、[REA 分析](docs/reverse-engineering/rea-report.md)、[HyperFrames 评阅](docs/reverse-engineering/hyperframes-review.md)继续保留。REA 完整源码和许可独立保存于私有仓库 [aHao030/rea](https://github.com/aHao030/rea)，研究工具不参与页面运行。
 
-[工作流记录](docs/WORKFLOW.md) · [产品说明](PRODUCT.md) · [设计规范](DESIGN.md) · [第三方许可](THIRD_PARTY_NOTICES.md)
-
-[大盘云图参考](docs/reverse-engineering/dapanyuntu-reference.md)、[REA实际分析](docs/reverse-engineering/rea-report.md)、[HyperFrames评阅](docs/reverse-engineering/hyperframes-review.md)保留历史依据。REA完整源码和许可独立保存于私有仓库 [aHao030/rea](https://github.com/aHao030/rea)。研究工具不参与本系统运行。
+源码 ZIP 解压后已独立验证：目录不含 node_modules，Node 数据服务、内置 Web 产物、API 和笔记保存/刷新均可运行；没有外部 CDN 请求。

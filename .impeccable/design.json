@@ -413,6 +413,17 @@
       "guide": "docs/UI_EDITING.md",
       "defaultVisualVersion": "1.2.1",
       "visualRedesignPaused": true
+    },
+    "currentSurface": {
+      "version": "1.4.0",
+      "legacyTokenSnapshot": true,
+      "authority": [
+        "DESIGN.md",
+        "web/preferences.js",
+        "public/ui.config.js"
+      ],
+      "runtime": "React + Ant Design + ECharts",
+      "defaultMode": "dark"
     }
   },
   "components": [

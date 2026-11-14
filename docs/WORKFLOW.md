@@ -98,3 +98,13 @@ Web与API现在共用 packages/market-core；packages/market-client 提供Fetch�
 UI修改入口为 public/ui.config.js 与 public/theme-overrides.css，配置实际接入布局、主题、名称规则及模块显隐。数据地址与显式兜底独立放在 public/data.config.js；修改共享源码后build，修改UI配置后刷新。默认视觉保持上一版，UI并未被视为最终定稿。
 
 本轮53项测试通过，包括原页面回归、共享核心、HTTP API、SDK、数据来源和真实UI配置覆盖；另跑通当前API客户端例子并检查四个视口。源码不包含实时行情实现、用户账户或交易能力；App/小程序目录仅提供接入示例，真实客户端工程仍待后续实现。
+
+## 1.4.0：Ant Design / ECharts 操作台（2026-11-14）
+
+用户重新指定首页和菜单结构，并要求完成后同步GitHub与日志。本轮依据该明确方向实现，替代上一轮暂停视觉重建的阶段决定。
+
+实际应用的hallmark、taste-skill、impeccable来源、版本与适用取舍见 DESIGN_SKILLS.md。读取Matt Pocock快照的engineering/tdd作为公共接口与行为验证参考；本轮测试围绕用户可见操作，不宣称完整遵循逐项先红后绿流程。Astryx只读查询因Core版本在包仓库不可用未引入，用户明确选择的Ant Design作为组件骨架。
+
+参考站通过Scrapling核对公开页面与交付组件；登录入口只记录跳转，不获取受保护业务数据。金额口径、U/D/Z名单及资金缺失事实见 REFERENCE_REDESIGN.md。
+
+实现采用React19.3.1、Ant Design6.7.0、ECharts6.1.0和esbuild0.28.2。新页面有独立行为检查，旧Canvas与旧页面测试明确指向legacy.html。源码包含构建产物、包锁、第三方许可，API/共享核心继续保留。

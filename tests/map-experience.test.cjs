@@ -30,7 +30,7 @@ async function openMap(t) {
       return originalStroke.apply(this, args);
     };
   });
-  await page.goto(pathToFileURL(path.resolve(__dirname, '../public/index.html')).href);
+  await page.goto(pathToFileURL(path.resolve(__dirname, '../public/legacy.html')).href);
   await page.waitForFunction(() => document.querySelectorAll('#markets .market-chip').length > 0);
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   return page;
