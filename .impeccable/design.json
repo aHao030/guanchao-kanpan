@@ -1,0 +1,525 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-14T11:19:38.157573Z",
+  "title": "Design System: 观潮看盘",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "冷雾底",
+        "tonalRamp": [
+          "oklch(15.00% 0.0057 264.53)",
+          "oklch(26.43% 0.0057 264.53)",
+          "oklch(37.86% 0.0057 264.53)",
+          "oklch(49.29% 0.0057 264.53)",
+          "oklch(60.71% 0.0057 264.53)",
+          "oklch(72.14% 0.0057 264.53)",
+          "oklch(83.57% 0.0057 264.53)",
+          "oklch(95.00% 0.0057 264.53)"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "浅冷灰",
+        "tonalRamp": [
+          "oklch(15.00% 0.0097 252.81)",
+          "oklch(26.43% 0.0097 252.81)",
+          "oklch(37.86% 0.0097 252.81)",
+          "oklch(49.29% 0.0097 252.81)",
+          "oklch(60.71% 0.0097 252.81)",
+          "oklch(72.14% 0.0097 252.81)",
+          "oklch(83.57% 0.0097 252.81)",
+          "oklch(95.00% 0.0097 252.81)"
+        ]
+      },
+      "paper-3": {
+        "role": "neutral",
+        "displayName": "边界冷灰",
+        "tonalRamp": [
+          "oklch(15.00% 0.0185 258.35)",
+          "oklch(26.43% 0.0185 258.35)",
+          "oklch(37.86% 0.0185 258.35)",
+          "oklch(49.29% 0.0185 258.35)",
+          "oklch(60.71% 0.0185 258.35)",
+          "oklch(72.14% 0.0185 258.35)",
+          "oklch(83.57% 0.0185 258.35)",
+          "oklch(95.00% 0.0185 258.35)"
+        ]
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "白页",
+        "tonalRamp": [
+          "oklch(15.00% 0.0000 0.00)",
+          "oklch(26.43% 0.0000 0.00)",
+          "oklch(37.86% 0.0000 0.00)",
+          "oklch(49.29% 0.0000 0.00)",
+          "oklch(60.71% 0.0000 0.00)",
+          "oklch(72.14% 0.0000 0.00)",
+          "oklch(83.57% 0.0000 0.00)",
+          "oklch(95.00% 0.0000 0.00)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "主墨",
+        "tonalRamp": [
+          "oklch(15.00% 0.0462 257.85)",
+          "oklch(26.43% 0.0462 257.85)",
+          "oklch(37.86% 0.0462 257.85)",
+          "oklch(49.29% 0.0462 257.85)",
+          "oklch(60.71% 0.0462 257.85)",
+          "oklch(72.14% 0.0462 257.85)",
+          "oklch(83.57% 0.0462 257.85)",
+          "oklch(95.00% 0.0462 257.85)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "正文墨",
+        "tonalRamp": [
+          "oklch(15.00% 0.0446 257.42)",
+          "oklch(26.43% 0.0446 257.42)",
+          "oklch(37.86% 0.0446 257.42)",
+          "oklch(49.29% 0.0446 257.42)",
+          "oklch(60.71% 0.0446 257.42)",
+          "oklch(72.14% 0.0446 257.42)",
+          "oklch(83.57% 0.0446 257.42)",
+          "oklch(95.00% 0.0446 257.42)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "说明灰",
+        "tonalRamp": [
+          "oklch(15.00% 0.0409 257.42)",
+          "oklch(26.43% 0.0409 257.42)",
+          "oklch(37.86% 0.0409 257.42)",
+          "oklch(49.29% 0.0409 257.42)",
+          "oklch(60.71% 0.0409 257.42)",
+          "oklch(72.14% 0.0409 257.42)",
+          "oklch(83.57% 0.0409 257.42)",
+          "oklch(95.00% 0.0409 257.42)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "细线",
+        "tonalRamp": [
+          "oklch(15.00% 0.0126 255.51)",
+          "oklch(26.43% 0.0126 255.51)",
+          "oklch(37.86% 0.0126 255.51)",
+          "oklch(49.29% 0.0126 255.51)",
+          "oklch(60.71% 0.0126 255.51)",
+          "oklch(72.14% 0.0126 255.51)",
+          "oklch(83.57% 0.0126 255.51)",
+          "oklch(95.00% 0.0126 255.51)"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "强线",
+        "tonalRamp": [
+          "oklch(15.00% 0.0240 256.11)",
+          "oklch(26.43% 0.0240 256.11)",
+          "oklch(37.86% 0.0240 256.11)",
+          "oklch(49.29% 0.0240 256.11)",
+          "oklch(60.71% 0.0240 256.11)",
+          "oklch(72.14% 0.0240 256.11)",
+          "oklch(83.57% 0.0240 256.11)",
+          "oklch(95.00% 0.0240 256.11)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "钴蓝",
+        "tonalRamp": [
+          "oklch(15.00% 0.1993 263.14)",
+          "oklch(26.43% 0.1993 263.14)",
+          "oklch(37.86% 0.1993 263.14)",
+          "oklch(49.29% 0.1993 263.14)",
+          "oklch(60.71% 0.1993 263.14)",
+          "oklch(72.14% 0.1993 263.14)",
+          "oklch(83.57% 0.1993 263.14)",
+          "oklch(95.00% 0.1993 263.14)"
+        ]
+      },
+      "accent-2": {
+        "role": "primary",
+        "displayName": "深钴蓝",
+        "tonalRamp": [
+          "oklch(15.00% 0.1847 262.98)",
+          "oklch(26.43% 0.1847 262.98)",
+          "oklch(37.86% 0.1847 262.98)",
+          "oklch(49.29% 0.1847 262.98)",
+          "oklch(60.71% 0.1847 262.98)",
+          "oklch(72.14% 0.1847 262.98)",
+          "oklch(83.57% 0.1847 262.98)",
+          "oklch(95.00% 0.1847 262.98)"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "浅蓝雾",
+        "tonalRamp": [
+          "oklch(15.00% 0.0212 268.43)",
+          "oklch(26.43% 0.0212 268.43)",
+          "oklch(37.86% 0.0212 268.43)",
+          "oklch(49.29% 0.0212 268.43)",
+          "oklch(60.71% 0.0212 268.43)",
+          "oklch(72.14% 0.0212 268.43)",
+          "oklch(83.57% 0.0212 268.43)",
+          "oklch(95.00% 0.0212 268.43)"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "反白",
+        "tonalRamp": [
+          "oklch(15.00% 0.0000 0.00)",
+          "oklch(26.43% 0.0000 0.00)",
+          "oklch(37.86% 0.0000 0.00)",
+          "oklch(49.29% 0.0000 0.00)",
+          "oklch(60.71% 0.0000 0.00)",
+          "oklch(72.14% 0.0000 0.00)",
+          "oklch(83.57% 0.0000 0.00)",
+          "oklch(95.00% 0.0000 0.00)"
+        ]
+      },
+      "up": {
+        "role": "secondary",
+        "displayName": "涨红",
+        "tonalRamp": [
+          "oklch(15.00% 0.2078 25.33)",
+          "oklch(26.43% 0.2078 25.33)",
+          "oklch(37.86% 0.2078 25.33)",
+          "oklch(49.29% 0.2078 25.33)",
+          "oklch(60.71% 0.2078 25.33)",
+          "oklch(72.14% 0.2078 25.33)",
+          "oklch(83.57% 0.2078 25.33)",
+          "oklch(95.00% 0.2078 25.33)"
+        ]
+      },
+      "down": {
+        "role": "secondary",
+        "displayName": "跌绿",
+        "tonalRamp": [
+          "oklch(15.00% 0.1920 149.58)",
+          "oklch(26.43% 0.1920 149.58)",
+          "oklch(37.86% 0.1920 149.58)",
+          "oklch(49.29% 0.1920 149.58)",
+          "oklch(60.71% 0.1920 149.58)",
+          "oklch(72.14% 0.1920 149.58)",
+          "oklch(83.57% 0.1920 149.58)",
+          "oklch(95.00% 0.1920 149.58)"
+        ]
+      },
+      "flat": {
+        "role": "secondary",
+        "displayName": "平黑",
+        "tonalRamp": [
+          "oklch(15.00% 0.0094 255.63)",
+          "oklch(26.43% 0.0094 255.63)",
+          "oklch(37.86% 0.0094 255.63)",
+          "oklch(49.29% 0.0094 255.63)",
+          "oklch(60.71% 0.0094 255.63)",
+          "oklch(72.14% 0.0094 255.63)",
+          "oklch(83.57% 0.0094 255.63)",
+          "oklch(95.00% 0.0094 255.63)"
+        ]
+      },
+      "up-strong": {
+        "role": "secondary",
+        "displayName": "正文涨红",
+        "tonalRamp": [
+          "oklch(15.00% 0.1872 21.27)",
+          "oklch(26.43% 0.1872 21.27)",
+          "oklch(37.86% 0.1872 21.27)",
+          "oklch(49.29% 0.1872 21.27)",
+          "oklch(60.71% 0.1872 21.27)",
+          "oklch(72.14% 0.1872 21.27)",
+          "oklch(83.57% 0.1872 21.27)",
+          "oklch(95.00% 0.1872 21.27)"
+        ]
+      },
+      "down-strong": {
+        "role": "secondary",
+        "displayName": "正文跌绿",
+        "tonalRamp": [
+          "oklch(15.00% 0.1121 157.13)",
+          "oklch(26.43% 0.1121 157.13)",
+          "oklch(37.86% 0.1121 157.13)",
+          "oklch(49.29% 0.1121 157.13)",
+          "oklch(60.71% 0.1121 157.13)",
+          "oklch(72.14% 0.1121 157.13)",
+          "oklch(83.57% 0.1121 157.13)",
+          "oklch(95.00% 0.1121 157.13)"
+        ]
+      },
+      "risk-soft": {
+        "role": "secondary",
+        "displayName": "炸板徽标浅红底"
+      },
+      "board-up": {
+        "role": "secondary",
+        "displayName": "Canvas行业涨幅红字"
+      }
+    },
+    "typographyMeta": {
+      "brand": {
+        "displayName": "品牌",
+        "purpose": "顶部品牌名；手机端缩至19px。"
+      },
+      "headline": {
+        "displayName": "主标题",
+        "purpose": "市场主标题。"
+      },
+      "title": {
+        "displayName": "面板标题",
+        "purpose": "观察面板与通用面板标题。"
+      },
+      "body": {
+        "displayName": "正文",
+        "purpose": "12px普通正文、搜索、股票名及详情；原因行高1.7。"
+      },
+      "label": {
+        "displayName": "说明",
+        "purpose": "11px短操作标签、图例、代码、计数、日期及来源；不替代12px正文。"
+      },
+      "numeric": {
+        "displayName": "关键数字",
+        "purpose": "情绪概览的大数字；等宽数字。"
+      },
+      "price": {
+        "displayName": "现价",
+        "purpose": "个股详情的主要价格。"
+      },
+      "brand-phone": {
+        "displayName": "手机品牌",
+        "purpose": "700px及以下，品牌19px。"
+      },
+      "stock-title": {
+        "displayName": "标的标题",
+        "purpose": "详情中的个股及行业标题，18px。"
+      },
+      "score": {
+        "displayName": "顶部评分",
+        "purpose": "顶部情绪温度评分，23px；手机为21px。"
+      },
+      "price-change": {
+        "displayName": "详情涨跌幅",
+        "purpose": "详情现价旁的涨跌幅，14px。"
+      },
+      "phone-breadth": {
+        "displayName": "手机涨跌家数",
+        "purpose": "手机情绪第一项数字，19px。"
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "pool-state",
+        "value": "color 160ms, background 160ms",
+        "purpose": "标的池悬停与选中状态过渡；系统请求减少动效时关闭。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1700px"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1200px"
+      },
+      {
+        "name": "tablet",
+        "value": "960px"
+      },
+      {
+        "name": "phone",
+        "value": "700px"
+      },
+      {
+        "name": "narrow-phone",
+        "value": "360px"
+      }
+    ],
+    "focus": {
+      "value": "2px solid var(--accent)",
+      "offset": "3px",
+      "purpose": "全局可见键盘焦点。"
+    },
+    "notes": [
+      "生产主题为light3colors；颜色与排版前置tokens记录在DESIGN.md，CSS/Canvas为实现来源。",
+      "色阶仅为设计面板的合成预览，不是生产主题的新tokens。",
+      "正文12px；11px用于短控件标签及辅助说明。图内行业/坐标注释可为10px，不推广到正文。",
+      "全部5566只参与市值布局、无预抽样；极小单元可无标签或可见面积，随视口而变，可搜索或聚焦行业读取。",
+      "面板依靠色面与边界区分层次，不使用投影；云图/观察面板6px圆角，情绪/辅助图表12px。",
+      "手机云图面板660px；360px及以下涨跌家数与量能各独占整行。",
+      "组件片段仅演示实际视觉和CSS状态，不包含业务脚本；实际交互以public文件为准。"
+    ],
+    "layout": {
+      "desktop": {
+        "topbarMinHeight": "62px",
+        "marketOverviewMinHeight": "56px",
+        "mainHeight": "calc(100dvh - 146px)",
+        "mainMinHeight": "640px",
+        "inspectorWidth": "296px",
+        "gap": "12px",
+        "horizontalMargin": "16px"
+      },
+      "phone": {
+        "mapPanelHeight": "660px",
+        "inspectorMaxHeight": "440px",
+        "drawerMaxHeight": "380px",
+        "horizontalMargin": "12px",
+        "timelineHeight": "190px",
+        "sparkHeight": "172px"
+      },
+      "focus": "Hides inspector and gives map full main-column width; same control restores inspector."
+    },
+    "map": {
+      "hierarchy": [
+        "industry",
+        "subBoardName",
+        "stock"
+      ],
+      "stockCount": 5566,
+      "samplingBudget": null,
+      "area": "total market capitalization",
+      "geometry": "d3-hierarchy 3.1.2 treemapSquarify.ratio(1.25)",
+      "labels": {
+        "stockNameSize": "12–32px",
+        "stockFigureMinSize": "11px",
+        "industryTitle": "12px",
+        "subindustryTitle": "10px",
+        "industryChange": "10px",
+        "minimumAttemptRect": "40×18px",
+        "fit": "measure complete string; omit if it cannot fit; clip per stock cell; never squeeze text"
+      },
+      "visibility": "All stocks participate; tiny cells may lack visible area or labels depending on viewport and padding. Use industry focus, list or search for details."
+    },
+    "reference": {
+      "direction": "User-specified dapanyuntu.com reference",
+      "evidence": "docs/reverse-engineering/dapanyuntu-reference.md",
+      "reaReport": "docs/reverse-engineering/rea-report.md",
+      "hyperframesReview": "docs/reverse-engineering/hyperframes-review.md"
+    }
+  },
+  "components": [
+    {
+      "name": "标的池导航",
+      "kind": "nav",
+      "refersTo": "pool-tab",
+      "description": "冷灰组底上的按钮与钴蓝选中态。",
+      "html": "<div class=\"ds-pool\" role=\"tablist\" aria-label=\"标的池\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">全部</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">涨停</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">连板</button></div>",
+      "css": ".ds-pool{display:inline-flex;gap:3px;padding:3px;background:var(--paper,#f3f5f9);border-radius:6px;font-family:var(--font-body,\"Segoe UI\",sans-serif)}.ds-tab{border:0;background:transparent;color:var(--muted,#617188);border-radius:4px;padding:6px 10px;font:400 11px/1.4 var(--font-body,\"Segoe UI\",sans-serif);cursor:pointer;transition:color 160ms,background 160ms}.ds-tab:hover{background:var(--paper-3,#dce4f0);color:var(--ink,#17263c)}.ds-tab[aria-selected=\"true\"]{background:var(--accent,#245bd7);color:var(--accent-ink,#fff);font-weight:600}.ds-tab:focus-visible{outline:2px solid var(--accent,#245bd7);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-tab{transition:none}}"
+    },
+    {
+      "name": "股票搜索",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "细边界输入，钴蓝边界与浅蓝外轮廓提示焦点。",
+      "html": "<label class=\"ds-search\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><circle cx=\"7\" cy=\"7\" r=\"4.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M10.5 10.5L14 14\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg><input type=\"search\" aria-label=\"搜索股票代码或名称\" placeholder=\"搜索股票代码或名称\"></label>",
+      "css": ".ds-search{display:flex;align-items:center;gap:9px;width:228px;min-height:36px;padding:7px 11px;border:1px solid var(--rule,#e1e7ef);background:var(--paper,#f3f5f9);border-radius:7px;color:var(--muted,#617188)}.ds-search:focus-within{border-color:var(--accent,#245bd7);outline:2px solid var(--accent-soft,#eaf0ff)}.ds-search input{min-width:0;width:100%;border:0;background:transparent;outline:none;color:var(--ink,#17263c);font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif);caret-color:var(--accent,#245bd7)}.ds-search input::placeholder{color:var(--muted,#617188)}"
+    },
+    {
+      "name": "样本标记",
+      "kind": "chip",
+      "refersTo": "snapshot-tag",
+      "description": "顶部数据性质说明，属于信息标签。",
+      "html": "<span class=\"ds-snapshot\">样本复盘</span>",
+      "css": ".ds-snapshot{display:inline-block;padding:3px 7px;border-radius:4px;color:var(--accent-2,#1648b8);background:var(--accent-soft,#eaf0ff);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}"
+    },
+    {
+      "name": "观察面板",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "6px圆角白面、固定标题、内部滚动；默认显示市值前列8只，选股后呈现详情。",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><strong>观察面板</strong><button>观察列表</button></header><div class=\"ds-panel-body\"><strong>市值前列</strong><p>先看结构，再检视个股。</p><div>贵州茅台 <span>600519 · 白酒</span></div></div></section>",
+      "css": ".ds-panel{width:296px;max-width:100%;border:1px solid var(--rule,#e1e7ef);border-radius:6px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);overflow:hidden;font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif)}.ds-panel-head{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 14px;border-bottom:1px solid var(--rule,#e1e7ef)}.ds-panel-head strong{font-size:13px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-head button{border:0;background:transparent;color:var(--accent-2,#1648b8);font-size:11px}.ds-panel-body{padding:16px;line-height:1.55}.ds-panel-body>strong{font-size:18px;font-weight:650;color:var(--ink,#17263c)}.ds-panel-body p,.ds-panel-body span{color:var(--muted,#617188);font-size:11px}"
+    },
+    {
+      "name": "返回池列表",
+      "kind": "button",
+      "refersTo": "button-back",
+      "description": "详情中的次级返回动作。",
+      "html": "<button class=\"ds-back\">← 返回涨停列表</button>",
+      "css": ".ds-back{padding:5px 9px;background:var(--paper,#f3f5f9);color:var(--accent-2,#1648b8);border:0;border-radius:4px;font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);cursor:pointer}.ds-back:hover{background:var(--accent-soft,#eaf0ff)}.ds-back:focus-visible{outline:2px solid var(--accent,#245bd7);outline-offset:3px}"
+    },
+    {
+      "name": "股票列表行",
+      "kind": "button",
+      "refersTo": "stock-list-item",
+      "description": "行间细线、名称与辅助信息；可见焦点配合列表操作。",
+      "html": "<button class=\"ds-stock-row\"><span><strong>贵州茅台</strong><small>600519 · 白酒</small></span><span class=\"ds-stock-code\">600519</span></button>",
+      "css": ".ds-stock-row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:280px;max-width:100%;padding:10px 0;border:0;border-bottom:1px solid var(--rule,#e1e7ef);background:transparent;text-align:left;color:var(--ink-2,#34445b);font:400 12px/1.55 var(--font-body,\"Segoe UI\",sans-serif);cursor:pointer}.ds-stock-row strong{display:block;color:var(--ink,#17263c);font-size:12px;font-weight:600}.ds-stock-row small{display:block;margin-top:2px;color:var(--muted,#617188);font-size:11px}.ds-stock-code{font:400 11px var(--font-outlier,Consolas,monospace);color:var(--muted,#617188)}.ds-stock-row:hover{background:var(--paper,#f3f5f9)}.ds-stock-row:focus-visible{outline:2px solid var(--accent,#245bd7);outline-offset:3px}"
+    },
+    {
+      "name": "市场概览当前范围",
+      "kind": "custom",
+      "refersTo": "market-summary-active",
+      "description": "静态概览的浅蓝范围标记，不模拟市场切换按钮。",
+      "html": "<div class=\"ds-market\"><span>沪深A股</span><b>—</b></div>",
+      "css": ".ds-market{display:inline-grid;gap:2px;position:relative;padding:10px 18px;min-width:108px;background:var(--accent-soft,#eaf0ff);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-market::after{content:\"\";position:absolute;bottom:0;left:18px;right:18px;height:2px;background:var(--accent,#245bd7)}.ds-market b{font:600 16px/1.55 var(--font-outlier,Consolas,monospace);font-variant-numeric:tabular-nums;color:var(--ink,#17263c)}"
+    },
+    {
+      "name": "行业与专注控件",
+      "kind": "custom",
+      "refersTo": "map-control",
+      "description": "行业下拉及可恢复的专注状态；示例不执行数据切换。",
+      "html": "<div class=\"ds-map-tools\"><label>行业 <select aria-label=\"聚焦行业\"><option>全部行业</option><option>电子</option></select></label><button aria-pressed=\"false\">专注云图</button><button aria-pressed=\"true\">显示观察面板</button></div>",
+      "css": ".ds-map-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);color:var(--muted,#617188)}.ds-map-tools select{padding:4px 5px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);font-size:12px;color:var(--ink,#17263c)}.ds-map-tools button{padding:5px 8px;border:1px solid var(--rule,#e1e7ef);border-radius:4px;background:var(--sheet,#fff);color:var(--ink-2,#34445b);font:inherit}.ds-map-tools button[aria-pressed=\"true\"]{background:var(--accent-soft,#eaf0ff);color:var(--accent-2,#1648b8);border-color:var(--accent,#245bd7)}"
+    },
+    {
+      "name": "炸板次数徽标",
+      "kind": "chip",
+      "refersTo": "risk-badge",
+      "description": "详情中的浅红风险说明，不构成新的树图行情色。",
+      "html": "<span class=\"ds-risk\">炸板 1 次</span>",
+      "css": ".ds-risk{display:inline-block;padding:2px 6px;margin:0 4px 5px 0;background:var(--risk-soft,#fff0f1);color:var(--up-strong,#c52d3c);font:400 11px/1.55 var(--font-body,\"Segoe UI\",sans-serif);border-radius:4px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "先看清市场，再进入细节",
+    "overview": "以大盘云图实际浅色页面为用户指定参考，把主要阅读面积交给市场本身。白色工作面、冷灰底、深蓝灰文字和钴蓝界面状态构成产品框架；行情保留用户确定的红、绿、黑三色。主图由真实市值、行业层级和正常比例的中文标签建立识别路径。\n\n当前文档记录 1.2.0 已实现的设计。页面采用本机无衬线字体与等宽关键数字，细线划分功能区域，较小圆角收束主云图与观察面板。参考站的连续色阶、品牌和业务代码没有搬入产品；样本日期与静态说明保持可见。",
+    "keyCharacteristics": [
+      "主云图优先；一级行业、二级行业和个股构成三级结构。",
+      "完整名称先测量，空间不足时隐去，不压缩汉字字宽。",
+      "行业聚焦与明确返回支持逐级查看；专注操作可收起观察面板。",
+      "观察面板初始显示市值前列列表；手机保留主要复盘模块。"
+    ],
+    "rules": [
+      {
+        "name": "The Separate Signals Rule",
+        "body": "钴蓝表达界面所指，红绿黑表达市场涨跌；选中状态不改写行情本色。",
+        "section": "colors"
+      },
+      {
+        "name": "The Natural Type Rule",
+        "body": "先测量完整文字，再决定是否显示；树图不用 maxWidth 横向挤压文字，也不描边补救。",
+        "section": "typography"
+      },
+      {
+        "name": "The Area Rule",
+        "body": "总市值决定面积；筛选保留原空间权重，行业聚焦明确改变当前范围。",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "Do 使用真实行业层级与总市值面积，并保持正常字形。",
+      "Do 保留行情三色、绿块深字、红黑块白字和独立选中轮廓。",
+      "Do 区分12px正文、11px操作标签与图内标注的不同阅读职责。",
+      "Do 为行业聚焦保留返回路径，为专注云图保留恢复面板的操作。",
+      "Do 在手机保留五组情绪、观察列表、时间轴、走势及静态样本说明。"
+    ],
+    "donts": [
+      "Don't 恢复900只抽样配额或将部分股票重新铺满以冒充全行业市值。",
+      "Don't 用横向压缩、描边或极小字号塞满每一个股票块。",
+      "Don't 用装饰性留白或空观察面板挤占主云图。",
+      "Don't 为常驻面板添加投影、渐变或悬停抬升。",
+      "Don't 把静态样本、情绪演示或仅一只K线包装成实时能力。"
+    ]
+  }
+}

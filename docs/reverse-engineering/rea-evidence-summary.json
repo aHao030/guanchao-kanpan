@@ -1,0 +1,526 @@
+{
+  "tool": {
+    "name": "REA",
+    "version": "6.9.0",
+    "runtime": "Node.js 24.22.1",
+    "provider": {
+      "id": "rea-javascript-application",
+      "name": "REA JavaScript application analyzer",
+      "version": "1"
+    }
+  },
+  "target": {
+    "url": "https://dapanyuntu.com/",
+    "date": "2026-11-14",
+    "source": "0gym.ayspgjd~.js",
+    "source_sha256": "1008097241f474dbb5da860f10080d274593c647c39412295e74f5a858cd74f3",
+    "bytes": 256683
+  },
+  "command": "rea analyze-javascript-application <captured-directory> --source-path 0gym.ayspgjd~.js --analysis-timeout-ms 60000 --format json",
+  "exit_code": 0,
+  "evidence_id": "ev_ed604b8e6865d5aa36f3b00619ad4be11b3583e3d67ee3ac451ed338b1c93752",
+  "raw_evidence": {
+    "sha256": "c692be5da021039bf87b215af8930f791ae6fc13d84619a9490dfb3a9e136506",
+    "bytes": 38656096,
+    "retention": "local work file; omitted from GitHub because it contains source-derived text"
+  },
+  "statistics": {
+    "relevant_files": 13,
+    "nested_asar_containers": 0,
+    "text_bytes_read": 256683,
+    "invalid_utf8_files": 0,
+    "parsed_javascript_files": 1,
+    "skipped_javascript_files": 0,
+    "visited_ast_nodes": 55665,
+    "findings": 419,
+    "modules": 0,
+    "parse_failures": 0
+  },
+  "source_selection": {
+    "requested_paths": [
+      "0gym.ayspgjd~.js"
+    ],
+    "unselected_files": 12
+  },
+  "application_graph": {
+    "id": "jag_b05180f8c3eaf0872b5ad711c9ce924c15e6e4dac895b76e4ab08346eb770206",
+    "nodes": 280,
+    "edges": 445,
+    "kinds": {
+      "endpoint": 11,
+      "javascript-module": 233,
+      "javascript-asset": 11,
+      "storage": 10,
+      "unknown": 12,
+      "artifact": 3
+    },
+    "coverage": {
+      "status": "partial",
+      "truncated": false
+    }
+  },
+  "semantic_graph": {
+    "id": "jsrg_5a7662a41168e1c46521e833dc79f8443de33f4596b0424ac10b3050f68e833f",
+    "nodes": 20010,
+    "relations": 21411,
+    "kinds": {
+      "return-site": 769,
+      "call-site": 3498,
+      "expression": 12588,
+      "parameter": 806,
+      "function": 784,
+      "binding": 1554,
+      "module": 11
+    },
+    "coverage": {
+      "status": "partial",
+      "truncated": true,
+      "limits": [
+        {
+          "name": "max_semantic_nodes",
+          "value": 100000,
+          "unit": "items"
+        },
+        {
+          "name": "max_semantic_nodes_per_file",
+          "value": 20000,
+          "unit": "items"
+        },
+        {
+          "name": "semantic_graph_file_node_ceiling",
+          "value": 20000,
+          "unit": "items"
+        },
+        {
+          "name": "semantic_graph_node_ceiling",
+          "value": 100000,
+          "unit": "items"
+        }
+      ]
+    }
+  },
+  "endpoint_candidates": [
+    {
+      "value": "`/api/heatmap/treemap?${e.toString()}`",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 185121
+          },
+          "end": {
+            "line": 1,
+            "column": 185166
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "`/api/heatmap/quotes?${t.toString()}`",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 61615
+          },
+          "end": {
+            "line": 1,
+            "column": 61677
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "a",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 185709
+          },
+          "end": {
+            "line": 1,
+            "column": 185717
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "`/api/heatmap/summary?${r.toString()}`",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 186696
+          },
+          "end": {
+            "line": 1,
+            "column": 186744
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "n",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 185431
+          },
+          "end": {
+            "line": 1,
+            "column": 185457
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "`/api/heatmap/quotes?${e.toString()}`",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 185957
+          },
+          "end": {
+            "line": 1,
+            "column": 186004
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "https://citic.s3.cn-north-1.jdcloud-oss.com/recall/1304215665819131955/favicon.ico",
+      "mechanism": "call:fetch",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 119953
+          },
+          "end": {
+            "line": 1,
+            "column": 120078
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "`/api/heatmap/quotes?market=${e}&period=${t}`",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 186120
+          },
+          "end": {
+            "line": 1,
+            "column": 186175
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "`/api/heatmap/search?q=${encodeURIComponent(D)}`",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 61141
+          },
+          "end": {
+            "line": 1,
+            "column": 61214
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "`/api/heatmap/overview?period=${e}`",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 186338
+          },
+          "end": {
+            "line": 1,
+            "column": 186383
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    },
+    {
+      "value": "a",
+      "mechanism": "call:fetch",
+      "resolution": "partial",
+      "location": {
+        "available": true,
+        "value": {
+          "start": {
+            "line": 1,
+            "column": 185560
+          },
+          "end": {
+            "line": 1,
+            "column": 185568
+          },
+          "kind": "source-range",
+          "source": "0gym.ayspgjd~.js"
+        }
+      },
+      "authority": "ast-static-analysis",
+      "confidence": "exact"
+    }
+  ],
+  "source_derived_canvas_calls": [
+    {
+      "method": "measureText",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 127561
+        },
+        "end": {
+          "line": 1,
+          "column": 127577
+        }
+      },
+      "evidence_node_id": "jsrg_node_0dde20ca390340c029b1b9476454725b5877111e39950c209b8f5f2be999d67f"
+    },
+    {
+      "method": "drawImage",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 214490
+        },
+        "end": {
+          "line": 1,
+          "column": 214508
+        }
+      },
+      "evidence_node_id": "jsrg_node_0f15998536a24c2b0e0ece8f276ab988dc753436a9eaf9d63254ab970da5495f"
+    },
+    {
+      "method": "restore",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 202802
+        },
+        "end": {
+          "line": 1,
+          "column": 202813
+        }
+      },
+      "evidence_node_id": "jsrg_node_0f506ef7a2adf41e06eb584ac7f706c0a85db8445d7140f9c25a5378a7302611"
+    },
+    {
+      "method": "strokeRect",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 203213
+        },
+        "end": {
+          "line": 1,
+          "column": 203291
+        }
+      },
+      "evidence_node_id": "jsrg_node_16ecc5ad8297d0db57aa71ab7be12ea13dedabcb3cf34d8698a55d0aaacd7310"
+    },
+    {
+      "method": "fillRect",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 214457
+        },
+        "end": {
+          "line": 1,
+          "column": 214489
+        }
+      },
+      "evidence_node_id": "jsrg_node_1a465a2d638c9c3fd5492f0207ce9fa48e23949cbe4c821bd9aede428cd73219"
+    },
+    {
+      "method": "save",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 214854
+        },
+        "end": {
+          "line": 1,
+          "column": 214862
+        }
+      },
+      "evidence_node_id": "jsrg_node_2b6872ae4bd7a55f12988d9fe4041e82a61298a53f2bac1f0e9538827cfbbac2"
+    },
+    {
+      "method": "fillText",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 206065
+        },
+        "end": {
+          "line": 1,
+          "column": 206117
+        }
+      },
+      "evidence_node_id": "jsrg_node_3d693ff2aba7c0324a4255b3dcb6738caa3be125850bb02f1f729c39b59874ea"
+    },
+    {
+      "method": "translate",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 200629
+        },
+        "end": {
+          "line": 1,
+          "column": 200651
+        }
+      },
+      "evidence_node_id": "jsrg_node_9df831f79d523e05ca5174b17e4f63b058fff488e7af703834161544d22c7dbb"
+    },
+    {
+      "method": "scale",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 200652
+        },
+        "end": {
+          "line": 1,
+          "column": 200678
+        }
+      },
+      "evidence_node_id": "jsrg_node_a222583d2229706677bb029cdacfa55dda946b1d94ee36be9f669856b8184a3a"
+    },
+    {
+      "method": "setTransform",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 200498
+        },
+        "end": {
+          "line": 1,
+          "column": 200525
+        }
+      },
+      "evidence_node_id": "jsrg_node_b511d1c60aff53fec936d0dbd39ab165db5403ec2f825989a3994416242f3b61"
+    },
+    {
+      "method": "getContext",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 214214
+        },
+        "end": {
+          "line": 1,
+          "column": 214232
+        }
+      },
+      "evidence_node_id": "jsrg_node_d1e27a7df92f36482cca6de602b186abff8126f71f28d5d2774a611a104aac97"
+    },
+    {
+      "method": "clip",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 127034
+        },
+        "end": {
+          "line": 1,
+          "column": 127042
+        }
+      },
+      "evidence_node_id": "jsrg_node_f43834ab6ad762c33a58908ccb893a1031339412d41bfdb5665ee1933e49badb"
+    }
+  ],
+  "limitations": [
+    "Caller-selected source analysis leaves 12 inventoried files outside analysis scope. Inventory identity covers the complete artifact; relationships through unselected sources remain unknown.",
+    "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+    "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+    "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+    "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+    "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+    "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code.",
+    "Default semantic per-file node budget retained only part of the semantic graph; the result is partial, not a full reconstruction.",
+    "Public static source was parsed without execution; calls and endpoint candidates do not prove runtime reachability."
+  ]
+}

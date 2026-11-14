@@ -3,53 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <title>观潮看盘 · 市场结构与涨停复盘</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip-link" href="#workspace">跳到市场树图</a>
 <header class="topbar">
-  <div class="brand" aria-label="观潮看盘">观潮看盘</div>
-  <div class="data-chip" id="dataChip">数据 · —</div>
-  <nav class="markets" id="markets" aria-label="五市场概览"></nav>
-  <div class="thermo" id="thermo" aria-label="市场情绪温度"></div>
+  <div class="brand" aria-label="观潮看盘">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 11c4-6 8-6 12 0s8 6 12 0M4 19c4-6 8-6 12 0s8 6 12 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+    <div><strong>观潮看盘</strong><span class="brand-sub">市场结构 · 涨停复盘</span></div>
+  </div>
+  <div class="session-meta"><span class="snapshot-tag">样本复盘</span><span class="data-chip" id="dataChip">数据 · —</span></div>
   <label class="search">
     <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    <input id="searchInput" type="search" placeholder="搜索代码 / 名称" autocomplete="off">
+    <input id="searchInput" type="search" placeholder="搜索股票代码或名称" aria-label="搜索股票代码或名称" autocomplete="off">
   </label>
+  <div class="thermo" id="thermo" aria-label="市场情绪温度"></div>
 </header>
+<section class="market-overview" aria-label="市场概览"><span class="overview-label">市场概览</span><nav class="markets" id="markets" aria-label="市场收盘概览"></nav></section>
 
-<main class="layout">
+<main class="layout" id="workspace" tabindex="-1">
   <section class="map-pane" aria-label="全市场树图">
-    <div class="pane-head">
+    <div class="map-title-row"><div class="map-heading"><button id="mapBack" class="map-back" type="button" hidden aria-label="返回全市场">← 全市场</button><h1 id="mapTitle">全市场云图</h1></div><div class="map-tools"><label class="industry-control">行业<select id="industrySelect" aria-label="聚焦行业"><option value="">全部行业</option></select></label><button id="mapFocus" type="button" class="map-focus-button" aria-pressed="false">专注云图</button></div></div>
+    <div class="pane-head map-controls">
       <div class="pool-tabs" id="poolTabs" role="tablist" aria-label="标的池"></div>
-      <div class="pool-meta" id="poolMeta"></div>
+      <span class="map-instruction">点击行业标题放大 · 悬停查看 · 点击个股检视</span>
     </div>
     <div class="treemap-wrap" id="treemapWrap">
-      <canvas id="treemap"></canvas>
+      <canvas id="treemap" role="img" aria-label="按行业和市值排列的市场树图，可通过股票搜索与右侧列表查看标的"></canvas>
       <div class="tooltip" id="tooltip" hidden></div>
       <div class="map-note" id="mapNote" hidden></div>
     </div>
+    <div class="map-statusbar"><div class="pool-meta" id="poolMeta" role="status"></div><div class="map-legend" aria-label="树图图例"><span><i class="legend-dot rising"></i>上涨</span><span><i class="legend-dot falling"></i>下跌</span><span><i class="legend-dot flat"></i>平盘</span><span><i class="legend-ring"></i>涨停</span></div></div>
   </section>
-  <aside class="drawer" id="drawer" aria-label="标的详情"></aside>
+  <aside class="inspector" aria-label="标的观察面板"><div class="inspector-head"><h2>观察面板</h2><button id="resetInspector" type="button">观察列表</button></div><div class="drawer" id="drawer" aria-label="标的详情"></div></aside>
 </main>
 
-<section class="emotion-strip" id="emotionStrip" aria-label="市场情绪仪表盘（数据源：盘见）"></section>
+<section class="emotion-section" aria-label="情绪概览"><div class="section-heading"><h2>情绪概览</h2><span>盘见数据 · 收盘快照</span></div><section class="emotion-strip" id="emotionStrip" aria-label="市场情绪仪表盘（数据源：盘见）"></section></section>
 
 <footer class="bottom">
   <div class="timeline-pane">
-    <div class="pane-head"><h2>涨停时间轴</h2><span class="pane-sub">2026-11-13 · 洋红=3板+ · 红环=炸板 · 泳道=连板数</span></div>
-    <canvas id="timeline"></canvas>
+    <div class="pane-head"><h2>涨停时间轴</h2><span class="pane-sub">2026-11-13 · 蓝点 3板+ · 红环 炸板</span></div>
+    <canvas id="timeline" role="img" aria-label="涨停发生时间，按连板高度分层"></canvas>
   </div>
   <div class="spark-pane">
     <div class="pane-head"><h2>情绪走势</h2><span class="pane-sub">近 21 个交易日评分</span></div>
-    <canvas id="spark"></canvas>
+    <canvas id="spark" role="img" aria-label="近21个交易日情绪评分走势"></canvas>
   </div>
 </footer>
+<div class="source-note"><span>观潮 · 把市场的潮汐看清楚</span><span>静态样本 · 非实时行情 · 情绪阶段为演示推算</span></div>
 
-<div class="toast" id="toast" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
 
 <script src="data/treemap.js"></script>
 <script src="data/overview.js"></script>
@@ -59,6 +63,8 @@
 <script src="data/call.js"></script>
 <script src="data/kline_600519.js"></script>
 <script src="data/market_extra.js"></script>
+<script src="vendor/d3-hierarchy.min.js"></script>
+<script src="market-map.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

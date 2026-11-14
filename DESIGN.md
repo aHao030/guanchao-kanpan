@@ -1,138 +1,293 @@
 ---
 name: 观潮看盘
-description: A 股市场结构与涨停复盘的 Almanac 风格盯盘工作台（浅色纸面 + 蓝黑墨水 + 洋红唯一强调）
+description: 主云图优先、三级行业与自然字形的浅色市场复盘工作台
 colors:
-  paper: "#c9cdd4"
-  paper-2: "#c9ced6"
-  sheet: "#edeff1"
-  ink: "#1a1f27"
-  ink-2: "#2f3540"
-  muted: "#5f6570"
-  rule: "#b3b9c1"
-  rule-2: "#4b5158"
-  accent: "#b12d6b"
-  accent-2: "#8f2455"
-  accent-ink: "#f2e9ee"
-  up: "#dc2626"
-  down: "#15803d"
+  paper: "#f3f5f9"
+  paper-2: "#edf2f8"
+  paper-3: "#dce4f0"
+  sheet: "#ffffff"
+  ink: "#17263c"
+  ink-2: "#34445b"
+  muted: "#617188"
+  rule: "#e1e7ef"
+  rule-2: "#c9d4e3"
+  accent: "#245bd7"
+  accent-2: "#1648b8"
+  accent-soft: "#eaf0ff"
+  accent-ink: "#ffffff"
+  up: "#ef4444"
+  down: "#22c55e"
   flat: "#111418"
+  up-strong: "#c52d3c"
+  down-strong: "#127548"
+  risk-soft: "#fff0f1"
+  board-up: "#b72d3a"
 typography:
-  display:
-    fontFamily: '"Hanken Grotesk", "Microsoft YaHei", "PingFang SC", ui-sans-serif, system-ui, sans-serif'
-    fontSize: "17px"
-    fontWeight: 600
-    letterSpacing: "-0.02em"
-  body:
-    fontFamily: '"Newsreader", "Microsoft YaHei", "PingFang SC", Georgia, serif'
+  brand:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
+    fontSize: "20px"
+    fontWeight: 700
+    lineHeight: 1.4
+    letterSpacing: "0.04em"
+  brand-phone:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
+    fontSize: "19px"
+    fontWeight: 700
+    lineHeight: 1.4
+    letterSpacing: "0.04em"
+  headline:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
+    fontSize: "16px"
+    fontWeight: 650
+    lineHeight: 1.55
+    letterSpacing: "0.02em"
+  title:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
     fontSize: "13px"
+    fontWeight: 650
+    lineHeight: 1.55
+  stock-title:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
+    fontSize: "18px"
+    fontWeight: 650
+    lineHeight: 1.4
+  body:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
+    fontSize: "12px"
     fontWeight: 400
     lineHeight: 1.55
-  caption:
-    fontFamily: '"Newsreader", "Microsoft YaHei", Georgia, serif'
+  label:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
     fontSize: "11px"
-    fontWeight: 500
-  brand:
-    fontFamily: '"Hanken Grotesk", "Microsoft YaHei", sans-serif'
-    fontSize: "16px"
-    fontWeight: 600
-    letterSpacing: "-0.02em"
+    fontWeight: 400
+    lineHeight: 1.55
   numeric:
-    fontFamily: '"IBM Plex Mono", ui-monospace, Consolas, monospace'
-    fontFeature: "tabular-nums"
+    fontFamily: '"Cascadia Mono", "SFMono-Regular", Consolas, monospace'
+    fontSize: "21px"
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: "-0.025em"
+  score:
+    fontFamily: '"Cascadia Mono", "SFMono-Regular", Consolas, monospace'
+    fontSize: "23px"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.025em"
+  price-change:
+    fontFamily: '"Cascadia Mono", "SFMono-Regular", Consolas, monospace'
+    fontSize: "14px"
+    fontWeight: 500
+    letterSpacing: "-0.025em"
+  phone-breadth:
+    fontFamily: '"Cascadia Mono", "SFMono-Regular", Consolas, monospace'
+    fontSize: "19px"
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: "-0.025em"
+  price:
+    fontFamily: '"Cascadia Mono", "SFMono-Regular", Consolas, monospace'
+    fontSize: "30px"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.025em"
 rounded:
-  lg: "0px"
-  md: "2px"
+  mark: "2px"
+  control: "4px"
+  group: "6px"
+  field: "7px"
+  map-panel: "6px"
+  panel: "12px"
 spacing:
   xs: "4px"
   sm: "8px"
-  md: "14px"
+  md: "12px"
+  lg: "16px"
+  tablet-gutter: "18px"
+  xl: "24px"
+components:
+  pool-tab:
+    backgroundColor: "transparent"
+    textColor: "{colors.muted}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "6px 10px"
+  pool-tab-hover:
+    backgroundColor: "{colors.paper-3}"
+    textColor: "{colors.ink}"
+  pool-tab-selected:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.accent-ink}"
+  search-field:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body}"
+    rounded: "{rounded.field}"
+    padding: "7px 11px"
+  snapshot-tag:
+    backgroundColor: "{colors.accent-soft}"
+    textColor: "{colors.accent-2}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "3px 7px"
+  panel:
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.ink-2}"
+    rounded: "{rounded.map-panel}"
+  button-back:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.accent-2}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "5px 9px"
+  button-back-hover:
+    backgroundColor: "{colors.accent-soft}"
+  stock-list-item:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-2}"
+    padding: "10px 0"
+  stock-list-item-hover:
+    backgroundColor: "{colors.paper}"
+  risk-badge:
+    backgroundColor: "{colors.risk-soft}"
+    textColor: "{colors.up-strong}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "2px 6px"
+  map-control:
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.ink-2}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "5px 8px"
+  map-control-active:
+    backgroundColor: "{colors.accent-soft}"
+    textColor: "{colors.accent-2}"
+  market-summary-active:
+    backgroundColor: "{colors.accent-soft}"
+    padding: "10px 18px"
 ---
+
 
 # Design System: 观潮看盘
 
 ## Overview
 
-**Creative North Star: 「纸面行情年鉴」— Almanac for the Market**
+**Creative North Star: "先看清市场，再进入细节"**
 
-观潮看盘是给 A 股日内短线交易者的观察与复盘工作台。视觉体系移植自 [Nutlope/hallmark](https://github.com/Nutlope/hallmark) 的 **Almanac** 主题：冷灰蓝纸面（slate, hue 245）上一张更浅的"印刷页"（sheet），蓝黑墨水、双线规（1px 发丝线 + 2px 实规）、方角、无阴影；Hanken Grotesk 撑结构，Newsreader 走正文，IBM Plex Mono 只排数字并右对齐到小数。深洋红（hue 350）是唯一强调色，占比 ≤5%。数据色（涨红/跌绿/平黑）是用户定版的语义色，不属于装饰体系。
+以大盘云图实际浅色页面为用户指定参考，把主要阅读面积交给市场本身。白色工作面、冷灰底、深蓝灰文字和钴蓝界面状态构成产品框架；行情保留用户确定的红、绿、黑三色。主图由真实市值、行业层级和正常比例的中文标签建立识别路径。
+
+当前文档记录 1.2.0 已实现的设计。页面采用本机无衬线字体与等宽关键数字，细线划分功能区域，较小圆角收束主云图与观察面板。参考站的连续色阶、品牌和业务代码没有搬入产品；样本日期与静态说明保持可见。
 
 **Key Characteristics:**
-- 双层 Canvas 树图：暗版三色块（涨红 #dc2626 / 跌绿 #15803d / 平黑 #111418）印在纸面栅格上，白栅格分隔
-- 每板块显示个股数按行业总市值比例动态分配（最大余数法，预算 900、保底 4）
-- 双线规层级：发丝线分内容、2px 实规压标题；方角、零阴影、零渐变
-- 洋红只出现在：涨停描边、连板角标、时间轴 3 板+、情绪走势主线、选中主控件
+- 主云图优先；一级行业、二级行业和个股构成三级结构。
+- 完整名称先测量，空间不足时隐去，不压缩汉字字宽。
+- 行业聚焦与明确返回支持逐级查看；专注操作可收起观察面板。
+- 观察面板初始显示市值前列列表；手机保留主要复盘模块。
 
 ## Colors
 
+前置 tokens 来自 `public/style.css` 和 `public/market-map.js`。生产值以这些实际颜色为准；sidecar 中的合成色阶仅是设计面板预览，不是新增主题。
+
 ### Primary
-- **深洋红**（#b12d6b，深态 #8f2455）：涨停描边、连板角标、情绪主线、选中主控件——唯一强调色。
-- **涨红**（#dc2626，文字态 #b02327）：上涨块与正涨幅。
-- **跌绿**（#15803d，文字态 #0c6b44）：下跌块与负涨幅。
+
+- 钴蓝 `accent` 用于标的池选中、焦点、涨停描边、列表与云图关联、时间轴高连板点和情绪走势。
+- 深钴蓝 `accent-2` 用于浅蓝面上的操作文字；浅蓝 `accent-soft` 用于选中概览、样本标记和专注状态。
+- 反白 `accent-ink` 用于钴蓝填充上的文字。
+
+### Secondary
+
+- `up`、`down`、`flat` 是固定的行情三色；树图将绝对涨跌幅小于 0.1% 归入平盘。绿块使用深墨字，红黑块使用白字。
+- `up-strong` 与 `down-strong` 是白底上的涨跌文字；`board-up` 是 Canvas 一级行业涨幅的小字专色。
+- `risk-soft` 是炸板次数徽标的浅红底，与 `up-strong` 文字配对，不是第四种树图行情色。
 
 ### Neutral
-- **纸底**（#f2f5f8 近似 oklch 84%）：页面底。
-- **Sheet**（#edeff1）：树图与表格所在的"印刷页"。
-- **板块灰蓝**（#c9ced6 / paper-2）：板块底与交替行。
-- **墨**（#1a1f27 / #2f3540 / #5f6570）：三级文字。
-- **规**（#b3b9c1 发丝 / #4b5158 实规）：两种线宽。
 
-**The One-Semantics Rule.** 洋红只表示涨停与"页面所指"；涨跌只由红绿表达；黑色只表示平盘。三者互不借用。
+- `paper`、`paper-2`、`paper-3` 分别用于页面与控件底、二级行业标题底、较强中性边界与悬停。
+- `sheet` 承载云图、观察面板和图表；`ink`、`ink-2`、`muted` 分别承载标题、正文和辅助说明。
+- `rule`、`rule-2` 是常规边界与提示浮层边界。兼容别名 `ink-3`、`gold` 分别指向 `muted`、`accent`，不增加色彩。
+
+**The Separate Signals Rule.** 钴蓝表达界面所指，红绿黑表达市场涨跌；选中状态不改写行情本色。
 
 ## Typography
 
-**Display Font:** Hanken Grotesk（600，-0.02em）+ Microsoft YaHei 中文回退
-**Body Font:** Newsreader（400/500，光学尺寸）+ 中文回退
-**Figure Font:** IBM Plex Mono（400/500，tabular-nums，右对齐）
+系统无衬线字体用于中文和界面文字，等宽字体用于价格、涨跌幅、评分和关键计数；字体栈以前置 tokens 为准，无远程字体依赖。
 
-### Hierarchy
-- **Headline**（600, 17px）：抽屉个股名、面板标题。
-- **Score/Figure**（500, 18–24px mono）：温度计分值、现价、情绪大数字。
-- **Body**（400, 13px）：界面正文与表格行。
-- **Meta/Caption**（500, 10–11px）：板块标题条、KV 标签、时间轴刻度。
+- 品牌使用 `brand`，手机使用 `brand-phone`。主图标题使用 `headline`；观察面板标题使用 `title`，个股/行业详情标题使用 `stock-title`。
+- **正文为 `body`（12px）**，用于搜索、股票名称、详情字段值与原因。原因行高为 1.7；不把普通正文统一缩小到 11px。
+- `label`（11px）用于控件短标签、图例、代码、计数、数据日期和来源说明。所有 DOM 功能文字至少 11px。
+- 情绪大数字使用 `numeric`（21px），顶部评分使用 `score`（23px），手机涨跌家数使用 `phone-breadth`（19px）。现价使用 `price`（30px），详情涨跌幅使用 `price-change`（14px）。
+- Canvas 股票完整名称按矩形尺寸使用 12–32px，涨跌幅使用至少 11px；一级行业标题 12px、二级行业及行业涨跌幅 10px。时间轴和走势的坐标及板数标注仍有 10px。这些是图内注释规则，不是 DOM 正文尺度。
 
-**The Mono-Only Rule.** Mono 只排数字；中文与标签一律 Hanken/Newsreader，永不混排成"伪终端"。
+**The Natural Type Rule.** 先测量完整文字，再决定是否显示；树图不用 `maxWidth` 横向挤压文字，也不描边补救。
 
 ## Layout
 
-一屏四区：52px 顶部概览条（品牌 + 8 市场芯片 + 温度计 + 搜索）→ 主区左树图（约 76%）+ 右 320px 抽屉 → 情绪仪表盘五格（150px，stat tile）→ 底部 148px 时间轴 + 情绪走势。间距 4/8/14。断点：1100px 搜索缩窄；860px 抽屉堆叠、情绪走势隐藏。
+桌面先是紧凑的身份 / 日期 / 搜索栏（最小 62px）和独立市场概览带（最小 56px）。主区采用左图右观察面板，外侧横向留白 16px、顶部间距 12px、列间距 12px；高度为 `calc(100dvh - 146px)`，最小 640px。右列默认 296px。情绪五项和两张辅助图表位于主区下方，页面按内容自然向下延伸。
+
+主云图内部依次为标题与行业/专注工具、标的池、连续画布、范围和图例状态栏；画布不加额外四周留白。观察面板独立滚动，初始用市值前列列表支持扫描。专注模式隐藏观察面板，云图占满主区宽度；恢复操作保留在云图标题栏。
+
+| 视口 | 实际布局 |
+| --- | --- |
+| ≥1700px | 右列增为350px。 |
+| ≤1200px | 右列286px；控件可换行，搜索200px；部分概览计数隐藏。 |
+| ≤960px | 主区高700px、最小640px；右列270px，外侧18px；顶部换行，情绪三列。 |
+| ≤700px | 主图与观察面板纵向堆叠，外侧12px；云图面板高660px。搜索独占一行；概览与标的池可在自身区域横向滚动。观察面板最高440px，内部详情最高380px。情绪两列，末项跨满；时间轴190px、走势172px，分别一行。 |
+| ≤360px | 涨跌家数、量能各占整行，避免数字碰撞。页面最小支持320px。 |
+
+**The Area Rule.** 总市值决定面积；筛选保留原空间权重，行业聚焦明确改变当前范围。
+
+具体探索路径、参考证据与首屏约定见 `.impeccable/surfaces/market-workbench.md`。全量 5,566 只股票参与布局、无预抽样；极小单元可能没有文字或可见面积，具体随视口和分隔间距而变。可通过行业聚焦或搜索读取，不能通过扭曲市值或字体制造可读性。
 
 ## Elevation & Depth
 
-零阴影零渐变。深度由纸阶（sheet → paper-2 → paper-3）与双线规表达。
-
-### Named Rules
-**The Two-Rule Rule.** 全站只有 1px 发丝线与 2px 实规两种线宽；更重的线一律禁止。
+常驻内容不使用投影、渐变或悬停抬升。白面、冷灰页面、细线与浅蓝状态提供层次。Tooltip 用较强边界，提示条用深墨底；树图白色间隔区分股票，中性标题区分行业层级。选中个股用深色外环与白色内环，列表和悬停关联用钴蓝轮廓。
 
 ## Shapes
 
-全方角；控件最多 2px。树图内以白栅格（rgba(255,255,255,.75)）分隔个股，板块外框 rgba(148,163,184,.48)。
+主云图与观察面板使用较紧圆角 `map-panel`（6px）；情绪和辅助图表保留 `panel`（12px）。控件和徽标使用 `control`（4px），搜索、Tooltip 与提示条使用 `field`（7px）。树图内部坚持矩形结构，市场概览为连续横带。
+
+普通边界为 1px；全局焦点为 2px 钴蓝轮廓，向外偏移 3px。焦点、选中环与涨停描边各有职责，不与普通面板边界混用。
 
 ## Components
 
-### Market Chip（市场芯片）
-- 右缘发丝线分隔、无圆角、无描边；active = paper-2 底 + 2px 墨底线。
-- 涨跌幅用 Plex Mono 语义着色（红涨绿跌）。
+### 标的池与搜索
 
-### Pool Tab（标的池）
-- 发丝线描边 + 2px 圆角，墨字；选中 = 洋红填充 + 纸色文字（唯一的填充控件）。
+保留全部、涨停、连板、首板、大市值五个池；冷灰组底与钴蓝选中态，11px短标签配等宽计数。使用原生按钮、tab语义及方向键/Home/End切换。搜索输入为12px正文，按名称或代码实时筛选，回车打开首个匹配；无匹配在图中显示文字状态。筛选降低未命中块透明度而不重新分配市值面积。
 
-### 详情抽屉（Drawer）
-- 320px 常驻，sheet 底；标题下 2px 实规；徽标 = 发丝线描边方块（洋红填充仅用于连板徽标）。
+### 行业与专注控件
 
-### 树图标注语言（签名组件）
-- 三色块 + 白栅格 + 板块中性底；涨停描边与连板角标为洋红；选中为深环 + 白环双规。
-- 每板块显示数按行业总市值比例分配（最大余数法，预算 900、保底 4）。
+原生行业下拉与一级/二级行业标题可进入对应的一级行业；返回按钮与「全部行业」恢复全市场。进入后标题更新、所选个股清空、行业成分重新占据画布。专注按钮通过 `aria-pressed` 表示状态，开启后文字变为「显示观察面板」，保持恢复入口。
+
+### 三级云图与标签
+
+以原样本行业、`subBoardName`、个股组织三级树；本地 D3 hierarchy 按总市值 squarify，目标比例为1.25。层级间细槽依深度为3/2/1px；可容纳时一级标题条22px、二级16px。
+
+股票标签先测量完整名称；矩形至少40×18px才尝试，名称至少12px仍放不下就不绘制。宽高允许时居中显示名称和涨跌幅两行，否则只显示名称。每个股票标签独立裁剪，行业名称及行业涨跌幅也先测量；不会压扁字形或拼出不可读前缀。小块通过悬停、搜索、列表或行业聚焦进入详情。
+
+涨停描边、连板角标、列表关联、悬停和所选标的轮廓保留。状态栏明确显示当前范围、命中数与「面积 = 总市值」，不再沿用抽样配额说明。
+
+### 市场概览与观察面板
+
+连续概览带显示静态市场快照，主范围以浅蓝面和钴蓝底线标识；美股已移除，这些单元不模拟可切换按钮。观察面板初始显示市值前列8只、名称/代码/行业和涨跌幅。股票详情按身份、现价、涨停、竞价、K线排布；返回观察列表可恢复默认列表。行业面板列出市值前20个成分，涨停类池保留板数/涨幅排序。列表支持键盘选择与图中定位，缺失K线与静态样本说明保留在关联区域。
+
+### 情绪与辅助图表
+
+五组情绪用同一白色面和内部分隔线；时间轴与情绪走势各有独立绘图区。时间轴保留板数分层、蓝色高连板点、红色炸板环及点击查看详情；走势为钴蓝线与低透明度面积。手机仍完整展示主要模块。非必要过渡在 `prefers-reduced-motion: reduce` 下关闭；不以动效暗示实时更新。
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** 用 IBM Plex Mono 渲染一切数字并右对齐。
-- **Do** 保持红涨绿跌平黑的用户定版三色。
-- **Do** 让洋红只服务涨停语义与"页面所指"。
-- **Do** 池过滤时整板压暗至 0.25/0.18（纸阶仍可读）。
+
+- **Do** 使用真实行业层级与总市值面积，并保持正常字形。
+- **Do** 保留行情三色、绿块深字、红黑块白字和独立选中轮廓。
+- **Do** 区分12px正文、11px操作标签与图内标注的不同阅读职责。
+- **Do** 为行业聚焦保留返回路径，为专注云图保留恢复面板的操作。
+- **Do** 在手机保留五组情绪、观察列表、时间轴、走势及静态样本说明。
 
 ### Don't:
-- **Don't** 使用圆角卡片、阴影、渐变、玻璃拟态。
-- **Don't** 让洋红占比超过 5% 画面。
-- **Don't** 用虚线网格或双 y 轴（data-viz 规则）。
-- **Don't** 在暗色画布上排中文正文（数据色块内仅名称与数字）。
+
+- **Don't** 恢复900只抽样配额或将部分股票重新铺满以冒充全行业市值。
+- **Don't** 用横向压缩、描边或极小字号塞满每一个股票块。
+- **Don't** 用装饰性留白或空观察面板挤占主云图。
+- **Don't** 为常驻面板添加投影、渐变或悬停抬升。
+- **Don't** 把静态样本、情绪演示或仅一只K线包装成实时能力。
