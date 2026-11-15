@@ -8,7 +8,7 @@
   'use strict';
   return {
     // 新版 Ant Design / ECharts 工作台默认值。浏览器外观设置可覆盖这些值。
-    workbench: { mode: 'light', up: '#c94e57', down: '#21846e', flat: '#525c68', accent: '#477a70', mapHeight: 490, labelSize: 12, density: 'middle' },
+    workbench: { mode: 'light', up: '#c94e57', down: '#21846e', flat: '#525c68', accent: '#477a70', mapHeight: 490, labelSize: 12, density: 'middle', perSectorLimit: 30 },
     theme: {
       tokens: {
         paper: '#f3f5f9', 'paper-2': '#edf2f8', 'paper-3': '#dce4f0', sheet: '#ffffff',

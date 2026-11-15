@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-15",
+  "screens": [
+    {
+      "name": "home",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "theme": "light",
+      "caption": "面积按入选股票总市值计算 · 点击行业放大图中 921 只 / 匹配 5,566 只 · 完整名单见股票列表",
+      "chart": "行业市值云图，每板块总市值前30只，当前显示921只；股票列表保留5566只匹配股票",
+      "errors": []
+    },
+    {
+      "name": "industry",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "theme": "light",
+      "caption": "面积按入选股票总市值计算 · 点击行业放大图中 30 只 / 匹配 530 只 · 完整名单见股票列表",
+      "chart": "行业市值云图，每板块总市值前30只，当前显示30只；股票列表保留530只匹配股票",
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "caption": "面积按入选股票总市值计算 · 点击行业放大图中 921 只 / 匹配 5,566 只 · 完整名单见股票列表",
+      "chart": "行业市值云图，每板块总市值前30只，当前显示921只；股票列表保留5566只匹配股票",
+      "errors": []
+    },
+    {
+      "name": "small",
+      "viewport": 320,
+      "scrollWidth": 320,
+      "theme": "light",
+      "caption": "面积按入选股票总市值计算 · 点击行业放大图中 921 只 / 匹配 5,566 只 · 完整名单见股票列表",
+      "chart": "行业市值云图，每板块总市值前30只，当前显示921只；股票列表保留5566只匹配股票",
+      "errors": []
+    }
+  ],
+  "perSectorLimit": 30,
+  "colors": {
+    "up": "#c94e57",
+    "down": "#21846e",
+    "unchanged": true
+  },
+  "tests": {
+    "total": 73,
+    "passed": 73,
+    "followup": {
+      "total": 11,
+      "passed": 11,
+      "reason": "Disable treemap-specific transition and retain explicit accessible scope description"
+    }
+  },
+  "build": "passed",
+  "sourceArtifactCheck": "passed",
+  "data": {
+    "fullStocks": 5566,
+    "plottedStocks": 921,
+    "metric": "totalMarketCap",
+    "selection": "filter current pool/industry/search, sort each industry descending total market cap, keep up to 30",
+    "stockUniverseUnchanged": true
+  },
+  "sourceArchive": {
+    "testedCodeRevision": "eb8e142",
+    "noNodeModules": true,
+    "version": "1.4.2",
+    "server": "passed",
+    "cloud": "921 of 5566",
+    "completeList": "passed",
+    "lightTheme": "passed",
+    "notesSaveReload": "passed",
+    "externalRequests": 0
+  }
+}
