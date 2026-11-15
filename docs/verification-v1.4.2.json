@@ -61,5 +61,16 @@
     "metric": "totalMarketCap",
     "selection": "filter current pool/industry/search, sort each industry descending total market cap, keep up to 30",
     "stockUniverseUnchanged": true
+  },
+  "sourceArchive": {
+    "testedCodeRevision": "eb8e142",
+    "noNodeModules": true,
+    "version": "1.4.2",
+    "server": "passed",
+    "cloud": "921 of 5566",
+    "completeList": "passed",
+    "lightTheme": "passed",
+    "notesSaveReload": "passed",
+    "externalRequests": 0
   }
 }
