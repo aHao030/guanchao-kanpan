@@ -1,6 +1,8 @@
+import { DEFAULT_CLOUD_LIMIT, normalizeCloudLimit } from './cloud-selection';
+
 const KEY = 'guanchao.workbench.preferences.v2';
 const LEGACY_KEY = 'guanchao.workbench.preferences.v1';
-const BUILTINS = { mode: 'light', up: '#c94e57', down: '#21846e', flat: '#525c68', accent: '#477a70', mapHeight: 490, labelSize: 12, density: 'middle' };
+const BUILTINS = { mode: 'light', up: '#c94e57', down: '#21846e', flat: '#525c68', accent: '#477a70', mapHeight: 490, labelSize: 12, density: 'middle', perSectorLimit: DEFAULT_CLOUD_LIMIT };
 export const defaults = () => normalize(window.MarketUIConfig?.workbench, BUILTINS);
 export function normalize(input, base = defaults()) {
   const result = { ...base };
@@ -10,6 +12,7 @@ export function normalize(input, base = defaults()) {
   for (const key of ['up', 'down', 'flat', 'accent']) if (/^#[0-9a-f]{6}$/i.test(input[key] || '')) result[key] = input[key];
   if (Number.isFinite(input.mapHeight)) result.mapHeight = Math.min(800, Math.max(320, input.mapHeight));
   if (Number.isFinite(input.labelSize)) result.labelSize = Math.min(20, Math.max(10, input.labelSize));
+  result.perSectorLimit = normalizeCloudLimit(input.perSectorLimit, base.perSectorLimit);
   return result;
 }
 export function loadPreferences() {

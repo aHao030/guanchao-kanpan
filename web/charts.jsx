@@ -4,6 +4,7 @@ import { TreemapChart, BarChart, LineChart, CandlestickChart } from 'echarts/cha
 import { TooltipComponent, GridComponent, DataZoomComponent, LegendComponent, AriaComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { readableColor } from './preferences';
+import { stockMarketCap } from './cloud-selection';
 echarts.use([TreemapChart, BarChart, LineChart, CandlestickChart, TooltipComponent, GridComponent, DataZoomComponent, LegendComponent, AriaComponent, CanvasRenderer]);
 
 export function Chart({ option, height = 300, onClick, label }) {
@@ -17,7 +18,7 @@ export function Chart({ option, height = 300, onClick, label }) {
     observer.observe(node.current);
     return () => { observer.disconnect(); instance.dispose(); chart.current = null; };
   }, []);
-  useEffect(() => { chart.current?.setOption(option, { notMerge: true }); }, [option]);
+  useEffect(() => { chart.current?.setOption({ ...option, aria: { ...option.aria, enabled: true, label: { description: label } } }, { notMerge: true }); }, [option, label]);
   return <div className="chart" ref={node} style={{ height }} role="img" aria-label={label} />;
 }
 
@@ -28,15 +29,16 @@ const color = (value, colors) => value > .005 ? colors.up : value < -.005 ? colo
 export function cloudOption(stocks, colors, selectedIndustry, labelSize = 12) {
   const boards = new Map();
   for (const stock of stocks) {
-    if (!boards.has(stock.board)) boards.set(stock.board, []);
+    const board = stock.board || '未分类';
+    if (!boards.has(board)) boards.set(board, []);
     const fill = color(stock.changePct, colors);
-    boards.get(stock.board).push({ name: stock.name, value: stock.value, stock, label: { color: readableColor('#ffffff', fill) }, itemStyle: { color: fill } });
+    boards.get(board).push({ name: stock.name, value: stockMarketCap(stock), stock, label: { color: readableColor('#ffffff', fill) }, itemStyle: { color: fill } });
   }
   const data = [...boards].map(([name, children]) => ({ name, children, value: children.reduce((n, s) => n + s.value, 0), itemStyle: { color: color(children.reduce((sum, child) => sum + child.stock.changePct * child.value, 0), colors) } }));
   return {
     animation: false, aria: { enabled: true },
     tooltip: { renderMode: 'richText', formatter: params => params.data.stock ? `${params.name}  ${params.data.stock.code6}\n${pct(params.data.stock.changePct)}  ¥${params.data.stock.price}\n${params.data.stock.board} · 市值 ${money(params.value)}` : `${params.name}\n点击行业标题放大` },
-    series: [{ type: 'treemap', data, top: 0, bottom: 0, left: 0, right: 0, roam: false, nodeClick: false,
+    series: [{ type: 'treemap', data, animation: false, animationDurationUpdate: 0, top: 0, bottom: 0, left: 0, right: 0, roam: false, nodeClick: false,
       breadcrumb: { show: false }, visibleMin: 1, childrenVisibleMin: 0,
       label: { show: true, color: '#fff', fontFamily: '"Microsoft YaHei", sans-serif', fontSize: labelSize, overflow: 'truncate', lineHeight: labelSize + 6,
         formatter: p => p.data.stock ? `${p.name}\n${pct(p.data.stock.changePct)}` : p.name },
